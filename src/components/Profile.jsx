@@ -4,15 +4,15 @@ import clsx from 'clsx';
 import DynamicIcon from './DynamicIcon';
 import styles from './Profile.module.css';
 import { createThemeClassGetter } from './helpers/themeClassHelper';
+import { PROFILE_DATA, BIO_TEXT } from '../constants/profileData';
 
 const Profile = ({ theme }) => {
-  // Fallback data
+  // Profile data from constants
   const data = {
-    name: 'Lux Sprwhk',
-    location: 'Austin, TX',
+    name: PROFILE_DATA.name,
+    location: PROFILE_DATA.location,
     profileImage: profileImg,
-    bio: `Web dev since the Flash days, turned digital artist.
-          Always building weird shit. Only now I won't get into trouble for it.`,
+    bio: BIO_TEXT.default,
   };
 
   // Create theme class getter for this component's styles
