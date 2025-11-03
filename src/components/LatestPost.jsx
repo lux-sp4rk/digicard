@@ -8,7 +8,7 @@ import { useContentful } from '../hooks/useContentful';
 import { getSettings } from '../utils/contentful';
 import fallbackPostData from '../featuredPost.json';
 
-const FeaturedPost = ({ theme }) => {
+const LatestPost = ({ theme }) => {
   const { post, loading } = useBeeHiiv();
   const { data: settings, loading: settingsLoading } =
     useContentful(getSettings);
@@ -169,4 +169,4 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
   );
 };
 
-export default FeaturedPost;
+export default LatestPost;

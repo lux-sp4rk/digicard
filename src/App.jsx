@@ -3,7 +3,7 @@ import AnalyticsProvider from './components/AnalyticsProvider';
 import Header from './components/Header';
 import Profile from './components/Profile';
 import Projects from './components/Projects/Projects';
-import FeaturedPost from './components/FeaturedPost';
+import LatestPost from './components/LatestPost';
 import YouTube from './components/YouTube';
 import SoundCloudWidget from './components/SoundCloudWidget';
 import Footer from './components/Footer';
@@ -106,13 +106,14 @@ function App() {
             <Profile theme={theme} />
             {/* Only show Links inline for non-csszen and non-web2 themes */}
             {theme !== 'web2' && theme !== 'csszen' ? <SocialLinks /> : null}
+            {/* Featured Content goes here */}
             <ErrorBoundary theme={theme}>
-              <FeaturedPost theme={theme} />
+              <YouTube theme={theme} featured={true} />
+            </ErrorBoundary>
+            <ErrorBoundary theme={theme}>
+              <LatestPost theme={theme} featured={false} />
             </ErrorBoundary>
             <Projects theme={theme} />
-            <ErrorBoundary theme={theme}>
-              <YouTube theme={theme} />
-            </ErrorBoundary>
             <ErrorBoundary theme={theme}>
               <SoundCloudWidget theme={theme} />
             </ErrorBoundary>
