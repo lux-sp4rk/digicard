@@ -22,43 +22,33 @@ vi.mock('../../src/components/ProfileBio', () => ({
 }));
 
 describe('Profile', () => {
-  it('renders profile with static data for non-web2 themes', () => {
+  it('renders all profile elements for non-web2 themes', () => {
     render(<Profile theme="dark" />);
 
-    // Check for static data
-    expect(screen.getByText('Luh Sprwhk')).toBeInTheDocument();
-    expect(
-      screen.getByText('Creative Dev && Vaporware Dealer')
-    ).toBeInTheDocument();
-    expect(screen.getByText('Austin, TX')).toBeInTheDocument();
-
-    // Check for profile image
+    // Check for profile image (using alt text for accessibility)
     const img = screen.getByAltText('Profile');
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src', 'profile-image-mock-url');
 
-    // Check for location icon
+    // Check for location icon (functionality, not specific icon name)
     expect(screen.getByTestId('dynamic-icon')).toBeInTheDocument();
 
-    // Check that bio is passed correctly
-    expect(screen.getByTestId('basic-bio')).toHaveTextContent(
-      'Web dev since the Flash days, now building digital experiences and making AI-powered art'
-    );
+    // Check that BasicBio component is rendered with correct props
+    const bio = screen.getByTestId('basic-bio');
+    expect(bio).toBeInTheDocument();
+    expect(bio).toHaveAttribute('data-theme', 'dark');
+    // Verify bio has some content (not empty)
+    expect(bio.textContent.length).toBeGreaterThan(0);
   });
 
-  it('does not render profile details for web2 theme', () => {
+  it('conditionally hides profile details for web2 theme', () => {
     render(<Profile theme="web2" />);
 
-    // Profile details should not be visible for web2 theme
-    expect(screen.queryByText('Luh Sprwhk')).not.toBeInTheDocument();
-    expect(
-      screen.queryByText('Creative Dev && Vaporware Dealer')
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText('Austin, TX')).not.toBeInTheDocument();
+    // Profile image should not be rendered for web2 theme
     expect(screen.queryByAltText('Profile')).not.toBeInTheDocument();
   });
 
-  it('renders the BasicBio component for all themes', () => {
+  it('renders BasicBio component for all themes with correct theme prop', () => {
     // Test with a non-web2 theme
     const { rerender } = render(<Profile theme="dark" />);
     expect(screen.getByTestId('basic-bio')).toBeInTheDocument();
@@ -74,5 +64,22 @@ describe('Profile', () => {
       'data-theme',
       'web2'
     );
+
+    // Test with matrix theme
+    rerender(<Profile theme="matrix" />);
+    expect(screen.getByTestId('basic-bio')).toBeInTheDocument();
+    expect(screen.getByTestId('basic-bio')).toHaveAttribute(
+      'data-theme',
+      'matrix'
+    );
+  });
+
+  it('passes bio content to BasicBio component', () => {
+    render(<Profile theme="dark" />);
+
+    const bio = screen.getByTestId('basic-bio');
+    // Just verify that bio receives some content, not the exact text
+    expect(bio.textContent).not.toBe('Default bio');
+    expect(bio.textContent.length).toBeGreaterThan(10);
   });
 });

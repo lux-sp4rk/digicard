@@ -11,7 +11,8 @@ const Profile = ({ theme }) => {
     name: 'Lux Sprwhk',
     location: 'Austin, TX',
     profileImage: profileImg,
-    bio: 'Web dev since the Flash days, now building digital experiences and making AI-powered art',
+    bio: `Web dev since the Flash days, turned digital artist.
+          Always building weird shit. Only now I won't get into trouble for it.`,
   };
 
   // Create theme class getter for this component's styles

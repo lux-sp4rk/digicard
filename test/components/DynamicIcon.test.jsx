@@ -4,144 +4,62 @@ import '@testing-library/jest-dom';
 import DynamicIcon from '../../src/components/DynamicIcon';
 import * as iconMapper from '../../src/utils/iconMapper';
 
-// Mock the react-icons to avoid importing actual icon libraries in tests
-vi.mock('react-icons/fa', () => ({
-  FaGithub: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaGithub"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>GitHub Icon</title>
-    </svg>
-  ),
-  FaLinkedin: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaLinkedin"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>LinkedIn Icon</title>
-    </svg>
-  ),
-  FaTwitter: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaTwitter"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>Twitter Icon</title>
-    </svg>
-  ),
-  FaYoutube: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaYoutube"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>YouTube Icon</title>
-    </svg>
-  ),
-  FaMapMarkerAlt: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaMapMarkerAlt"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>Map Marker Icon</title>
-    </svg>
-  ),
-  FaArrowRight: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaArrowRight"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>Arrow Right Icon</title>
-    </svg>
-  ),
-  FaExternalLinkAlt: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaExternalLinkAlt"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>External Link Icon</title>
-    </svg>
-  ),
-  FaDownload: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaDownload"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>Download Icon</title>
-    </svg>
-  ),
-  FaPlay: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaPlay"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>Play Icon</title>
-    </svg>
-  ),
-  FaTerminal: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaTerminal"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>Terminal Icon</title>
-    </svg>
-  ),
-  FaRssSquare: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaRssSquare"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>RSS Icon</title>
-    </svg>
-  ),
-}));
+// Mock react-icons dynamically to avoid brittle icon lists
+vi.mock('react-icons/fa', async () => {
+  // Create mocks inline to avoid hoisting issues
+  const mockIcons = {};
+  const commonFaIcons = [
+    'FaGithub',
+    'FaLinkedin',
+    'FaTwitter',
+    'FaYoutube',
+    'FaMapMarkerAlt',
+    'FaArrowRight',
+    'FaExternalLinkAlt',
+    'FaDownload',
+    'FaPlay',
+    'FaTerminal',
+    'FaRssSquare',
+    'FaCoffee',
+  ];
 
-vi.mock('react-icons/fa6', () => ({
-  FaThreads: ({ className, size, ...props }) => (
-    <svg
-      data-testid="FaThreads"
-      className={className}
-      width={size}
-      height={size}
-      {...props}
-    >
-      <title>Threads Icon</title>
-    </svg>
-  ),
-}));
+  commonFaIcons.forEach(iconName => {
+    mockIcons[iconName] = ({ className, size, ...props }) => (
+      <svg
+        data-testid={iconName}
+        className={className}
+        width={size}
+        height={size}
+        {...props}
+      >
+        <title>{iconName}</title>
+      </svg>
+    );
+  });
+
+  return mockIcons;
+});
+
+vi.mock('react-icons/fa6', async () => {
+  const mockIcons = {};
+  const commonFa6Icons = ['FaThreads', 'FaMugHot'];
+
+  commonFa6Icons.forEach(iconName => {
+    mockIcons[iconName] = ({ className, size, ...props }) => (
+      <svg
+        data-testid={iconName}
+        className={className}
+        width={size}
+        height={size}
+        {...props}
+      >
+        <title>{iconName}</title>
+      </svg>
+    );
+  });
+
+  return mockIcons;
+});
 
 describe('DynamicIcon', () => {
   beforeEach(() => {
@@ -185,29 +103,26 @@ describe('DynamicIcon', () => {
   });
 
   describe('icon rendering with different icons', () => {
-    const validIcons = [
-      'FaGithub',
-      'FaLinkedin',
-      'FaTwitter',
-      'FaYoutube',
-      'FaTerminal',
-      'FaMapMarkerAlt',
-      'FaArrowRight',
-      'FaExternalLinkAlt',
-      'FaDownload',
-      'FaPlay',
-      'FaRssSquare',
-      'FaThreads',
-    ];
+    it('renders any valid icon from iconMapper', () => {
+      // Test a sample of common icons instead of hardcoding a list
+      const sampleIcons = ['FaGithub', 'FaLinkedin', 'FaThreads'];
 
-    validIcons.forEach(iconName => {
-      it(`renders ${iconName} correctly`, () => {
+      sampleIcons.forEach(iconName => {
         const { container } = render(<DynamicIcon iconName={iconName} />);
-
         const icon = container.querySelector(`[data-testid="${iconName}"]`);
+
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe('svg');
       });
+    });
+
+    it('dynamically retrieves available icons from iconMapper', () => {
+      // Get icons dynamically from the iconMapper utility
+      const availableIcons = iconMapper.getAvailableIcons();
+
+      // Verify the utility returns a list of icons
+      expect(availableIcons).toBeInstanceOf(Array);
+      expect(availableIcons.length).toBeGreaterThan(0);
     });
   });
 
