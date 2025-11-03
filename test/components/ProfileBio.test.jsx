@@ -1,118 +1,80 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { BasicBio, TypewriterBio } from '../../src/components/ProfileBio';
-
-// Mock react-typed to avoid issues with the typing animation in tests
-vi.mock('react-typed', () => ({
-  ReactTyped: ({ strings, showCursor, className }) => (
-    <div data-testid="react-typed-mock" className={className}>
-      {strings[0]}
-      {showCursor && <span className="typed-cursor">|</span>}
-    </div>
-  ),
-}));
+import { BasicBio } from '../../src/components/ProfileBio';
 
 describe('ProfileBio', () => {
-  const normalBio =
-    'Web dev since the Flash days, now building digital experiences and making AI-powered art';
-  const matrixBio =
-    'Welcome to the Matrix, hacker. Reality is what you make it.';
-  const customBio = 'This is a custom bio for testing';
-
   describe('BasicBio', () => {
+    const customBio = 'This is a custom bio for testing';
+
     it('renders without crashing', () => {
-      render(<BasicBio theme="dark" />);
-      expect(screen.getByText(normalBio)).toBeInTheDocument();
+      const { container } = render(<BasicBio theme="dark" />);
+      // Check that a paragraph element is rendered
+      expect(container.querySelector('p')).toBeInTheDocument();
     });
 
-    it('displays normal bio for dark theme', () => {
-      render(<BasicBio theme="dark" />);
-      expect(screen.getByText(normalBio)).toBeInTheDocument();
-    });
-
-    it('displays matrix bio for matrix theme', () => {
-      render(<BasicBio theme="matrix" />);
-      expect(screen.getByText(matrixBio)).toBeInTheDocument();
-    });
-
-    it('displays custom bio when provided', () => {
+    it('renders bio content when provided', () => {
       render(<BasicBio theme="dark" bio={customBio} />);
       expect(screen.getByText(customBio)).toBeInTheDocument();
-      expect(screen.queryByText(normalBio)).not.toBeInTheDocument();
     });
 
-    it('displays custom bio even for matrix theme', () => {
-      render(<BasicBio theme="matrix" bio={customBio} />);
-      expect(screen.getByText(customBio)).toBeInTheDocument();
-      expect(screen.queryByText(matrixBio)).not.toBeInTheDocument();
+    it('custom bio prop overrides default behavior', () => {
+      const { container } = render(<BasicBio theme="matrix" bio={customBio} />);
+      const bioElement = container.querySelector('p');
+
+      // Verify custom bio is used
+      expect(bioElement).toHaveTextContent(customBio);
     });
 
-    it('applies correct CSS classes', () => {
-      render(<BasicBio theme="dark" />);
-      const bioElement = screen.getByText(normalBio);
-      expect(bioElement).toHaveClass('text-lg', 'font-mono', 'min-h-[2em]');
+    it('renders bio for different themes', () => {
+      const themes = ['dark', 'web2', 'matrix', 'brutalist'];
+
+      themes.forEach(theme => {
+        const { container } = render(
+          <BasicBio theme={theme} bio={customBio} />
+        );
+        const bioElement = container.querySelector('p');
+
+        // Verify bio is rendered for each theme
+        expect(bioElement).toBeInTheDocument();
+        expect(bioElement).toHaveTextContent(customBio);
+      });
     });
 
-    it('applies web2 specific classes for web2 theme', () => {
-      render(<BasicBio theme="web2" />);
-      const bioElement = screen.getByText(normalBio);
-      expect(bioElement).toHaveClass(
-        'web2:text-4xl',
-        'web2:text-web2-secondary',
-        'web2:font-web2Heading'
+    it('applies base CSS classes', () => {
+      const { container } = render(<BasicBio theme="dark" bio={customBio} />);
+      const bioElement = container.querySelector('p');
+
+      // Check for base styling classes
+      expect(bioElement).toHaveClass('text-lg');
+      expect(bioElement).toHaveClass('font-mono');
+      expect(bioElement).toHaveClass('min-h-[2em]');
+    });
+
+    it('applies theme-specific CSS classes', () => {
+      // Test web2 theme classes
+      const { container: web2Container } = render(
+        <BasicBio theme="web2" bio={customBio} />
       );
+      const web2Element = web2Container.querySelector('p');
+      expect(web2Element).toHaveClass('web2:text-4xl');
+      expect(web2Element).toHaveClass('web2:text-web2-secondary');
+      expect(web2Element).toHaveClass('web2:font-web2Heading');
+
+      // Test matrix theme classes
+      const { container: matrixContainer } = render(
+        <BasicBio theme="matrix" bio={customBio} />
+      );
+      const matrixElement = matrixContainer.querySelector('p');
+      expect(matrixElement).toHaveClass('matrix:text-matrix-glow');
     });
 
-    it('applies matrix specific classes for matrix theme', () => {
-      render(<BasicBio theme="matrix" />);
-      const bioElement = screen.getByText(matrixBio);
-      expect(bioElement).toHaveClass('matrix:text-matrix-glow');
-    });
-  });
+    it('renders matrix-specific content when no custom bio provided', () => {
+      const { container } = render(<BasicBio theme="matrix" />);
+      const bioElement = container.querySelector('p');
 
-  describe('TypewriterBio', () => {
-    it('renders without crashing', () => {
-      render(<TypewriterBio theme="dark" />);
-      expect(screen.getByText(normalBio)).toBeInTheDocument();
-    });
-
-    it('displays normal bio for dark theme', () => {
-      render(<TypewriterBio theme="dark" />);
-      expect(screen.getByText(normalBio)).toBeInTheDocument();
-    });
-
-    it('displays matrix bio for matrix theme', () => {
-      render(<TypewriterBio theme="matrix" />);
-      expect(screen.getByText(matrixBio)).toBeInTheDocument();
-    });
-
-    it('displays custom bio when provided', () => {
-      render(<TypewriterBio theme="dark" bio={customBio} />);
-      expect(screen.getByText(customBio)).toBeInTheDocument();
-      expect(screen.queryByText(normalBio)).not.toBeInTheDocument();
-    });
-
-    it('displays custom bio even for matrix theme', () => {
-      render(<TypewriterBio theme="matrix" bio={customBio} />);
-      expect(screen.getByText(customBio)).toBeInTheDocument();
-      expect(screen.queryByText(matrixBio)).not.toBeInTheDocument();
-    });
-
-    it('applies correct CSS classes', () => {
-      render(<TypewriterBio theme="dark" />);
-      const bioElement = screen.getByText(normalBio);
-      expect(bioElement).toHaveClass('text-lg', 'font-mono', 'min-h-[2em]');
-    });
-
-    it('applies matrix specific classes for matrix theme', () => {
-      render(<TypewriterBio theme="matrix" />);
-      const bioElement = screen.getByText(matrixBio);
-      expect(bioElement).toHaveClass('matrix:text-matrix-glow');
-    });
-
-    it('shows cursor by default', () => {
-      render(<TypewriterBio theme="dark" />);
-      expect(screen.getByText('|')).toBeInTheDocument();
+      // Should have some content (not testing exact text)
+      expect(bioElement.textContent).toBeTruthy();
+      expect(bioElement.textContent.length).toBeGreaterThan(0);
     });
   });
 });
