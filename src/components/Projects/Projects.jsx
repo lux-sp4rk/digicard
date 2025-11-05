@@ -1,9 +1,6 @@
 import { useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import sbBukowskisImg from '../../assets/sb-bukowskis.jpg';
-import hypehallImg from '../../assets/hypehall-thumb.jpg';
-import liveLaughDieImg from '../../assets/LiveLaughDie-thumb.png';
-import liveLaughDieWideImg from '../../assets/LiveLaughDie-thumb-wide.png';
 import rubberDuckTarotIMG from '../../assets/RDTBanner.png';
 import { useContentful } from '../../hooks/useContentful';
 import { getProjects } from '../../utils/contentful';
@@ -41,8 +38,6 @@ const ProjectCard = ({
         className={clsx(
           'w-full h-full', // layout only
           styles.imageBase,
-          img === liveLaughDieImg && styles.imgContainBottom,
-          img === hypehallImg && styles.imgObjectFillCenter,
           img === sbBukowskisImg && styles.imgObjectCoverCenter,
           img === rubberDuckTarotIMG && styles.imgObjectCoverCenter
         )}
@@ -96,17 +91,6 @@ const fallbackProjects = [
       "Decision-making tool disguised as tarot cards, featuring a dead developer's ghost trapped in a rubber duck who helps creative people debug their mental blocks",
     link: 'https://rubberducktarot.com',
     order: 1,
-    active: true,
-  },
-  {
-    imgNormal: liveLaughDieImg,
-    imgWide: liveLaughDieWideImg,
-    alt: 'Live Laugh Die',
-    title: 'Live Laugh Die',
-    description:
-      'Horror trivia game satirizing MLM culture and toxic positivity through deadly quiz show gameplay',
-    link: 'https://liveLaughDie.beehiiv.com/subscribe',
-    order: 4,
     active: true,
   },
 ];
