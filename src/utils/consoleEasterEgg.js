@@ -22,6 +22,9 @@ const consoleEasterEgg = setTheme => {
   Object.defineProperties(window, {
     hack: {
       get: function () {
+        // Track easter egg start
+        window.umami?.track('easter-egg-hack-typed');
+
         console.log(
           '%cInitiating Level 1: "Code Breaker"',
           'color: #f39c12; font-family: monospace; font-size: 16px;'
@@ -44,6 +47,9 @@ const consoleEasterEgg = setTheme => {
     },
     red: {
       get: function () {
+        // Track binary puzzle completion
+        window.umami?.track('easter-egg-binary-solved');
+
         console.log(
           '%c🔴 You chose the red pill.',
           'color: #e74c3c; font-family: monospace; font-size: 16px; font-weight: bold;'
@@ -80,6 +86,9 @@ const consoleEasterEgg = setTheme => {
     },
     spoon: {
       get: function () {
+        // Track spoon challenge start
+        window.umami?.track('easter-egg-spoon-challenge');
+
         console.log(
           '%c[Mind] Reality check protocol activated. A simple test of perception awaits you.',
           'font-size: 16px; font-weight: bold; color: #ff79c6;'
@@ -136,6 +145,9 @@ const consoleEasterEgg = setTheme => {
             const allPassed = results.every(r => r.passed);
 
             if (allPassed) {
+              // Track function challenge completion
+              window.umami?.track('easter-egg-function-completed');
+
               console.log(
                 '%c🎉 CORRECT! You understand the nature of nothingness.',
                 'font-size: 16px; font-weight: bold; color: #50fa7b;'
@@ -153,6 +165,9 @@ const consoleEasterEgg = setTheme => {
               Object.defineProperties(window, {
                 'there is no spoon': {
                   get: function () {
+                    // Track matrix theme unlock (final stage)
+                    window.umami?.track('easter-egg-matrix-unlocked');
+
                     setTheme('matrix');
                     localStorage.setItem('theme', 'matrix');
                     console.log(

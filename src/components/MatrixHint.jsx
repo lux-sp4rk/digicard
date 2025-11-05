@@ -2,6 +2,7 @@ import { useState, useRef, useLayoutEffect } from 'react';
 
 function MatrixHint({ children }) {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [hasTracked, setHasTracked] = useState(false);
   const tooltipRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -9,6 +10,12 @@ function MatrixHint({ children }) {
       const tooltip = tooltipRef.current;
       const rect = tooltip.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
+
+      // Track first hover only (start of easter egg funnel)
+      if (!hasTracked) {
+        window.umami?.track('easter-egg-hint-hovered');
+        setHasTracked(true);
+      }
 
       // Adjust position if tooltip goes beyond viewport edges
       if (rect.left < 0) {
@@ -20,7 +27,7 @@ function MatrixHint({ children }) {
         tooltip.style.transform = 'none';
       }
     }
-  }, [showTooltip]);
+  }, [showTooltip, hasTracked]);
 
   return (
     <span
