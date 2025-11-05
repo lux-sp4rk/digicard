@@ -13,7 +13,11 @@ function MatrixHint({ children }) {
 
       // Track first hover only (start of easter egg funnel)
       if (!hasTracked) {
-        window.umami?.track('easter-egg-hint-hovered');
+        try {
+          window.umami?.track('easter-egg-hint-hovered');
+        } catch (e) {
+          console.warn('Analytics tracking failed:', e);
+        }
         setHasTracked(true);
       }
 
