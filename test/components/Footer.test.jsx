@@ -3,9 +3,16 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Footer, SuperFooter } from '../../src/components/Footer';
 
-// Mock the profile image
-vi.mock('../../src/assets/lux-avatar.jpg', () => ({
-  default: 'profile-image-mock-url',
+const mockProfile = {
+  name: 'Test Name',
+  profileImage: 'https://example.com/avatar.jpg',
+  bio: 'Test bio snippet.',
+};
+
+vi.mock('../../src/hooks/useProfileData', () => ({
+  useProfileData: () => ({
+    profile: mockProfile,
+  }),
 }));
 
 // Mock the DynamicIcon component
@@ -101,11 +108,11 @@ describe('SuperFooter', () => {
   it('renders profile section', () => {
     render(<SuperFooter />);
 
-    expect(screen.getByAltText('Profile')).toBeInTheDocument();
-    expect(screen.getByText('Luh Sprwhk')).toBeInTheDocument();
-    expect(
-      screen.getByText(/Web tinkerer, vaporwave enjoyer/)
-    ).toBeInTheDocument();
+    const avatar = screen.getByAltText(`${mockProfile.name} avatar`);
+    expect(avatar).toBeInTheDocument();
+    expect(avatar).toHaveAttribute('src', mockProfile.profileImage);
+    expect(screen.getByText(mockProfile.name)).toBeInTheDocument();
+    expect(screen.getByText(mockProfile.bio)).toBeInTheDocument();
   });
 
   it('renders social links', () => {
