@@ -197,3 +197,20 @@ export const getSoundCloudTrack = async () => {
     return null;
   }
 };
+
+export const getBio = async () => {
+  try {
+    const response = await client.getEntries({
+      content_type: 'profile',
+      limit: 1,
+    });
+    if (response.items.length > 0) {
+      const item = response.items[0];
+      return item.fields.bio || null;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching bio:', error);
+    return null;
+  }
+};
