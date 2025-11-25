@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import profileImg from '../assets/profile.jpg';
+import profileImg from '../assets/lux-avatar.jpg';
 import clsx from 'clsx';
 import DynamicIcon from './DynamicIcon';
 
