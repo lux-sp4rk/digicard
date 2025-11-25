@@ -56,10 +56,6 @@
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
   text-decoration-style: dotted;
-  text-decoration-color: var(--web2-primary);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-  text-decoration-style: dotted;
 }
 
 /* Theme-specific name styles */
