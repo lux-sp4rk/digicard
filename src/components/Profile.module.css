@@ -53,8 +53,6 @@
   font-size: 2.25rem;
   text-transform: uppercase;
   text-decoration: underline;
-  /* Using web2-primary color for underline across all themes by design */
-  text-decoration-color: var(--web2-primary);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
   text-decoration-style: dotted;
@@ -63,23 +61,28 @@
 /* Theme-specific name styles */
 .profileNameGithub {
   color: var(--github-text);
+  text-decoration-color: var(--github-blue);
 }
 
 .profileNameDracula {
   color: var(--dracula-foreground);
+  text-decoration-color: var(--dracula-purple);
 }
 
 .profileNameMatrix {
   color: var(--matrix-highlight);
   filter: drop-shadow(0 0 5px var(--matrix-glow));
+  text-decoration-color: var(--matrix-glow);
 }
 
 .profileNameWeb2 {
   color: white;
+  text-decoration-color: var(--web2-primary);
 }
 
 .profileNameCsszen {
   color: var(--csszen-text);
+  text-decoration-color: var(--csszen-text);
 }
 
 .profileTitle {
