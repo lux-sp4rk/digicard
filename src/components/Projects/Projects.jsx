@@ -1,9 +1,5 @@
-import { useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import sbBukowskisImg from '../../assets/sb-bukowskis.jpg';
-import hypehallImg from '../../assets/hypehall-thumb.jpg';
-import liveLaughDieImg from '../../assets/LiveLaughDie-thumb.png';
-import liveLaughDieWideImg from '../../assets/LiveLaughDie-thumb-wide.png';
 import rubberDuckTarotIMG from '../../assets/RDTBanner.png';
 import { useContentful } from '../../hooks/useContentful';
 import { getProjects } from '../../utils/contentful';
@@ -22,7 +18,6 @@ const ProjectCard = ({
   description,
   link,
   icon,
-  refCb,
   createRipple,
   theme,
 }) => (
@@ -32,7 +27,6 @@ const ProjectCard = ({
       styles.cardBase,
       getThemeClass(theme, 'card')
     )}
-    ref={refCb}
   >
     <div className="h-40 overflow-hidden">
       <img
@@ -41,8 +35,6 @@ const ProjectCard = ({
         className={clsx(
           'w-full h-full', // layout only
           styles.imageBase,
-          img === liveLaughDieImg && styles.imgContainBottom,
-          img === hypehallImg && styles.imgObjectFillCenter,
           img === sbBukowskisImg && styles.imgObjectCoverCenter,
           img === rubberDuckTarotIMG && styles.imgObjectCoverCenter
         )}
@@ -98,21 +90,9 @@ const fallbackProjects = [
     order: 1,
     active: true,
   },
-  {
-    imgNormal: liveLaughDieImg,
-    imgWide: liveLaughDieWideImg,
-    alt: 'Live Laugh Die',
-    title: 'Live Laugh Die',
-    description:
-      'Horror trivia game satirizing MLM culture and toxic positivity through deadly quiz show gameplay',
-    link: 'https://liveLaughDie.beehiiv.com/subscribe',
-    order: 4,
-    active: true,
-  },
 ];
 
 const Projects = ({ theme }) => {
-  const projectRefs = useRef([]);
   const { data: cmsProjects, loading, error } = useContentful(getProjects);
 
   // Use CMS data if available, otherwise fall back to static data
@@ -139,33 +119,6 @@ const Projects = ({ theme }) => {
 
     button.appendChild(circle);
   };
-
-  // Set up animations for project cards (currently inactive but mechanism preserved)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Animation class addition disabled, but mechanism kept for future use
-            // entry.target.classList.add('animate-bounce-once')
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentRefs = projectRefs.current;
-    currentRefs.forEach(card => {
-      if (card) observer.observe(card);
-    });
-
-    return () => {
-      currentRefs.forEach(card => {
-        if (card) observer.unobserve(card);
-      });
-    };
-  }, []);
 
   if (loading) {
     return (
@@ -213,21 +166,20 @@ const Projects = ({ theme }) => {
       >
         {sortedProjects
           .filter(projectItem => projectItem.active)
-          .map((projectItem, idx) => {
+          .map(projectItem => {
             const imageSrc =
               isOddLayout && projectItem.imgWide
                 ? projectItem.imgWide
                 : projectItem.imgNormal;
             return (
               <ProjectCard
-                key={projectItem.id || projectItem.title}
+                key={projectItem.title}
                 img={imageSrc}
                 alt={projectItem.alt}
                 title={projectItem.title}
                 description={projectItem.description}
                 link={projectItem.link}
                 icon={projectItem.icon}
-                refCb={el => (projectRefs.current[idx] = el)}
                 createRipple={createRipple}
                 theme={theme}
               />

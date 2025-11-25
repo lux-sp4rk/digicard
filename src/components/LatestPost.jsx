@@ -14,7 +14,7 @@ const LatestPost = ({ theme }) => {
     useContentful(getSettings);
 
   if (settingsLoading) return <Loading />;
-  const { blogArchiveUrl } = settings;
+  const { blogArchiveUrl } = settings || {};
 
   const sectionClassName = clsx(
     'p-5',
@@ -148,23 +148,25 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
           </p>
         </div>
       </div>
-      <a
-        href={`https://${blogArchiveUrl}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={clsx(
-          'mt-4 block',
-          'underline',
-          'web2:text-web2-primary csszen:text-csszen-text',
-          'hover:text-blue-800 csszen:hover:text-[#8b7c4a]',
-          'transition-colors',
-          'text-base',
-          'font-normal',
-          'web2:hover:text-web2-accent'
-        )}
-      >
-        View Archives
-      </a>
+      {blogArchiveUrl && (
+        <a
+          href={`https://${blogArchiveUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={clsx(
+            'mt-4 block',
+            'underline',
+            'web2:text-web2-primary csszen:text-csszen-text',
+            'hover:text-blue-800 csszen:hover:text-[#8b7c4a]',
+            'transition-colors',
+            'text-base',
+            'font-normal',
+            'web2:hover:text-web2-accent'
+          )}
+        >
+          View Archives
+        </a>
+      )}
     </section>
   );
 };

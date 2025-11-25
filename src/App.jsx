@@ -103,9 +103,15 @@ function App() {
             )}
           >
             {theme === 'web2' && <Web2NavBar theme={theme} />}
-            <Profile theme={theme} />
+            <ErrorBoundary theme={theme}>
+              <Profile theme={theme} />
+            </ErrorBoundary>
             {/* Only show Links inline for non-csszen and non-web2 themes */}
-            {theme !== 'web2' && theme !== 'csszen' ? <SocialLinks /> : null}
+            {theme !== 'web2' && theme !== 'csszen' ? (
+              <ErrorBoundary theme={theme}>
+                <SocialLinks />
+              </ErrorBoundary>
+            ) : null}
             {/* Featured Content goes here */}
             <ErrorBoundary theme={theme}>
               <YouTube theme={theme} featured={true} />
@@ -113,7 +119,9 @@ function App() {
             <ErrorBoundary theme={theme}>
               <LatestPost theme={theme} featured={false} />
             </ErrorBoundary>
-            <Projects theme={theme} />
+            <ErrorBoundary theme={theme}>
+              <Projects theme={theme} />
+            </ErrorBoundary>
             <ErrorBoundary theme={theme}>
               <SoundCloudWidget theme={theme} />
             </ErrorBoundary>
@@ -127,7 +135,9 @@ function App() {
             className="csszen-sidebar hidden md:block"
             style={{ minWidth: 180, marginLeft: -25, marginTop: '20rem' }}
           >
-            <SocialLinks theme={theme} />
+            <ErrorBoundary theme={theme}>
+              <SocialLinks theme={theme} />
+            </ErrorBoundary>
           </aside>
         )}
       </div>

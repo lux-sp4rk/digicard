@@ -1,18 +1,21 @@
-import profileImg from '../assets/profile.jpg';
+import profileImg from '../assets/lux-avatar.jpg';
 import { BasicBio } from './ProfileBio';
 import clsx from 'clsx';
-import DynamicIcon from './DynamicIcon';
 import styles from './Profile.module.css';
 import { createThemeClassGetter } from './helpers/themeClassHelper';
 import { PROFILE_DATA, BIO_TEXT } from '../constants/profileData';
+import { useContentful } from '../hooks/useContentful';
+import { getBio } from '../utils/contentful';
 
 const Profile = ({ theme }) => {
-  // Profile data from constants
+  // Fetch bio from Contentful first
+  const { data: contentfulBio } = useContentful(getBio);
+
+  // Profile data from constants (with bio fallback)
   const data = {
     name: PROFILE_DATA.name,
-    location: PROFILE_DATA.location,
     profileImage: profileImg,
-    bio: BIO_TEXT.default,
+    bio: contentfulBio || BIO_TEXT.default,
   };
 
   // Create theme class getter for this component's styles
@@ -73,17 +76,6 @@ const Profile = ({ theme }) => {
         >
           {data.name}
         </h1>
-      )}
-      {theme !== 'web2' && (
-        <p
-          className={clsx(
-            'mb-4 flex justify-center items-center gap-1',
-            styles.profileLocation,
-            getThemeClass(theme, 'profileLocation')
-          )}
-        >
-          <DynamicIcon iconName="FaMapMarkerAlt" /> {data.location}
-        </p>
       )}
 
       <BasicBio theme={theme} bio={data.bio} />

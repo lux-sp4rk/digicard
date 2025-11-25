@@ -1,16 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Profile from '../../src/components/Profile';
+import * as useContentfulHook from '../../src/hooks/useContentful';
 
-// Mock the profile image
-vi.mock('../../src/assets/profile.jpg', () => ({
-  default: 'profile-image-mock-url',
-}));
-
-// Mock the DynamicIcon component
-vi.mock('../../src/components/DynamicIcon', () => ({
-  default: ({ iconName }) => <span data-testid="dynamic-icon">{iconName}</span>,
-}));
+// Mock the useContentful hook
+vi.mock('../../src/hooks/useContentful');
 
 // Mock the ProfileBio component
 vi.mock('../../src/components/ProfileBio', () => ({
@@ -22,16 +16,25 @@ vi.mock('../../src/components/ProfileBio', () => ({
 }));
 
 describe('Profile', () => {
+  beforeEach(() => {
+    // Default mock: Contentful returns null (falls back to constant)
+    useContentfulHook.useContentful.mockReturnValue({
+      data: null,
+      loading: false,
+      error: null,
+    });
+  });
   it('renders all profile elements for non-web2 themes', () => {
     render(<Profile theme="dark" />);
 
     // Check for profile image (using alt text for accessibility)
+    // Just verify it exists, don't check the exact src path
     const img = screen.getByAltText('Profile');
     expect(img).toBeInTheDocument();
-    expect(img).toHaveAttribute('src', 'profile-image-mock-url');
+    expect(img).toHaveAttribute('src');
 
-    // Check for location icon (functionality, not specific icon name)
-    expect(screen.getByTestId('dynamic-icon')).toBeInTheDocument();
+    // Check for profile name
+    expect(screen.getByText('Lux Sp4rwhk')).toBeInTheDocument();
 
     // Check that BasicBio component is rendered with correct props
     const bio = screen.getByTestId('basic-bio');
