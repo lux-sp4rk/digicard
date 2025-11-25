@@ -9,7 +9,7 @@ vi.mock('../../src/components/Footer', () => ({
 }));
 
 // Mock the profile image
-vi.mock('../../src/assets/profile.jpg', () => ({
+vi.mock('../../src/assets/lux-avatar.jpg', () => ({
   default: 'profile-image-mock-url',
 }));
 
