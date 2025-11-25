@@ -46,12 +46,14 @@
   transform: scale(1.1);
 }
 
+/* Base profile name styling - intentionally applied to all themes */
 .profileName {
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: 2.25rem;
   text-transform: uppercase;
   text-decoration: underline;
+  /* Using web2-primary color for underline across all themes by design */
   text-decoration-color: var(--web2-primary);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
