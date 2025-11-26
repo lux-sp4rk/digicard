@@ -1,22 +1,11 @@
-import profileImg from '../assets/lux-avatar.jpg';
-import { BasicBio } from './ProfileBio';
 import clsx from 'clsx';
+import { BasicBio } from './ProfileBio';
 import styles from './Profile.module.css';
 import { createThemeClassGetter } from './helpers/themeClassHelper';
-import { PROFILE_DATA, BIO_TEXT } from '../constants/profileData';
-import { useContentful } from '../hooks/useContentful';
-import { getBio } from '../utils/contentful';
+import { useProfileData } from '../hooks/useProfileData';
 
 const Profile = ({ theme }) => {
-  // Fetch bio from Contentful first
-  const { data: contentfulBio } = useContentful(getBio);
-
-  // Profile data from constants (with bio fallback)
-  const data = {
-    name: PROFILE_DATA.name,
-    profileImage: profileImg,
-    bio: contentfulBio || BIO_TEXT.default,
-  };
+  const { profile } = useProfileData();
 
   // Create theme class getter for this component's styles
   const getThemeClass = createThemeClassGetter(styles);
@@ -59,8 +48,8 @@ const Profile = ({ theme }) => {
             )}
           >
             <img
-              src={data.profileImage}
-              alt="Profile"
+              src={profile.profileImage}
+              alt={`${profile.name} avatar`}
               className={clsx('w-full h-full', styles.profilePhoto)}
             />
           </div>
@@ -74,11 +63,11 @@ const Profile = ({ theme }) => {
             getThemeClass(theme, 'profileName')
           )}
         >
-          {data.name}
+          {profile.name}
         </h1>
       )}
 
-      <BasicBio theme={theme} bio={data.bio} />
+      <BasicBio theme={theme} bio={profile.bio} />
     </section>
   );
 };

@@ -5,6 +5,18 @@ import '@testing-library/jest-dom';
 // Since ViewSourceButton is not exported separately, we'll test it through the Footer components
 import { Footer, SuperFooter } from '../../src/components/Footer';
 
+const mockProfile = {
+  name: 'Test Name',
+  profileImage: 'https://example.com/avatar.jpg',
+  bio: 'Test bio snippet.',
+};
+
+vi.mock('../../src/hooks/useProfileData', () => ({
+  useProfileData: () => ({
+    profile: mockProfile,
+  }),
+}));
+
 // Mock the DynamicIcon component
 vi.mock('../../src/components/DynamicIcon', () => ({
   default: ({ iconName, className }) => (
@@ -12,11 +24,6 @@ vi.mock('../../src/components/DynamicIcon', () => ({
       {iconName}
     </span>
   ),
-}));
-
-// Mock the profile image
-vi.mock('../../src/assets/profile.jpg', () => ({
-  default: 'profile-image-mock-url',
 }));
 
 describe('ViewSourceButton', () => {

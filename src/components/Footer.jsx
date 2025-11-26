@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import profileImg from '../assets/profile.jpg';
 import clsx from 'clsx';
 import DynamicIcon from './DynamicIcon';
+import { useProfileData } from '../hooks/useProfileData';
 
 const Footer = ({ theme }) => {
   const [currentYear] = useState(new Date().getFullYear());
@@ -79,8 +79,17 @@ const ViewSourceButton = () => {
   );
 };
 
+const getShortBio = bio => {
+  if (!bio) return '';
+  const normalized = bio.replace(/\s+/g, ' ').trim();
+  if (normalized.length <= 120) return normalized;
+  return `${normalized.slice(0, 117)}...`;
+};
+
 const SuperFooter = () => {
   const [currentYear] = useState(new Date().getFullYear());
+  const { profile } = useProfileData();
+  const shortBio = getShortBio(profile.bio);
 
   return (
     <footer className="relative bg-gradient-to-br from-white via-blue-50 to-cyan-50 border-t border-blue-200 shadow-inner mt-8 text-xs md:text-sm text-gray-700 dark:text-gray-300 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -89,17 +98,18 @@ const SuperFooter = () => {
           {/* Mini Profile (Profile Pic + About Me) */}
           <div className="flex flex-col items-center md:items-start w-full mb-2">
             <img
-              src={profileImg}
-              alt="Profile"
+              src={profile.profileImage}
+              alt={`${profile.name} avatar`}
               className="w-16 h-16 rounded-full border-2 border-web2-primaryDark shadow-md mb-1"
             />
             <div className="text-base font-bold text-web2-primaryDark dark:text-blue-400">
-              Luh Sprwhk
+              {profile.name}
             </div>
-            <div className="text-xs text-web2-text dark:text-gray-300 text-center md:text-left max-w-[180px]">
-              Web tinkerer, vaporwave enjoyer, and lover of all things
-              retro-futurist.
-            </div>
+            {shortBio && (
+              <div className="text-xs text-web2-text dark:text-gray-300 text-center md:text-left max-w-[220px]">
+                {shortBio}
+              </div>
+            )}
           </div>
           {/* END Mini Profile */}
         </div>

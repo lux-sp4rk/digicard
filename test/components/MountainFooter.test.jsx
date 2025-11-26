@@ -8,11 +8,6 @@ vi.mock('../../src/components/Footer', () => ({
   SuperFooter: () => <div data-testid="super-footer">SuperFooter Content</div>,
 }));
 
-// Mock the profile image
-vi.mock('../../src/assets/profile.jpg', () => ({
-  default: 'profile-image-mock-url',
-}));
-
 describe('MountainFooter', () => {
   it('renders the SVG mountain illustration', () => {
     const { container } = render(<MountainFooter />);
