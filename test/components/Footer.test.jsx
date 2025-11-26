@@ -3,6 +3,10 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Footer, SuperFooter } from '../../src/components/Footer';
 
+vi.mock('../../src/assets/avatar.jpg', () => ({
+  default: 'profile-image-mock-url',
+}));
+
 const mockProfile = {
   name: 'Test Name',
   profileImage: 'https://example.com/avatar.jpg',

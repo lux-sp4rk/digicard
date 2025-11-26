@@ -1,4 +1,4 @@
-import profileImg from '../assets/lux-avatar.jpg';
+import profileImg from '../assets/avatar.jpg';
 import { PROFILE_DATA, BIO_TEXT } from '../constants/profileData';
 import { useContentful } from './useContentful';
 import { getProfile } from '../utils/contentful';
