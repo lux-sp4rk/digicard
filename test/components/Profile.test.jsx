@@ -29,7 +29,7 @@ describe('Profile', () => {
 
     // Check for profile image (using alt text for accessibility)
     // Just verify it exists, don't check the exact src path
-    const img = screen.getByAltText('Profile');
+    const img = screen.getByAltText('Lux Sp4rwhk avatar');
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src');
 
@@ -48,7 +48,7 @@ describe('Profile', () => {
     render(<Profile theme="web2" />);
 
     // Profile image should not be rendered for web2 theme
-    expect(screen.queryByAltText('Profile')).not.toBeInTheDocument();
+    expect(screen.queryByAltText('Lux Sp4rwhk avatar')).not.toBeInTheDocument();
   });
 
   it('renders BasicBio component for all themes with correct theme prop', () => {
