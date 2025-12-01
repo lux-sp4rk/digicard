@@ -98,7 +98,7 @@ const YouTube = ({ theme }) => {
       )}
     >
       <div className="flex items-center gap-2 mb-4">
-        <DynamicIcon iconName="FaYoutube" className="text-red-600 text-2xl" />
+        <DynamicIcon iconName="FaYoutube" className="text-white" size={32} />
         <h2 className={clsx('section-heading')}>Youtube</h2>
       </div>
       <div className={clsx('mx-auto', isShort ? 'max-w-sm' : 'max-w-2xl')}>
@@ -145,8 +145,8 @@ const YouTube = ({ theme }) => {
             <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
               <div className="bg-red-600 rounded-full p-4 transform scale-90 group-hover:scale-100 transition-transform duration-300">
                 <DynamicIcon
-                  iconName="FaPlay"
-                  className="text-white text-3xl"
+                  iconName="FaYoutube"
+                  className="text-white text-2xl"
                 />
               </div>
             </div>
