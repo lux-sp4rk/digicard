@@ -5,26 +5,16 @@ import DynamicIcon from '../../src/components/DynamicIcon';
 import * as iconMapper from '../../src/utils/iconMapper';
 
 // Mock react-icons dynamically to avoid brittle icon lists
+// Read icon names from iconMapper to automatically include all icons
+// All logic is inside the mock factories to avoid hoisting issues
 vi.mock('react-icons/fa', async () => {
-  // Create mocks inline to avoid hoisting issues
-  const mockIcons = {};
-  const commonFaIcons = [
-    'FaGithub',
-    'FaLinkedin',
-    'FaTwitter',
-    'FaYoutube',
-    'FaMapMarkerAlt',
-    'FaArrowRight',
-    'FaExternalLinkAlt',
-    'FaDownload',
-    'FaPlay',
-    'FaTerminal',
-    'FaRssSquare',
-    'FaCoffee',
-  ];
+  const { readFileSync } = await import('fs');
+  const { fileURLToPath } = await import('url');
+  const { dirname, join } = await import('path');
 
-  commonFaIcons.forEach(iconName => {
-    mockIcons[iconName] = ({ className, size, ...props }) => (
+  // Create mock component factory
+  const createIconMock = iconName => {
+    return ({ className, size, ...props }) => (
       <svg
         data-testid={iconName}
         className={className}
@@ -35,17 +25,58 @@ vi.mock('react-icons/fa', async () => {
         <title>{iconName}</title>
       </svg>
     );
-  });
+  };
 
-  return mockIcons;
+  // Parse iconMapper to get all icon names dynamically
+  let faIcons = [];
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const iconMapperPath = join(__dirname, '../../src/utils/iconMapper.jsx');
+    const content = readFileSync(iconMapperPath, 'utf-8');
+
+    // Match imports from react-icons/fa
+    const faImportRegex =
+      /import\s*\{([^}]+)\}\s*from\s*['"]react-icons\/fa['"]/;
+    const faMatch = content.match(faImportRegex);
+    if (faMatch) {
+      const imports = faMatch[1].match(/Fa\w+/g) || [];
+      faIcons = [...new Set(imports)];
+    }
+  } catch (error) {
+    // Fallback to common icons if parsing fails
+    faIcons = [
+      'FaGithub',
+      'FaLinkedin',
+      'FaTwitter',
+      'FaYoutube',
+      'FaMapMarkerAlt',
+      'FaArrowRight',
+      'FaExternalLinkAlt',
+      'FaDownload',
+      'FaPlay',
+      'FaTerminal',
+      'FaRssSquare',
+      'FaCoffee',
+      'FaTiktok',
+    ];
+  }
+
+  const mockExports = {};
+  faIcons.forEach(iconName => {
+    mockExports[iconName] = createIconMock(iconName);
+  });
+  return mockExports;
 });
 
 vi.mock('react-icons/fa6', async () => {
-  const mockIcons = {};
-  const commonFa6Icons = ['FaThreads', 'FaMugHot'];
+  const { readFileSync } = await import('fs');
+  const { fileURLToPath } = await import('url');
+  const { dirname, join } = await import('path');
 
-  commonFa6Icons.forEach(iconName => {
-    mockIcons[iconName] = ({ className, size, ...props }) => (
+  // Create mock component factory
+  const createIconMock = iconName => {
+    return ({ className, size, ...props }) => (
       <svg
         data-testid={iconName}
         className={className}
@@ -56,9 +87,34 @@ vi.mock('react-icons/fa6', async () => {
         <title>{iconName}</title>
       </svg>
     );
-  });
+  };
 
-  return mockIcons;
+  // Parse iconMapper to get all icon names dynamically
+  let fa6Icons = [];
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const iconMapperPath = join(__dirname, '../../src/utils/iconMapper.jsx');
+    const content = readFileSync(iconMapperPath, 'utf-8');
+
+    // Match imports from react-icons/fa6
+    const fa6ImportRegex =
+      /import\s*\{([^}]+)\}\s*from\s*['"]react-icons\/fa6['"]/;
+    const fa6Match = content.match(fa6ImportRegex);
+    if (fa6Match) {
+      const imports = fa6Match[1].match(/Fa\w+/g) || [];
+      fa6Icons = [...new Set(imports)];
+    }
+  } catch (error) {
+    // Fallback to common icons if parsing fails
+    fa6Icons = ['FaThreads', 'FaMugHot', 'FaX'];
+  }
+
+  const mockExports = {};
+  fa6Icons.forEach(iconName => {
+    mockExports[iconName] = createIconMock(iconName);
+  });
+  return mockExports;
 });
 
 describe('DynamicIcon', () => {
