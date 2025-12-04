@@ -28,6 +28,7 @@ export default defineConfig({
     },
   },
   server: {
+    host: true, // Allows access from network (not just localhost)
     proxy: {
       '/api': {
         target: 'https://api.beehiiv.com/v2',

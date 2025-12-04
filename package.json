@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "dev:netlify": "netlify dev",
     "build": "vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
@@ -16,7 +16,8 @@
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --run --coverage",
-    "test:coverage:watch": "vitest --watch --coverage"
+    "test:coverage:watch": "vitest --watch --coverage",
+    "setup": "node scripts/setup.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
