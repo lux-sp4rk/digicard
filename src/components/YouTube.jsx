@@ -3,37 +3,42 @@ import clsx from 'clsx';
 import DynamicIcon from './DynamicIcon';
 import { useContentful } from '../hooks/useContentful';
 import { getYouTubeVideo } from '../utils/contentful';
+import { getLatestYouTubeVideo } from '../utils/youtube';
 import Loading from './Loading';
 
 const YouTube = ({ theme }) => {
   const {
     data: cmsVideo,
-    loading: videoLoading,
-    error: videoError,
+    loading: cmsLoading,
+    error: cmsError,
   } = useContentful(getYouTubeVideo);
-  const [fallbackVideo, setFallbackVideo] = useState(null);
-  const [fallbackLoading, setFallbackLoading] = useState(true);
+  const [apiVideo, setApiVideo] = useState(null);
+  const [apiLoading, setApiLoading] = useState(false);
+  const [apiAttempted, setApiAttempted] = useState(false);
 
-  // Fallback to JSON file if Contentful fails
+  // Determine if we need to fetch from YouTube API
+  // Fetch if: Contentful failed, returned null, or video is inactive
+  const needsApiFallback =
+    !cmsLoading && (cmsError || !cmsVideo || cmsVideo.active === false);
+
+  // Fetch from YouTube API when Contentful doesn't have an active featured video
   useEffect(() => {
-    if (videoError) {
-      fetch('/youtubeVideo.json')
-        .then(res => {
-          if (!res.ok) throw new Error('Failed to load YouTube video');
-          return res.json();
+    if (needsApiFallback && !apiAttempted) {
+      setApiLoading(true);
+      setApiAttempted(true);
+      getLatestYouTubeVideo()
+        .then(video => {
+          setApiVideo(video);
         })
-        .then(data => {
-          setFallbackVideo(data);
-          setFallbackLoading(false);
-        })
-        .catch(() => {
-          setFallbackLoading(false);
+        .finally(() => {
+          setApiLoading(false);
         });
     }
-  }, [videoError]);
+  }, [needsApiFallback, apiAttempted]);
 
-  const loading = videoLoading || (videoError && fallbackLoading);
-  const video = cmsVideo || fallbackVideo;
+  const loading = cmsLoading || apiLoading;
+  // Use Contentful video if available and active, otherwise use API video
+  const video = cmsVideo && cmsVideo.active !== false ? cmsVideo : apiVideo;
 
   const getThumbnailUrl = videoId => {
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
