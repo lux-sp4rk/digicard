@@ -53,3 +53,4 @@ See [docs/architecture.md](docs/architecture.md) for a high-level, ever-green ov
 - **ESLint** for code quality
 - **Prettier** for consistent formatting
 - **Husky** for Git hooks management
+- remember that this is a solo project, so there is no need for team workflows. optimize for solo dev with LLM
