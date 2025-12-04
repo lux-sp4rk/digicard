@@ -98,8 +98,10 @@ const YouTube = ({ theme }) => {
       )}
     >
       <div className="flex items-center gap-2 mb-4">
-        <DynamicIcon iconName="FaYoutube" className="text-white" size={32} />
-        <h2 className={clsx('section-heading')}>Youtube</h2>
+        <span className="flex items-center gap-2 p-2">
+          <DynamicIcon iconName="FaYoutube" className="text-white" size={32} />
+          <h2 className={clsx('section-heading', 'mt-4')}>Youtube</h2>
+        </span>
       </div>
       <div className={clsx('mx-auto', isShort ? 'max-w-sm' : 'max-w-2xl')}>
         <div
