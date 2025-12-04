@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "dev:netlify": "netlify dev",
+    "dev:netlify": "netlify dev --live",
     "build": "vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -17,7 +17,8 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --run --coverage",
     "test:coverage:watch": "vitest --watch --coverage",
-    "setup": "node scripts/setup.js"
+    "setup": "node scripts/setup.js",
+    "dev:seed-data": "node scripts/seed-dev-data.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -32,6 +33,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "clsx": "^2.1.1",
     "contentful": "^11.7.7",
+    "netlify-cli": "^23.12.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
@@ -48,11 +50,12 @@
     "@vitejs/plugin-react-swc": "^3.10.2",
     "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.16",
+    "dotenv": "^16.6.1",
     "eslint": "^8.55.0",
-    "globals": "^15.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "globals": "^15.0.0",
     "husky": "^9.1.7",
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",
