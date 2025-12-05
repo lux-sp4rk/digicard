@@ -6,7 +6,10 @@ import Loading from './Loading';
 import { useBeeHiiv } from '../hooks/useBeeHiiv';
 import { useContentful } from '../hooks/useContentful';
 import { getSettings } from '../utils/contentful';
-import fallbackPostData from '../dev-data/featuredPost.json';
+
+// Only import fallback data in development
+// Note: This import will be included in the bundle, but only used in dev mode
+import fallbackPostDataModule from '../dev-data/featuredPost.json';
 
 const LatestPost = ({ theme }) => {
   const { post, loading } = useBeeHiiv();
@@ -26,14 +29,15 @@ const LatestPost = ({ theme }) => {
 
   if (loading && !post) return <Loading />;
 
+  // In production, return null if there's no post data
+  // In development, use fallback data if available
+  const postData =
+    post || (import.meta.env.DEV ? fallbackPostDataModule : null);
+  if (!postData) return null;
+
   return (
     <section className={sectionClassName}>
-      <SectionHeading>Latest Post</SectionHeading>
-      <Post
-        post={post || fallbackPostData}
-        theme={theme}
-        blogArchiveUrl={blogArchiveUrl}
-      />
+      <Post post={postData} theme={theme} blogArchiveUrl={blogArchiveUrl} />
     </section>
   );
 };

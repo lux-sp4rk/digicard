@@ -122,9 +122,6 @@ function App() {
             <ErrorBoundary theme={theme}>
               <Projects theme={theme} />
             </ErrorBoundary>
-            <ErrorBoundary theme={theme}>
-              <SoundCloudWidget theme={theme} />
-            </ErrorBoundary>
           </main>
 
           {theme === 'web2' ? <MountainFooter /> : <Footer theme={theme} />}
