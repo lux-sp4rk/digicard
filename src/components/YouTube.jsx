@@ -5,6 +5,7 @@ import { useContentful } from '../hooks/useContentful';
 import { getYouTubeVideo } from '../utils/contentful';
 import { getLatestYouTubeVideo } from '../utils/youtube';
 import Loading from './Loading';
+import fallbackVideoData from '../dev-data/youtubeVideo.json';
 
 const YouTube = ({ theme }) => {
   const {
@@ -36,9 +37,13 @@ const YouTube = ({ theme }) => {
     }
   }, [needsApiFallback, apiAttempted]);
 
-  const loading = cmsLoading || apiLoading;
-  // Use Contentful video if available and active, otherwise use API video
-  const video = cmsVideo && cmsVideo.active !== false ? cmsVideo : apiVideo;
+  // Use Contentful video if available and active, otherwise use API video, or fallback to dev data
+  const video =
+    cmsVideo && cmsVideo.active !== false
+      ? cmsVideo
+      : apiVideo || fallbackVideoData;
+
+  const loading = (cmsLoading || apiLoading) && !video;
 
   const getThumbnailUrl = videoId => {
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -102,12 +107,6 @@ const YouTube = ({ theme }) => {
         'matrix:shadow-lg'
       )}
     >
-      <div className="flex items-center gap-2 mb-4">
-        <span className="flex items-center gap-2 p-2">
-          <DynamicIcon iconName="FaYoutube" className="text-white" size={32} />
-          <h2 className={clsx('section-heading', 'mt-4')}>Youtube</h2>
-        </span>
-      </div>
       <div className={clsx('mx-auto', isShort ? 'max-w-sm' : 'max-w-2xl')}>
         <div
           className={clsx(
