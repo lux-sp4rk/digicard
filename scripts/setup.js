@@ -85,6 +85,7 @@ const writeEnvFile = envVars => {
     ],
     'Umami Analytics': ['VITE_UMAMI_WEBSITE_ID', 'VITE_UMAMI_SCRIPT_URL'],
     'Beehiiv (Newsletter)': ['BEEHIIV_API_KEY', 'BEEHIIV_PUBLICATION_ID'],
+    YouTube: ['YOUTUBE_API_KEY', 'YOUTUBE_CHANNEL_ID'],
   };
 
   // Track which variables have been written
@@ -181,6 +182,21 @@ const main = async () => {
   envVars.BEEHIIV_PUBLICATION_ID = await askRequiredQuestion(
     'BEEHIIV_PUBLICATION_ID',
     existingEnv.BEEHIIV_PUBLICATION_ID || ''
+  );
+
+  // YouTube variables
+  console.log('\n📺 YouTube Configuration');
+  console.log(
+    'Get API key from: https://console.cloud.google.com/apis/credentials\n'
+  );
+  envVars.YOUTUBE_API_KEY = await askQuestion(
+    'YOUTUBE_API_KEY',
+    existingEnv.YOUTUBE_API_KEY || ''
+  );
+
+  envVars.YOUTUBE_CHANNEL_ID = await askQuestion(
+    'YOUTUBE_CHANNEL_ID',
+    existingEnv.YOUTUBE_CHANNEL_ID || ''
   );
 
   // Validate all required variables are present

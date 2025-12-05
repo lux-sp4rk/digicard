@@ -6,7 +6,7 @@ import Loading from './Loading';
 import { useBeeHiiv } from '../hooks/useBeeHiiv';
 import { useContentful } from '../hooks/useContentful';
 import { getSettings } from '../utils/contentful';
-import fallbackPostData from '../featuredPost.json';
+import fallbackPostData from '../dev-data/featuredPost.json';
 
 const LatestPost = ({ theme }) => {
   const { post, loading } = useBeeHiiv();

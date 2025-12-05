@@ -3,6 +3,9 @@ export const handler = async event => {
   if (event.httpMethod !== 'GET') {
     return {
       statusCode: 405,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ error: 'Method not allowed' }),
     };
   }
@@ -14,6 +17,9 @@ export const handler = async event => {
   if (!API_KEY || !PUBLICATION_ID) {
     return {
       statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         error: 'Beehiiv API key or Publication ID is not configured',
       }),
@@ -54,6 +60,9 @@ export const handler = async event => {
     console.error('Error fetching from Beehiiv:', error);
     return {
       statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ error: 'Failed to fetch posts from Beehiiv' }),
     };
   }

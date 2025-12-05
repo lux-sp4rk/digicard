@@ -1,0 +1,13 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
+  - cwebp-bin
+  - esbuild
+  - gifsicle
+  - jpegtran-bin
+  - mozjpeg
+  - netlify-cli
+  - optipng-bin
+  - pngquant-bin
+  - sharp
+  - unix-dgram
