@@ -30,7 +30,8 @@ function App() {
       'matrix',
       'light',
       'web2',
-      'csszen'
+      'csszen',
+      'christmas'
     );
     // Add the current theme class
     document.documentElement.classList.add(theme);
@@ -99,15 +100,16 @@ function App() {
               'opacity-0 transform translate-y-5 animate-fade-in',
               'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow',
               'web2:bg-web2-background web2:border-web2-border',
-              'csszen:bg-csszen-cream csszen:text-csszen-text csszen:border-csszen-text'
+              'csszen:bg-csszen-cream csszen:text-csszen-text csszen:border-csszen-text',
+              'christmas:bg-christmas-white christmas:border-2 christmas:border-christmas-red'
             )}
           >
             {theme === 'web2' && <Web2NavBar theme={theme} />}
             <ErrorBoundary theme={theme}>
               <Profile theme={theme} />
             </ErrorBoundary>
-            {/* Only show Links inline for non-csszen and non-web2 themes */}
-            {theme !== 'web2' && theme !== 'csszen' ? (
+            {/* Only show Links inline for non-csszen, non-web2, and non-christmas themes */}
+            {theme !== 'web2' && theme !== 'csszen' && theme !== 'christmas' ? (
               <ErrorBoundary theme={theme}>
                 <SocialLinks />
               </ErrorBoundary>
@@ -134,6 +136,17 @@ function App() {
           <aside
             className="csszen-sidebar hidden md:block"
             style={{ minWidth: 180, marginLeft: -25, marginTop: '20rem' }}
+          >
+            <ErrorBoundary theme={theme}>
+              <SocialLinks theme={theme} />
+            </ErrorBoundary>
+          </aside>
+        )}
+        {/* Christmas sidebar */}
+        {theme === 'christmas' && (
+          <aside
+            className="christmas-sidebar hidden md:block"
+            style={{ minWidth: 180, marginLeft: -25, marginTop: '10rem' }}
           >
             <ErrorBoundary theme={theme}>
               <SocialLinks theme={theme} />

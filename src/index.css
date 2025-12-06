@@ -9,7 +9,8 @@
   body {
     @apply font-body bg-github-bgGray text-github-text transition-colors 
            dark:bg-dracula-background dark:text-dracula-foreground
-           matrix:bg-matrix-background matrix:text-matrix-text;
+           matrix:bg-matrix-background matrix:text-matrix-text
+           christmas:bg-christmas-cream christmas:text-christmas-green-dark;
   }
   h1,
   h2,
@@ -17,7 +18,9 @@
   h4,
   h5,
   h6 {
-    @apply font-heading matrix:text-matrix-highlight matrix:drop-shadow-[0_0_5px_theme(colors.matrix.glow)];
+    @apply font-heading 
+           matrix:text-matrix-highlight matrix:drop-shadow-[0_0_5px_theme(colors.matrix.glow)]
+           christmas:text-christmas-red;
   }
 }
 
@@ -66,7 +69,10 @@
 
   /* Card styling */
   .card {
-    @apply bg-white dark:bg-dracula-currentLine matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow rounded-lg shadow-sm;
+    @apply bg-white dark:bg-dracula-currentLine 
+           matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow
+           christmas:bg-christmas-white christmas:border-christmas-gold 
+           rounded-lg shadow-sm;
   }
 
   /* Links styling */
@@ -74,12 +80,16 @@
     @apply text-github-blue hover:text-github-lightBlue 
            dark:text-dracula-cyan dark:hover:text-dracula-pink 
            matrix:text-matrix-highlight matrix:hover:text-matrix-glow matrix:hover:drop-shadow-[0_0_8px_theme(colors.matrix.glow)]
+           christmas:text-christmas-red christmas:hover:text-christmas-gold
            transition-colors;
   }
 
   /* Button styling */
   .btn-primary {
-    @apply bg-github-blue text-white hover:bg-github-lightBlue dark:bg-dracula-purple dark:hover:bg-dracula-pink transition-colors;
+    @apply bg-github-blue text-white hover:bg-github-lightBlue 
+           dark:bg-dracula-purple dark:hover:bg-dracula-pink 
+           christmas:bg-christmas-red christmas:hover:bg-christmas-green
+           transition-colors;
   }
 }
 
@@ -117,7 +127,10 @@
   }
 
   .section-heading {
-    @apply text-2xl font-heading mb-4 text-github-text dark:text-dracula-foreground web2:text-web2-primaryDark matrix:text-matrix-text;
+    @apply text-2xl font-heading mb-4 
+           text-github-text dark:text-dracula-foreground 
+           web2:text-web2-primaryDark matrix:text-matrix-text
+           christmas:text-christmas-red;
   }
 
   body.matrix-bg {
@@ -169,4 +182,34 @@
   min-height: 3rem;
   /* opacity: 0.5; */
   pointer-events: none;
+}
+
+/* Christmas theme animations */
+@media (prefers-reduced-motion: no-preference) {
+  .christmas-sparkle {
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  @keyframes sparkle {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  .christmas-glow {
+    animation: christmas-glow 2.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes christmas-glow {
+    from {
+      filter: drop-shadow(0 0 0px #ffd700);
+    }
+    to {
+      filter: drop-shadow(0 0 8px #ffd700);
+    }
+  }
 }

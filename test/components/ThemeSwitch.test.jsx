@@ -150,8 +150,8 @@ describe('ThemeSwitch', () => {
       const options = screen.getAllByRole('option');
       const values = options.map(option => option.value);
 
-      expect(values).toEqual(['light', 'dark', 'web2', 'csszen']);
-      expect(options).toHaveLength(4);
+      expect(values).toEqual(['light', 'dark', 'web2', 'csszen', 'christmas']);
+      expect(options).toHaveLength(5);
     });
   });
 

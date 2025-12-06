@@ -34,6 +34,10 @@
   background: var(--matrix-terminal);
   border-top-color: var(--matrix-glow);
 }
+.classicSectionChristmas {
+  background: var(--christmas-white);
+  border-top-color: var(--christmas-red);
+}
 
 .classicHeadingWeb2 {
   color: var(--web2-primary-dark);
@@ -49,6 +53,9 @@
 }
 .classicHeadingMatrix {
   color: var(--matrix-highlight);
+}
+.classicHeadingChristmas {
+  color: var(--christmas-red);
 }
 
 .classicItemBase {
@@ -74,6 +81,10 @@
   border-bottom-color: var(--matrix-glow);
   background: var(--matrix-terminal);
 }
+.classicItemChristmas {
+  border-bottom-color: var(--christmas-gold);
+  background: var(--christmas-cream);
+}
 
 .classicImageBase {
   border: 1px solid transparent;
@@ -94,6 +105,9 @@
 }
 .classicImageMatrix {
   border-color: var(--matrix-glow);
+}
+.classicImageChristmas {
+  border-color: var(--christmas-red);
 }
 
 .classicLinkWeb2 {
@@ -131,6 +145,13 @@
 .classicLinkMatrix:hover {
   color: var(--matrix-glow);
 }
+.classicLinkChristmas {
+  color: var(--christmas-red);
+  text-decoration: underline;
+}
+.classicLinkChristmas:hover {
+  color: var(--christmas-gold);
+}
 
 .classicDescWeb2 {
   color: var(--web2-text);
@@ -147,6 +168,9 @@
 .classicDescMatrix {
   color: var(--matrix-highlight);
 }
+.classicDescChristmas {
+  color: var(--christmas-green-dark);
+}
 .sectionGithub {
   border-top-color: var(--github-light-gray);
 }
@@ -156,6 +180,9 @@
 .sectionMatrix {
   border-top-color: var(--matrix-glow);
   box-shadow: 0 0 8px rgba(0, 255, 65, 0.35);
+}
+.sectionChristmas {
+  border-top-color: var(--christmas-gold);
 }
 .sectionWeb2 {
   border-top-color: var(--web2-border);
@@ -201,6 +228,14 @@
   border: 1px solid var(--matrix-glow);
   box-shadow: 0 0 12px rgba(0, 255, 65, 0.25);
 }
+.cardChristmas {
+  background: var(--christmas-white);
+  border: 2px solid var(--christmas-red);
+  box-shadow: 0 0 12px rgba(196, 30, 58, 0.15);
+}
+.cardChristmas:hover {
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+}
 
 /* Image visual effects */
 .imageBase {
@@ -240,6 +275,9 @@
 .iconMatrix {
   color: var(--matrix-highlight);
 }
+.iconChristmas {
+  color: var(--christmas-gold);
+}
 
 /* Title */
 .titleBase {
@@ -265,6 +303,12 @@
   color: var(--matrix-glow);
   text-shadow: 0 0 5px var(--matrix-glow);
 }
+.titleChristmas {
+  color: var(--christmas-red);
+}
+.titleChristmas:hover {
+  color: var(--christmas-gold);
+}
 
 /* Description */
 .descBase {
@@ -288,6 +332,9 @@
 .descMatrix:hover {
   color: var(--matrix-glow);
   text-shadow: 0 0 5px var(--matrix-glow);
+}
+.descChristmas {
+  color: var(--christmas-green-dark);
 }
 
 /* Link button */
@@ -335,6 +382,17 @@
 .linkMatrix:hover {
   color: var(--matrix-glow);
   box-shadow: 0 0 16px rgba(0, 255, 65, 0.35);
+}
+.linkChristmas {
+  color: var(--christmas-white);
+  background: var(--christmas-red);
+  border: 2px solid var(--christmas-gold);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+}
+.linkChristmas:hover {
+  background: var(--christmas-green);
+  border-color: var(--christmas-gold);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
 }
 
 /* Keep ripple as a global class to satisfy tests and allow direct DOM query selection */

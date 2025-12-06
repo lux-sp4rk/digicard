@@ -37,6 +37,11 @@
   border-color: var(--github-blue);
 }
 
+.profileImageChristmas {
+  border-color: var(--christmas-gold);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
 .profilePhoto {
   object-fit: cover;
   transition: transform 500ms;
@@ -85,6 +90,11 @@
   text-decoration-color: var(--csszen-text);
 }
 
+.profileNameChristmas {
+  color: var(--christmas-red);
+  text-decoration-color: var(--christmas-gold);
+}
+
 .profileTitle {
   font-size: 1.25rem;
   font-weight: 300;
@@ -111,6 +121,10 @@
   color: var(--csszen-green-dark);
 }
 
+.profileTitleChristmas {
+  color: var(--christmas-green);
+}
+
 .profileLocation {
   font-size: 0.875rem;
   opacity: 0.8;
@@ -135,4 +149,8 @@
 
 .profileLocationCsszen {
   color: var(--github-secondaryText);
+}
+
+.profileLocationChristmas {
+  color: var(--christmas-pine);
 }

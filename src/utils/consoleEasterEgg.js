@@ -299,6 +299,102 @@ const consoleEasterEgg = setTheme => {
       },
       configurable: true,
     },
+    christmas: {
+      get: function () {
+        // Track Christmas theme activation
+        window.umami?.track('easter-egg-christmas-activated');
+
+        setTheme('christmas');
+        localStorage.setItem('theme', 'christmas');
+        console.log(
+          '%c🎄 Ho Ho Ho! Christmas theme activated! 🎅',
+          'color: #c41e3a; font-weight: bold; font-size: 18px; text-shadow: 0 0 5px #ffd700;'
+        );
+        console.log(
+          '%c❄️ Wishing you a festive season filled with joy and code! ✨',
+          'color: #0f5132; font-style: italic; font-size: 14px;'
+        );
+        console.log(
+          '%cTip: Try typing "santaslist" to check if you\'ve been naughty or nice this year!',
+          'color: #ffd700; font-family: monospace; font-size: 12px;'
+        );
+        return undefined;
+      },
+      configurable: true,
+    },
+    santaslist: {
+      get: function () {
+        // Track Santa's list check
+        window.umami?.track('easter-egg-santas-list');
+
+        console.log(
+          "%c🎅 Checking Santa's List... 📜",
+          'color: #c41e3a; font-weight: bold; font-size: 16px;'
+        );
+        console.log(
+          '%c⏳ Loading...',
+          'color: #ffd700; font-family: monospace;'
+        );
+
+        setTimeout(() => {
+          console.log(
+            "%c✅ Good news! You're on the NICE list! 🎁",
+            'color: #0f5132; font-weight: bold; font-size: 18px;'
+          );
+          console.log(
+            '%c🌟 Your dedication to clean code and best practices has been noted!',
+            'color: #ffd700; font-style: italic;'
+          );
+          console.log(
+            '%c🎄 Keep up the great work, and happy holidays!',
+            'color: #c41e3a;'
+          );
+          console.log(
+            '%cType "snowflake" to see something magical... ❄️',
+            'color: #e6f7ff; font-family: monospace; font-size: 12px;'
+          );
+        }, 1500);
+        return undefined;
+      },
+      configurable: true,
+    },
+    snowflake: {
+      get: function () {
+        // Track snowflake command
+        window.umami?.track('easter-egg-snowflake');
+
+        console.log(
+          '%c❄️ Every snowflake is unique, just like every line of code you write! ✨',
+          'color: #e6f7ff; font-size: 16px; font-weight: bold;'
+        );
+        console.log(
+          '%c    *     .    *   ',
+          'color: #c0c0c0; font-family: monospace;'
+        );
+        console.log(
+          '%c  .   *   .  *  . ',
+          'color: #e6f7ff; font-family: monospace;'
+        );
+        console.log(
+          '%c *  .  *   .   *  ',
+          'color: #c0c0c0; font-family: monospace;'
+        );
+        console.log(
+          '%c  .   *  .   *  . ',
+          'color: #e6f7ff; font-family: monospace;'
+        );
+        console.log(
+          '%c    *    .  *     ',
+          'color: #c0c0c0; font-family: monospace;'
+        );
+        console.log(
+          '%c🎁 May your holidays be merry and your code be bug-free!',
+          'color: #ffd700; font-style: italic; font-size: 14px;'
+        );
+        return undefined;
+      },
+      configurable: true,
+    },
   });
 
   // Return a cleanup function
@@ -311,6 +407,9 @@ const consoleEasterEgg = setTheme => {
     delete window.spoon;
     delete window.matrix;
     delete window.clearMatrix;
+    delete window.christmas;
+    delete window.santaslist;
+    delete window.snowflake;
     delete window.verifyNoSpoon;
     delete window.noSpoon;
     delete window._noSpoon;

@@ -71,6 +71,29 @@ export default {
           cream: '#f8f7f3', // background cream
           accent: '#6d7e59', // accent green for links/highlights
         },
+        christmas: {
+          red: {
+            light: '#d64456',
+            DEFAULT: '#c41e3a',
+            dark: '#a01629',
+          },
+          green: {
+            light: '#146c43',
+            DEFAULT: '#0f5132',
+            dark: '#0a3622',
+          },
+          gold: {
+            light: '#ffe44d',
+            DEFAULT: '#ffd700',
+            dark: '#ccac00',
+          },
+          white: '#fffafa',
+          cream: '#fff8dc',
+          silver: '#c0c0c0',
+          pine: '#1b4d3e',
+          burgundy: '#800020',
+          frost: '#e6f7ff',
+        },
       },
       fontFamily: {
         heading: ['"Raleway"', 'sans-serif'],
@@ -161,10 +184,10 @@ export default {
   },
   variants: {
     extend: {
-      backgroundColor: ['matrix', 'web2', 'csszen'],
-      textColor: ['matrix', 'web2', 'csszen'],
-      borderColor: ['matrix', 'web2', 'csszen'],
-      dropShadow: ['matrix', 'web2', 'csszen'],
+      backgroundColor: ['matrix', 'web2', 'csszen', 'christmas'],
+      textColor: ['matrix', 'web2', 'csszen', 'christmas'],
+      borderColor: ['matrix', 'web2', 'csszen', 'christmas'],
+      dropShadow: ['matrix', 'web2', 'csszen', 'christmas'],
       boxShadow: {
         web2: '0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
         'web2-hover':
@@ -184,6 +207,7 @@ export default {
       addVariant('matrix', '.matrix &');
       addVariant('web2', '.web2 &');
       addVariant('csszen', '.csszen &');
+      addVariant('christmas', '.christmas &');
     },
   ],
 };

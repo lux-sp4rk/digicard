@@ -21,7 +21,8 @@ const LatestPost = ({ theme }) => {
     theme !== 'web2' && 'border-t border-github-lightGray',
     'dark:border-dracula-currentLine',
     'matrix:border-matrix-glow',
-    'matrix:shadow-lg'
+    'matrix:shadow-lg',
+    'christmas:border-christmas-gold'
   );
 
   if (loading && !post) return <Loading />;
@@ -39,7 +40,7 @@ const LatestPost = ({ theme }) => {
 };
 
 const Post = ({ post, theme, blogArchiveUrl }) => {
-  if (theme === 'web2' || theme === 'csszen') {
+  if (theme === 'web2' || theme === 'csszen' || theme === 'christmas') {
     return (
       <ClassicFeaturedPost
         featuredPost={post}
@@ -126,7 +127,8 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
             className={clsx(
               'inline-flex items-center gap-2 underline hover:text-web2-primary transition-colors text-base',
               'web2:hover:text-web2-accent',
-              'csszen:hover:text-[#8b7c4a]'
+              'csszen:hover:text-[#8b7c4a]',
+              'christmas:hover:text-christmas-gold'
               // 'font-bold'
             )}
             target="_blank"
@@ -135,7 +137,7 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
             <h3
               className={clsx(
                 'text-xl',
-                'web2:text-web2-primary csszen:text-csszen-text',
+                'web2:text-web2-primary csszen:text-csszen-text christmas:text-christmas-red',
                 'web2:hover:text-web2-accent',
                 'mb-1'
               )}
@@ -143,7 +145,12 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
               {featuredPost.title}
             </h3>
           </a>
-          <p className={clsx('text-web2-text', 'mb-2')}>
+          <p
+            className={clsx(
+              'text-web2-text christmas:text-christmas-green-dark',
+              'mb-2'
+            )}
+          >
             {featuredPost.description || featuredPost.preview_text}
           </p>
         </div>
@@ -156,8 +163,8 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
           className={clsx(
             'mt-4 block',
             'underline',
-            'web2:text-web2-primary csszen:text-csszen-text',
-            'hover:text-blue-800 csszen:hover:text-[#8b7c4a]',
+            'web2:text-web2-primary csszen:text-csszen-text christmas:text-christmas-red',
+            'hover:text-blue-800 csszen:hover:text-[#8b7c4a] christmas:hover:text-christmas-gold',
             'transition-colors',
             'text-base',
             'font-normal',

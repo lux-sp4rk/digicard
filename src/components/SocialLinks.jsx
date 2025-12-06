@@ -15,6 +15,10 @@ const SocialLinks = ({ theme }) => {
     return <CSSZenLinks links={socialLinks} />;
   }
 
+  if (theme === 'christmas') {
+    return <ChristmasLinks links={socialLinks} />;
+  }
+
   return (
     <section className="p-4">
       <h2 className="text-xl font-bold mb-4">
@@ -37,7 +41,8 @@ const SocialLinks = ({ theme }) => {
                 'bg-github-blue text-white hover:bg-github-lightBlue',
                 'dark:bg-dracula-comment dark:hover:bg-dracula-purple',
                 'matrix:bg-matrix-terminal matrix:text-matrix-highlight matrix:border matrix:border-matrix-glow',
-                'web2:bg-web2-primary web2:text-white web2:hover:bg-web2-secondary'
+                'web2:bg-web2-primary web2:text-white web2:hover:bg-web2-secondary',
+                'christmas:bg-christmas-red christmas:text-christmas-white christmas:hover:bg-christmas-green christmas:border-2 christmas:border-christmas-gold'
               )}
               title={link.name}
             >
@@ -84,6 +89,52 @@ const CSSZenLinks = ({ links }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
+                  {link.name}
+                </a>
+              </li>
+            ))}
+        </ul>
+      </nav>
+    </aside>
+  );
+};
+
+// Christmas sidebar: vertical, festive links with icons
+const ChristmasLinks = ({ links }) => {
+  return (
+    <aside
+      className={clsx(
+        'christmas-links-sidebar',
+        'p-4 bg-christmas-white border-l-4 border-christmas-red rounded-xl shadow-md flex flex-col items-end'
+      )}
+    >
+      <h2 className={clsx('font-bold mb-4 text-christmas-red text-lg')}>
+        <MatrixHint>C</MatrixHint>
+        onnect & Follow
+      </h2>
+      <nav>
+        <ul className={clsx('flex flex-col gap-3 items-end')}>
+          {links
+            .filter(link => link.active && !link.disabled)
+            .sort((a, b) => a.order - b.order)
+            .map((link, idx) => (
+              <li key={idx}>
+                <a
+                  href={link.url}
+                  className={clsx(
+                    'text-christmas-red',
+                    'underline',
+                    'hover:text-christmas-gold',
+                    'transition-colors',
+                    'text-base',
+                    'flex items-center gap-2',
+                    link.name.charAt(0).toUpperCase() === 'C' &&
+                      'inline-block animate-pulse hover:animate-bounce transition-all duration-300 cursor-pointer'
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <DynamicIcon iconName={link.icon} size={18} />
                   {link.name}
                 </a>
               </li>

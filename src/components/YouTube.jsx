@@ -104,7 +104,8 @@ const YouTube = ({ theme }) => {
         theme !== 'web2' && 'border-t border-github-lightGray',
         'dark:border-dracula-currentLine',
         'matrix:border-matrix-glow',
-        'matrix:shadow-lg'
+        'matrix:shadow-lg',
+        'christmas:border-christmas-gold'
       )}
     >
       <div className={clsx('mx-auto', isShort ? 'max-w-sm' : 'max-w-2xl')}>
@@ -114,6 +115,7 @@ const YouTube = ({ theme }) => {
             'bg-white dark:bg-dracula-currentLine',
             'web2:bg-web2-cardBg',
             'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:hover:shadow-matrix-glow',
+            'christmas:bg-christmas-white christmas:border-2 christmas:border-christmas-red',
             'flex flex-col'
           )}
         >
@@ -168,7 +170,8 @@ const YouTube = ({ theme }) => {
                 'text-xl font-semibold mb-3',
                 'text-github-text dark:text-dracula-purple',
                 'matrix:text-matrix-highlight',
-                'web2:text-web2-text'
+                'web2:text-web2-text',
+                'christmas:text-christmas-red'
               )}
             >
               {video.title}
@@ -178,7 +181,8 @@ const YouTube = ({ theme }) => {
                 'text-sm mb-4',
                 'text-github-mutedText dark:text-dracula-foreground',
                 'matrix:text-matrix-green',
-                'web2:text-web2-mutedText'
+                'web2:text-web2-mutedText',
+                'christmas:text-christmas-green-dark'
               )}
             >
               {video.description}
