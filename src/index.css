@@ -83,34 +83,6 @@
   }
 }
 
-/* Custom classes not provided by Tailwind */
-.csszen-banner-img {
-  position: absolute;
-  left: -140px;
-  top: 60px;
-  width: 120px;
-  z-index: 10;
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.13);
-  border-radius: 0 1.5rem 1.5rem 0;
-  background: #fffbe6;
-  border-right: 4px solid #b6a16b;
-}
-@media (max-width: 640px) {
-  .csszen-banner-img {
-    display: none;
-  }
-}
-
-.csszen {
-  font-family:
-    'Lucida Grande', 'Segoe UI', 'Trebuchet MS', 'Tahoma', sans-serif;
-}
-
-.csszen-bg {
-  background-size: cover;
-  background: url('/src/assets/csszen-bg.png') repeat center center fixed;
-}
-
 @layer utilities {
   .card-hover {
     @apply transition-all hover:shadow-lg hover:-translate-y-1;

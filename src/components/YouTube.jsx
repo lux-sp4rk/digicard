@@ -49,10 +49,6 @@ const YouTube = ({ theme }) => {
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   };
 
-  const getVideoUrl = videoId => {
-    return `https://www.youtube.com/watch?v=${videoId}`;
-  };
-
   const getEmbedUrl = videoId => {
     return `https://www.youtube.com/embed/${videoId}`;
   };
@@ -93,7 +89,6 @@ const YouTube = ({ theme }) => {
 
   const videoId = extractVideoId(video.url);
   const thumbnailUrl = video.thumbnail || getThumbnailUrl(videoId);
-  const videoUrl = getVideoUrl(videoId);
   const embedUrl = getEmbedUrl(videoId);
   const isShort = isYouTubeShort(video.url);
 
@@ -161,76 +156,6 @@ const YouTube = ({ theme }) => {
                 {video.duration}
               </div>
             )}
-          </div>
-          <div className="p-6">
-            <h3
-              className={clsx(
-                'text-xl font-semibold mb-3',
-                'text-github-text dark:text-dracula-purple',
-                'matrix:text-matrix-highlight',
-                'web2:text-web2-text'
-              )}
-            >
-              {video.title}
-            </h3>
-            <p
-              className={clsx(
-                'text-sm mb-4',
-                'text-github-mutedText dark:text-dracula-foreground',
-                'matrix:text-matrix-green',
-                'web2:text-web2-mutedText'
-              )}
-            >
-              {video.description}
-            </p>
-            <div className="flex items-center justify-between">
-              <span
-                className={clsx(
-                  'text-xs',
-                  'text-github-mutedText dark:text-dracula-comment',
-                  'matrix:text-matrix-green',
-                  'web2:text-web2-mutedText'
-                )}
-              >
-                {video.publishDate &&
-                  new Date(video.publishDate).toLocaleDateString()}
-              </span>
-
-              {/* Show "Watch on YouTube" button only on mobile */}
-              <a
-                href={videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={clsx(
-                  'md:hidden inline-flex items-center gap-2 px-4 py-2 rounded text-sm font-medium transition-colors',
-                  'bg-red-600 text-white hover:bg-red-700',
-                  'dark:bg-red-500 dark:hover:bg-red-600',
-                  'matrix:bg-matrix-terminal matrix:border matrix:border-matrix-glow matrix:text-matrix-highlight matrix:hover:text-matrix-glow',
-                  'web2:bg-web2-accent web2:hover:bg-web2-accentHover',
-                  'dark:text-dracula-comment dark:hover:text-dracula-pink'
-                )}
-              >
-                <DynamicIcon iconName="FaYoutube" />
-                Watch on YouTube
-              </a>
-
-              {/* Desktop: Show link to YouTube for full screen viewing */}
-              <a
-                href={videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={clsx(
-                  'hidden md:inline-flex items-center gap-2 px-3 py-1 rounded text-xs font-medium transition-colors',
-                  'text-github-mutedText hover:text-github-text',
-                  'matrix:text-matrix-green matrix:hover:text-matrix-highlight',
-                  'web2:text-web2-mutedText web2:hover:text-web2-text',
-                  'dark:text-dracula-foreground dark:hover:text-dracula-pink'
-                )}
-              >
-                <DynamicIcon iconName="FaExternalLinkAlt" />
-                Open in YouTube
-              </a>
-            </div>
           </div>
         </div>
       </div>

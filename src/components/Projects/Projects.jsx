@@ -157,7 +157,6 @@ const Projects = ({ theme }) => {
         getThemeClass(theme, 'section')
       )}
     >
-      <SectionHeading>Projects</SectionHeading>
       <div
         className={clsx(
           'grid gap-6',
@@ -198,11 +197,6 @@ const ClassicProjectsList = ({ theme, projects }) => (
       getThemeClass(theme, 'classicSection')
     )}
   >
-    <h2
-      className={clsx('text-2xl mb-6', getThemeClass(theme, 'classicHeading'))}
-    >
-      Projects
-    </h2>
     <div className={clsx('flex flex-col gap-8')}>
       {projects.map(project => (
         <div

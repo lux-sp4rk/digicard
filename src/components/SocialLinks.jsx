@@ -17,10 +17,6 @@ const SocialLinks = ({ theme }) => {
 
   return (
     <section className="p-4">
-      <h2 className="text-xl font-bold mb-4">
-        <MatrixHint>C</MatrixHint>
-        onnect
-      </h2>
       <div className="flex flex-col sm:flex-row gap-4 w-full">
         {socialLinks
           .filter(link => link.active && !link.disabled)

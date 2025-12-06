@@ -57,20 +57,6 @@ export default {
           terminal: '#0D0208',
           rain: '#008F11',
         },
-        csszen: {
-          brown: {
-            light: '#d3cbb8', // lighter brown/beige
-            DEFAULT: '#9b8e70', // main brown
-            dark: '#776b53', // darker brown
-          },
-          green: {
-            light: '#e2eddf', // light sage
-            DEFAULT: '#c0cba2', // main sage green
-            dark: '#8fa061', // darker sage
-          },
-          cream: '#f8f7f3', // background cream
-          accent: '#6d7e59', // accent green for links/highlights
-        },
       },
       fontFamily: {
         heading: ['"Raleway"', 'sans-serif'],
@@ -89,8 +75,6 @@ export default {
           'Arial',
           'sans-serif',
         ],
-        'zengarden-serif': ['Georgia', 'Times New Roman', 'serif'],
-        'zengarden-sans': ['Verdana', 'Arial', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.8s forwards',
@@ -153,18 +137,14 @@ export default {
       transitionTimingFunction: {
         DEFAULT: 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
-      backgroundImage: {
-        'zengarden-pattern': "url('/src/assets/zengarden-bg-pattern.png')",
-        'zengarden-lotus': "url('/src/assets/zengarden-lotus.svg')",
-      },
     },
   },
   variants: {
     extend: {
-      backgroundColor: ['matrix', 'web2', 'csszen'],
-      textColor: ['matrix', 'web2', 'csszen'],
-      borderColor: ['matrix', 'web2', 'csszen'],
-      dropShadow: ['matrix', 'web2', 'csszen'],
+      backgroundColor: ['matrix', 'web2'],
+      textColor: ['matrix', 'web2'],
+      borderColor: ['matrix', 'web2'],
+      dropShadow: ['matrix', 'web2'],
       boxShadow: {
         web2: '0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
         'web2-hover':
@@ -183,7 +163,6 @@ export default {
     function ({ addVariant }) {
       addVariant('matrix', '.matrix &');
       addVariant('web2', '.web2 &');
-      addVariant('csszen', '.csszen &');
     },
   ],
 };

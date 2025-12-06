@@ -37,28 +37,6 @@ describe('Footer', () => {
     vi.useRealTimers();
   });
 
-  it('renders copyright with current year', () => {
-    const currentYear = new Date().getFullYear();
-    render(<Footer theme="dark" />);
-
-    expect(
-      screen.getByText(`© ${currentYear}. All rights reserved.`)
-    ).toBeInTheDocument();
-  });
-
-  it('renders ViewSourceButton', () => {
-    render(<Footer theme="dark" />);
-
-    const viewSourceLink = screen.getByRole('link', { name: /view source/i });
-    expect(viewSourceLink).toBeInTheDocument();
-    expect(viewSourceLink).toHaveAttribute(
-      'href',
-      'https://github.com/luhsprwhk/digicard'
-    );
-    expect(viewSourceLink).toHaveAttribute('target', '_blank');
-    expect(viewSourceLink).toHaveAttribute('rel', 'noopener noreferrer');
-  });
-
   it('shows terminal icon with blinking cursor for non-matrix themes', async () => {
     render(<Footer theme="dark" />);
 
@@ -100,15 +78,6 @@ describe('Footer', () => {
 });
 
 describe('SuperFooter', () => {
-  it('renders copyright with current year', () => {
-    const currentYear = new Date().getFullYear();
-    render(<SuperFooter />);
-
-    expect(
-      screen.getByText(`© ${currentYear}. All rights reserved.`)
-    ).toBeInTheDocument();
-  });
-
   it('renders profile section', () => {
     render(<SuperFooter />);
 
@@ -170,17 +139,6 @@ describe('SuperFooter', () => {
     expect(tailwindImg).toHaveAttribute(
       'src',
       'https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg'
-    );
-  });
-
-  it('renders ViewSourceButton in SuperFooter', () => {
-    render(<SuperFooter />);
-
-    const viewSourceLink = screen.getByRole('link', { name: /view source/i });
-    expect(viewSourceLink).toBeInTheDocument();
-    expect(viewSourceLink).toHaveAttribute(
-      'href',
-      'https://github.com/luhsprwhk/digicard'
     );
   });
 

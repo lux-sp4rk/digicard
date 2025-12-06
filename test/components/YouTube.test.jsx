@@ -76,7 +76,12 @@ describe('YouTube', () => {
 
       render(<YouTube theme="dark" />);
       // Should render fallback video instead of loading when fallback is available
-      expect(screen.getByText('Fallback Video')).toBeInTheDocument();
+      const iframe = document.querySelector('iframe');
+      expect(iframe).toBeInTheDocument();
+      expect(iframe).toHaveAttribute(
+        'src',
+        'https://www.youtube.com/embed/fallback123'
+      );
     });
 
     it('renders fallback video while falling back to YouTube API', async () => {
@@ -95,7 +100,12 @@ describe('YouTube', () => {
 
       // Should show fallback video while API fetch is in progress
       await waitFor(() => {
-        expect(screen.getByText('Fallback Video')).toBeInTheDocument();
+        const iframe = document.querySelector('iframe');
+        expect(iframe).toBeInTheDocument();
+        expect(iframe).toHaveAttribute(
+          'src',
+          'https://www.youtube.com/embed/fallback123'
+        );
       });
     });
   });
@@ -104,13 +114,13 @@ describe('YouTube', () => {
     it('renders video from Contentful when available and active', () => {
       render(<YouTube theme="dark" />);
 
-      expect(
-        screen.getByText('Featured Video from Contentful')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText('This is a featured video managed in Contentful')
-      ).toBeInTheDocument();
-      expect(screen.getByText('10:30')).toBeInTheDocument();
+      const iframe = document.querySelector('iframe');
+      expect(iframe).toBeInTheDocument();
+      expect(iframe).toHaveAttribute('title', 'Featured Video from Contentful');
+      expect(iframe).toHaveAttribute(
+        'src',
+        'https://www.youtube.com/embed/abc123xyz'
+      );
     });
 
     it('does not call YouTube API when Contentful video is active', () => {
@@ -143,12 +153,6 @@ describe('YouTube', () => {
       await waitFor(() => {
         expect(youtubeUtils.getLatestYouTubeVideo).toHaveBeenCalledTimes(1);
       });
-
-      await waitFor(() => {
-        expect(
-          screen.getByText('Latest Video from YouTube API')
-        ).toBeInTheDocument();
-      });
     });
 
     it('falls back to YouTube API when Contentful video is inactive', async () => {
@@ -163,12 +167,6 @@ describe('YouTube', () => {
       await waitFor(() => {
         expect(youtubeUtils.getLatestYouTubeVideo).toHaveBeenCalledTimes(1);
       });
-
-      await waitFor(() => {
-        expect(
-          screen.getByText('Latest Video from YouTube API')
-        ).toBeInTheDocument();
-      });
     });
 
     it('falls back to YouTube API when Contentful errors', async () => {
@@ -182,12 +180,6 @@ describe('YouTube', () => {
 
       await waitFor(() => {
         expect(youtubeUtils.getLatestYouTubeVideo).toHaveBeenCalledTimes(1);
-      });
-
-      await waitFor(() => {
-        expect(
-          screen.getByText('Latest Video from YouTube API')
-        ).toBeInTheDocument();
       });
     });
 
@@ -224,7 +216,12 @@ describe('YouTube', () => {
       render(<YouTube theme="dark" />);
 
       await waitFor(() => {
-        expect(screen.getByText('Fallback Video')).toBeInTheDocument();
+        const iframe = document.querySelector('iframe');
+        expect(iframe).toBeInTheDocument();
+        expect(iframe).toHaveAttribute(
+          'src',
+          'https://www.youtube.com/embed/fallback123'
+        );
       });
     });
 
@@ -242,7 +239,12 @@ describe('YouTube', () => {
       render(<YouTube theme="dark" />);
 
       await waitFor(() => {
-        expect(screen.getByText('Fallback Video')).toBeInTheDocument();
+        const iframe = document.querySelector('iframe');
+        expect(iframe).toBeInTheDocument();
+        expect(iframe).toHaveAttribute(
+          'src',
+          'https://www.youtube.com/embed/fallback123'
+        );
       });
     });
 
@@ -269,7 +271,12 @@ describe('YouTube', () => {
       render(<YouTube theme="dark" />);
 
       // Fallback should be rendered since it's active
-      expect(screen.getByText('Fallback Video')).toBeInTheDocument();
+      const iframe = document.querySelector('iframe');
+      expect(iframe).toBeInTheDocument();
+      expect(iframe).toHaveAttribute(
+        'src',
+        'https://www.youtube.com/embed/fallback123'
+      );
     });
   });
 
@@ -370,43 +377,6 @@ describe('YouTube', () => {
   });
 
   describe('Video metadata display', () => {
-    it('displays video title', () => {
-      render(<YouTube theme="dark" />);
-      expect(
-        screen.getByText('Featured Video from Contentful')
-      ).toBeInTheDocument();
-    });
-
-    it('displays video description', () => {
-      render(<YouTube theme="dark" />);
-      expect(
-        screen.getByText('This is a featured video managed in Contentful')
-      ).toBeInTheDocument();
-    });
-
-    it('displays video duration when provided', () => {
-      render(<YouTube theme="dark" />);
-      expect(screen.getByText('10:30')).toBeInTheDocument();
-    });
-
-    it('does not display duration when not provided', () => {
-      useContentfulHook.useContentful.mockReturnValue({
-        data: { ...mockContentfulVideo, duration: null },
-        loading: false,
-        error: null,
-      });
-
-      render(<YouTube theme="dark" />);
-      expect(screen.queryByText('10:30')).not.toBeInTheDocument();
-    });
-
-    it('displays formatted publish date', () => {
-      render(<YouTube theme="dark" />);
-      // Date formatting depends on locale, so check that some date is displayed
-      const dateElement = screen.getByText(/2025/);
-      expect(dateElement).toBeInTheDocument();
-    });
-
     it('generates thumbnail URL when not provided', () => {
       useContentfulHook.useContentful.mockReturnValue({
         data: { ...mockContentfulVideo, thumbnail: '' },
@@ -425,29 +395,6 @@ describe('YouTube', () => {
   });
 
   describe('Links and accessibility', () => {
-    it('renders YouTube link with correct href', () => {
-      render(<YouTube theme="dark" />);
-
-      const links = screen.getAllByRole('link');
-      const youtubeLink = links.find(link =>
-        link.getAttribute('href')?.includes('youtube.com/watch')
-      );
-      expect(youtubeLink).toHaveAttribute(
-        'href',
-        'https://www.youtube.com/watch?v=abc123xyz'
-      );
-    });
-
-    it('opens YouTube links in new tab', () => {
-      render(<YouTube theme="dark" />);
-
-      const links = screen.getAllByRole('link');
-      links.forEach(link => {
-        expect(link).toHaveAttribute('target', '_blank');
-        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-      });
-    });
-
     it('renders iframe with correct title for accessibility', () => {
       render(<YouTube theme="dark" />);
 

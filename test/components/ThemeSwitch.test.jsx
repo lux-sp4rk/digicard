@@ -21,7 +21,6 @@ describe('ThemeSwitch', () => {
     expect(screen.getByRole('option', { name: 'Github' })).toBeInTheDocument();
     expect(screen.getByRole('option', { name: 'Dracula' })).toBeInTheDocument();
     expect(screen.getByRole('option', { name: 'Web 2.0' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'CSS Zen' })).toBeInTheDocument();
   });
 
   it('displays the correct current theme value', () => {
@@ -37,9 +36,6 @@ describe('ThemeSwitch', () => {
 
     rerender(<ThemeSwitch theme="web2" setTheme={mockSetTheme} />);
     expect(select).toHaveValue('web2');
-
-    rerender(<ThemeSwitch theme="csszen" setTheme={mockSetTheme} />);
-    expect(select).toHaveValue('csszen');
   });
 
   it('calls setTheme when a new option is selected', async () => {
@@ -54,10 +50,7 @@ describe('ThemeSwitch', () => {
     await user.selectOptions(select, 'web2');
     expect(mockSetTheme).toHaveBeenCalledWith('web2');
 
-    await user.selectOptions(select, 'csszen');
-    expect(mockSetTheme).toHaveBeenCalledWith('csszen');
-
-    expect(mockSetTheme).toHaveBeenCalledTimes(3);
+    expect(mockSetTheme).toHaveBeenCalledTimes(2);
   });
 
   it('calls setTheme with correct value using fireEvent', () => {
@@ -101,18 +94,6 @@ describe('ThemeSwitch', () => {
       );
     });
 
-    it('applies correct classes for csszen theme', () => {
-      render(<ThemeSwitch theme="csszen" setTheme={mockSetTheme} />);
-
-      const select = screen.getByRole('combobox');
-      expect(select).toHaveClass('w-full', 'mt-1', 'px-2', 'py-1', 'rounded');
-      expect(select).toHaveClass(
-        'csszen:bg-csszen-cream',
-        'csszen:text-csszen-text',
-        'csszen:border-csszen-text'
-      );
-    });
-
     it('applies correct classes for matrix theme', () => {
       render(<ThemeSwitch theme="matrix" setTheme={mockSetTheme} />);
 
@@ -139,9 +120,6 @@ describe('ThemeSwitch', () => {
 
       const web2Option = screen.getByRole('option', { name: 'Web 2.0' });
       expect(web2Option).toHaveValue('web2');
-
-      const csszenOption = screen.getByRole('option', { name: 'CSS Zen' });
-      expect(csszenOption).toHaveValue('csszen');
     });
 
     it('has all expected option values', () => {
@@ -150,8 +128,8 @@ describe('ThemeSwitch', () => {
       const options = screen.getAllByRole('option');
       const values = options.map(option => option.value);
 
-      expect(values).toEqual(['light', 'dark', 'web2', 'csszen']);
-      expect(options).toHaveLength(4);
+      expect(values).toEqual(['light', 'dark', 'web2']);
+      expect(options).toHaveLength(3);
     });
   });
 
@@ -216,14 +194,10 @@ describe('ThemeSwitch', () => {
       // Rapidly change themes
       await user.selectOptions(select, 'dark');
       await user.selectOptions(select, 'web2');
-      await user.selectOptions(select, 'csszen');
-      await user.selectOptions(select, 'light');
 
-      expect(mockSetTheme).toHaveBeenCalledTimes(4);
+      expect(mockSetTheme).toHaveBeenCalledTimes(2);
       expect(mockSetTheme).toHaveBeenNthCalledWith(1, 'dark');
       expect(mockSetTheme).toHaveBeenNthCalledWith(2, 'web2');
-      expect(mockSetTheme).toHaveBeenNthCalledWith(3, 'csszen');
-      expect(mockSetTheme).toHaveBeenNthCalledWith(4, 'light');
     });
   });
 
