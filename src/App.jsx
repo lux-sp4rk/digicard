@@ -5,7 +5,6 @@ import Profile from './components/Profile';
 import Projects from './components/Projects/Projects';
 import LatestPost from './components/LatestPost';
 import YouTube from './components/YouTube';
-import SoundCloudWidget from './components/SoundCloudWidget';
 import Footer from './components/Footer';
 import MountainFooter from './components/MountainFooter';
 import { Web2NavBar } from './components/NavBar';
