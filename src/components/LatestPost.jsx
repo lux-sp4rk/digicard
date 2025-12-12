@@ -6,7 +6,10 @@ import Loading from './Loading';
 import { useBeeHiiv } from '../hooks/useBeeHiiv';
 import { useContentful } from '../hooks/useContentful';
 import { getSettings } from '../utils/contentful';
-import fallbackPostData from '../dev-data/featuredPost.json';
+
+// Only import fallback data in development
+// Note: This import will be included in the bundle, but only used in dev mode
+import fallbackPostDataModule from '../dev-data/featuredPost.json';
 
 const LatestPost = ({ theme }) => {
   const { post, loading } = useBeeHiiv();
@@ -26,20 +29,21 @@ const LatestPost = ({ theme }) => {
 
   if (loading && !post) return <Loading />;
 
+  // In production, return null if there's no post data
+  // In development, use fallback data if available
+  const postData =
+    post || (import.meta.env.DEV ? fallbackPostDataModule : null);
+  if (!postData) return null;
+
   return (
     <section className={sectionClassName}>
-      <SectionHeading>Latest Post</SectionHeading>
-      <Post
-        post={post || fallbackPostData}
-        theme={theme}
-        blogArchiveUrl={blogArchiveUrl}
-      />
+      <Post post={postData} theme={theme} blogArchiveUrl={blogArchiveUrl} />
     </section>
   );
 };
 
 const Post = ({ post, theme, blogArchiveUrl }) => {
-  if (theme === 'web2' || theme === 'csszen') {
+  if (theme === 'web2') {
     return (
       <ClassicFeaturedPost
         featuredPost={post}
@@ -125,8 +129,7 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
             href={featuredPost.link || featuredPost.web_url}
             className={clsx(
               'inline-flex items-center gap-2 underline hover:text-web2-primary transition-colors text-base',
-              'web2:hover:text-web2-accent',
-              'csszen:hover:text-[#8b7c4a]'
+              'web2:hover:text-web2-accent'
               // 'font-bold'
             )}
             target="_blank"
@@ -135,7 +138,7 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
             <h3
               className={clsx(
                 'text-xl',
-                'web2:text-web2-primary csszen:text-csszen-text',
+                'web2:text-web2-primary',
                 'web2:hover:text-web2-accent',
                 'mb-1'
               )}
@@ -156,8 +159,8 @@ const ClassicFeaturedPost = ({ featuredPost, theme, blogArchiveUrl }) => {
           className={clsx(
             'mt-4 block',
             'underline',
-            'web2:text-web2-primary csszen:text-csszen-text',
-            'hover:text-blue-800 csszen:hover:text-[#8b7c4a]',
+            'web2:text-web2-primary',
+            'hover:text-blue-800',
             'transition-colors',
             'text-base',
             'font-normal',

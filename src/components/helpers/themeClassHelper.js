@@ -1,7 +1,7 @@
 /**
  * Helper function to get theme-specific CSS module class names
  * @param {Object} styles - CSS module styles object
- * @param {string} theme - Current theme (e.g., 'github', 'dark', 'matrix', 'web2', 'csszen')
+ * @param {string} theme - Current theme (e.g., 'github', 'dark', 'matrix', 'web2')
  * @param {string} baseClass - Base class name without theme suffix
  * @returns {string} - The appropriate CSS module class name for the theme
  */
@@ -11,7 +11,6 @@ export const getThemeClass = (styles, theme, baseClass) => {
     dark: 'Dracula',
     matrix: 'Matrix',
     web2: 'Web2',
-    csszen: 'Csszen',
   };
 
   const themeSuffix = themeMap[theme] || 'Github';

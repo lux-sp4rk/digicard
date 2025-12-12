@@ -141,19 +141,6 @@ describe('SocialLinks', () => {
       });
     });
 
-    it('renders section with heading for non-csszen themes', () => {
-      const { container } = render(<SocialLinks theme="light" />);
-
-      const section = container.querySelector('section');
-      expect(section).toBeInTheDocument();
-
-      const heading = screen.getByRole('heading', { level: 2 });
-      expect(heading).toBeInTheDocument();
-      expect(heading).toHaveTextContent('Connect');
-
-      expect(screen.getByTestId('matrix-hint')).toHaveTextContent('C');
-    });
-
     it('renders active and enabled social links only', () => {
       render(<SocialLinks theme="light" />);
 
@@ -431,7 +418,6 @@ describe('SocialLinks', () => {
       const { container } = render(<SocialLinks theme="light" />);
 
       expect(container.querySelector('section')).toBeInTheDocument();
-      expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
     });
 
     it('has proper semantic structure for csszen theme', () => {

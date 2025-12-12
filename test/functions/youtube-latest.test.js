@@ -1,14 +1,25 @@
 import { handler } from '../../netlify/functions/youtube-latest';
 
-// Mock fetch globally
-const mockFetch = vi.fn();
-globalThis.fetch = mockFetch;
+// Mock fetch globally using vi.stubGlobal to ensure it's properly mocked
+// This prevents any real API calls during testing
+const mockFetch = vi.fn(() => {
+  throw new Error('Real fetch was called - mock is not working!');
+});
+vi.stubGlobal('fetch', mockFetch);
 
 describe('youtube-latest Netlify function', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
     vi.clearAllMocks();
+    // Ensure fetch is still mocked after clearAllMocks
+    // Reset to throw error by default, then each test will override with mockResolvedValueOnce
+    mockFetch.mockImplementation(() => {
+      throw new Error(
+        'Real fetch was called - mock is not working! Make sure to set up mockFetch.mockResolvedValueOnce() in your test.'
+      );
+    });
+    vi.stubGlobal('fetch', mockFetch);
     process.env = {
       ...originalEnv,
       YOUTUBE_API_KEY: 'test-api-key',

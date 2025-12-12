@@ -11,12 +11,10 @@ describe('themeClassHelper', () => {
     buttonDracula: 'Component__buttonDracula___4c5d6',
     buttonMatrix: 'Component__buttonMatrix___7e8f9',
     buttonWeb2: 'Component__buttonWeb2___0g1h2',
-    buttonCsszen: 'Component__buttonCsszen___3i4j5',
     cardGithub: 'Component__cardGithub___6k7l8',
     cardDracula: 'Component__cardDracula___9m0n1',
     cardMatrix: 'Component__cardMatrix___2o3p4',
     cardWeb2: 'Component__cardWeb2___5q6r7',
-    cardCsszen: 'Component__cardCsszen___8s9t0',
   };
 
   describe('getThemeClass', () => {
@@ -38,11 +36,6 @@ describe('themeClassHelper', () => {
     it('should return correct class for web2 theme', () => {
       const result = getThemeClass(mockStyles, 'web2', 'button');
       expect(result).toBe('Component__buttonWeb2___0g1h2');
-    });
-
-    it('should return correct class for csszen theme', () => {
-      const result = getThemeClass(mockStyles, 'csszen', 'button');
-      expect(result).toBe('Component__buttonCsszen___3i4j5');
     });
 
     it('should work with different base class names', () => {
@@ -102,9 +95,6 @@ describe('themeClassHelper', () => {
       );
       expect(getThemeClass('web2', 'button')).toBe(
         'Component__buttonWeb2___0g1h2'
-      );
-      expect(getThemeClass('csszen', 'button')).toBe(
-        'Component__buttonCsszen___3i4j5'
       );
     });
 
@@ -166,14 +156,8 @@ describe('themeClassHelper', () => {
     });
 
     it('should handle all supported themes correctly', () => {
-      const supportedThemes = ['github', 'dark', 'matrix', 'web2', 'csszen'];
-      const expectedSuffixes = [
-        'Github',
-        'Dracula',
-        'Matrix',
-        'Web2',
-        'Csszen',
-      ];
+      const supportedThemes = ['github', 'dark', 'matrix', 'web2'];
+      const expectedSuffixes = ['Github', 'Dracula', 'Matrix', 'Web2'];
 
       supportedThemes.forEach((theme, index) => {
         const expectedClass = `Component__button${expectedSuffixes[index]}___`;

@@ -4,7 +4,6 @@ import DynamicIcon from './DynamicIcon';
 import { useProfileData } from '../hooks/useProfileData';
 
 const Footer = ({ theme }) => {
-  const [currentYear] = useState(new Date().getFullYear());
   const [cursorVisible, setCursorVisible] = useState(false);
 
   // Blinking cursor effect for the easter egg hint
@@ -18,11 +17,6 @@ const Footer = ({ theme }) => {
 
   return (
     <footer className="text-center pb-5 px-4 text-sm text-gray-500 dark:text-gray-400 relative">
-      <div className="flex justify-end items-center gap-2 mb-2">
-        <ViewSourceButton />
-      </div>
-      <p>&copy; {currentYear}. All rights reserved.</p>
-      <br />
       <div className="footer-details mt-2">
         {theme !== 'matrix' && (
           <span className="group relative inline-block">
@@ -66,19 +60,6 @@ const techBadges = [
   },
 ];
 
-const ViewSourceButton = () => {
-  return (
-    <a
-      href="https://github.com/luhsprwhk/digicard"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-xs text-web2-primaryDark dark:text-blue-400"
-    >
-      View Source
-    </a>
-  );
-};
-
 const getShortBio = bio => {
   if (!bio) return '';
   const normalized = bio.replace(/\s+/g, ' ').trim();
@@ -87,7 +68,6 @@ const getShortBio = bio => {
 };
 
 const SuperFooter = () => {
-  const [currentYear] = useState(new Date().getFullYear());
   const { profile } = useProfileData();
   const shortBio = getShortBio(profile.bio);
 
@@ -168,10 +148,6 @@ const SuperFooter = () => {
             ))}
           </div>
           <hr className="my-4 border-gray-300 dark:border-gray-600 border-t-2 border-solid w-1/2 mx-auto" />
-          <ViewSourceButton />
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-10">
-            &copy; {currentYear}. All rights reserved.
-          </p>
         </div>
       </div>
     </footer>
