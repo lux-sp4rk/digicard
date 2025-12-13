@@ -21,11 +21,11 @@ describe('Snowfall', () => {
       expect(snowfallContainer).toBeInTheDocument();
     });
 
-    it('renders 50 snowflakes', () => {
+    it('renders 35 snowflakes', () => {
       const { container } = render(<Snowfall />);
       const snowflakes = container.querySelectorAll('.snowflake');
 
-      expect(snowflakes).toHaveLength(50);
+      expect(snowflakes).toHaveLength(35);
     });
 
     it('renders snowflakes with snowflake emoji', () => {
@@ -103,9 +103,7 @@ describe('Snowfall', () => {
       const snowflakes = container.querySelectorAll('.snowflake');
 
       snowflakes.forEach(snowflake => {
-        const drift = parseFloat(
-          snowflake.style.getPropertyValue('--drift')
-        );
+        const drift = parseFloat(snowflake.style.getPropertyValue('--drift'));
         expect(drift).toBeGreaterThanOrEqual(-20);
         expect(drift).toBeLessThanOrEqual(20);
       });
@@ -132,12 +130,12 @@ describe('Snowfall', () => {
       const { container } = render(<Snowfall />);
       const snowflakes = container.querySelectorAll('.snowflake');
 
-      // React keys are internal, but we can verify there are 50 distinct elements
-      expect(snowflakes).toHaveLength(50);
+      // React keys are internal, but we can verify there are 35 distinct elements
+      expect(snowflakes).toHaveLength(35);
 
       // Verify each snowflake is a distinct DOM element
       const snowflakeSet = new Set(snowflakes);
-      expect(snowflakeSet.size).toBe(50);
+      expect(snowflakeSet.size).toBe(35);
     });
   });
 
@@ -201,17 +199,17 @@ describe('Snowfall', () => {
       const { container } = render(<Snowfall />);
       const snowflakes = container.querySelectorAll('.snowflake');
 
-      expect(snowflakes.length).toBe(50);
+      expect(snowflakes.length).toBe(35);
     });
 
     it('maintains snowflakes after re-render', () => {
       const { container, rerender } = render(<Snowfall />);
       let snowflakes = container.querySelectorAll('.snowflake');
-      expect(snowflakes.length).toBe(50);
+      expect(snowflakes.length).toBe(35);
 
       rerender(<Snowfall />);
       snowflakes = container.querySelectorAll('.snowflake');
-      expect(snowflakes.length).toBe(50);
+      expect(snowflakes.length).toBe(35);
     });
   });
 
@@ -255,7 +253,7 @@ describe('Snowfall', () => {
       const { container } = render(<Snowfall />);
       const snowflakes = container.querySelectorAll('.snowflake');
 
-      expect(snowflakes.length).toBe(50);
+      expect(snowflakes.length).toBe(35);
 
       // With random = 0, all values should be at minimum
       const firstSnowflake = snowflakes[0];
@@ -272,7 +270,7 @@ describe('Snowfall', () => {
       const { container } = render(<Snowfall />);
       const snowflakes = container.querySelectorAll('.snowflake');
 
-      expect(snowflakes.length).toBe(50);
+      expect(snowflakes.length).toBe(35);
 
       // With random = 1, all values should be at maximum
       const firstSnowflake = snowflakes[0];
@@ -291,12 +289,12 @@ describe('Snowfall', () => {
   });
 
   describe('performance', () => {
-    it('creates exactly 50 elements, no more', () => {
+    it('creates exactly 35 elements, no more', () => {
       const { container } = render(<Snowfall />);
       const allDivs = container.querySelectorAll('div');
 
-      // 1 container + 50 snowflakes = 51 total divs
-      expect(allDivs.length).toBe(51);
+      // 1 container + 35 snowflakes = 36 total divs
+      expect(allDivs.length).toBe(36);
     });
 
     it('does not recreate snowflakes unnecessarily', () => {
