@@ -24,7 +24,10 @@ const LatestPost = ({ theme }) => {
     theme !== 'web2' && 'border-t border-github-lightGray',
     'dark:border-dracula-currentLine',
     'matrix:border-matrix-glow',
-    'matrix:shadow-lg'
+    'matrix:shadow-lg',
+    'xmas:border-xmas-gold',
+    'xmas:shadow-lg',
+    'xmas:bg-white'
   );
 
   if (loading && !post) return <Loading />;
@@ -58,8 +61,9 @@ const Post = ({ post, theme, blogArchiveUrl }) => {
         'bg-white dark:bg-dracula-currentLine',
         'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:hover:shadow-matrix-glow',
         'web2:bg-web2-cardBg web2:border-web2-border',
+        'xmas:bg-xmas-cardBg xmas:border-xmas-gold xmas:border-2 xmas:shadow-lg xmas:hover:shadow-xmas-glow',
         'rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all',
-        'border dark:border-dracula-purple matrix:border-matrix-glow web2:border-web2-border dark:hover:border-bg-dracula-currentLine'
+        'border dark:border-dracula-purple matrix:border-matrix-glow web2:border-web2-border xmas:border-xmas-gold dark:hover:border-bg-dracula-currentLine'
       )}
     >
       <a

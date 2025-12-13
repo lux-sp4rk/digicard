@@ -63,6 +63,25 @@
   --csszen-accent: #6d7e59;
   --csszen-text: var(--csszen-brown-dark);
 
+  /* Christmas Theme Colors */
+  --xmas-red: #c41e3a;
+  --xmas-red-light: #e63946;
+  --xmas-red-dark: #8b0000;
+  --xmas-green: #165b33;
+  --xmas-green-light: #2d8659;
+  --xmas-green-dark: #0f3823;
+  --xmas-gold: #d4af37;
+  --xmas-gold-light: #ffd700;
+  --xmas-gold-dark: #b8860b;
+  --xmas-white: #fffafa;
+  --xmas-cream: #f5f5dc;
+  --xmas-background: #0f1c14;
+  --xmas-card-bg: #1a2e1f;
+  --xmas-text: #fffafa;
+  --xmas-text-secondary: #c7d5ca;
+  --xmas-accent: #ff6b6b;
+  --xmas-glow: #ffd700;
+
   /* Font Families */
   --font-heading: 'Raleway', sans-serif;
   --font-body: 'Roboto', sans-serif;

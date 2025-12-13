@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { BasicBio } from './ProfileBio';
 import styles from './Profile.module.css';
 import { createThemeClassGetter } from './helpers/themeClassHelper';
 import { useProfileData } from '../hooks/useProfileData';
+import { BIO_TEXT } from '../constants/profileData';
 
 const Profile = ({ theme }) => {
   const { profile } = useProfileData();
@@ -16,7 +16,8 @@ const Profile = ({ theme }) => {
         'relative py-8 px-5',
         theme === 'web2' && 'pt-10 pb-44',
         styles.profileSection,
-        theme === 'web2' && styles.profileSectionWeb2
+        theme === 'web2' && styles.profileSectionWeb2,
+        theme === 'xmas' && styles.profileSectionXmas
       )}
     >
       {/* Clouds BG at bottom */}
@@ -67,7 +68,16 @@ const Profile = ({ theme }) => {
         </h1>
       )}
 
-      <BasicBio theme={theme} bio={profile.bio} />
+      {/* Bio section */}
+      <p
+        className={clsx(
+          'text-lg font-mono min-h-[2em] w-full',
+          'web2:text-4xl web2:text-web2-secondary web2:font-web2Heading',
+          'matrix:text-matrix-glow'
+        )}
+      >
+        {profile.bio || (theme === 'matrix' ? BIO_TEXT.matrix : BIO_TEXT.fallback)}
+      </p>
     </section>
   );
 };

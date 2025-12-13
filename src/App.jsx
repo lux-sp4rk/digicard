@@ -10,15 +10,13 @@ import MountainFooter from './components/MountainFooter';
 import { Web2NavBar } from './components/NavBar';
 import ErrorBoundary from './components/ErrorBoundary';
 import consoleEasterEgg from './utils/consoleEasterEgg';
+import { getInitialTheme } from './utils/themeInitializer';
 import clsx from 'clsx';
 import SocialLinks from './components/SocialLinks';
+import Snowfall from './components/Snowfall';
 
 function App() {
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = sessionStorage.getItem('theme');
-    // Default to dark if no theme is saved
-    return savedTheme || 'dark';
-  });
+  const [theme, setTheme] = useState(() => getInitialTheme());
 
   // Apply theme to body
   useEffect(() => {
@@ -27,7 +25,8 @@ function App() {
       'dark',
       'matrix',
       'light',
-      'web2'
+      'web2',
+      'xmas'
     );
     // Add the current theme class
     document.documentElement.classList.add(theme);
@@ -55,6 +54,7 @@ function App() {
   return (
     <>
       <AnalyticsProvider />
+      {theme === 'xmas' && <Snowfall />}
       <div className="max-w-2xl mx-auto px-4 py-6 relative flex">
         <div style={{ flex: 1 }}>
           <Header theme={theme} setTheme={setTheme} />
@@ -63,7 +63,8 @@ function App() {
               'bg-white dark:bg-dracula-currentLine rounded-xl shadow-md overflow-hidden mb-6',
               'opacity-0 transform translate-y-5 animate-fade-in',
               'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow',
-              'web2:bg-web2-background web2:border-web2-border'
+              'web2:bg-web2-background web2:border-web2-border',
+              'xmas:border-xmas-gold xmas:border-2 xmas:shadow-lg xmas:shadow-xmas-glow'
             )}
           >
             {theme === 'web2' && <Web2NavBar theme={theme} />}

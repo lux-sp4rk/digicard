@@ -16,7 +16,7 @@ const SocialLinks = ({ theme }) => {
   }
 
   return (
-    <section className="p-4">
+    <section className={clsx('p-4', 'xmas:bg-white')}>
       <div className="flex flex-col sm:flex-row gap-4 w-full">
         {socialLinks
           .filter(link => link.active && !link.disabled)
@@ -33,7 +33,8 @@ const SocialLinks = ({ theme }) => {
                 'bg-github-blue text-white hover:bg-github-lightBlue',
                 'dark:bg-dracula-comment dark:hover:bg-dracula-purple',
                 'matrix:bg-matrix-terminal matrix:text-matrix-highlight matrix:border matrix:border-matrix-glow',
-                'web2:bg-web2-primary web2:text-white web2:hover:bg-web2-secondary'
+                'web2:bg-web2-primary web2:text-white web2:hover:bg-web2-secondary',
+                'xmas:bg-xmas-red xmas:text-xmas-white xmas:border-2 xmas:border-xmas-gold xmas:hover:bg-xmas-redLight xmas:shadow-xmas-glow'
               )}
               title={link.name}
             >

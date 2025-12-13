@@ -139,14 +139,13 @@ const Projects = ({ theme }) => {
     console.warn('Contentful error, using fallback data:', error);
   }
 
-  if (theme === 'web2' || theme === 'csszen') {
+  if (theme === 'web2') {
     return <ClassicProjectsList theme={theme} projects={projects} />;
   }
 
   // sort projects by order
   const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
 
-  const isOddLayout = sortedProjects.length % 2 !== 0;
 
   // Modern card layout for other themes
   return (
@@ -160,14 +159,14 @@ const Projects = ({ theme }) => {
       <div
         className={clsx(
           'grid gap-6',
-          isOddLayout ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'
+          'grid-cols-1 md:grid-cols-2'
         )}
       >
         {sortedProjects
           .filter(projectItem => projectItem.active)
           .map(projectItem => {
             const imageSrc =
-              isOddLayout && projectItem.imgWide
+              projectItem.imgWide
                 ? projectItem.imgWide
                 : projectItem.imgNormal;
             return (

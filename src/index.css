@@ -7,9 +7,10 @@
 
 @layer base {
   body {
-    @apply font-body bg-github-bgGray text-github-text transition-colors 
+    @apply font-body bg-github-bgGray text-github-text transition-colors
            dark:bg-dracula-background dark:text-dracula-foreground
-           matrix:bg-matrix-background matrix:text-matrix-text;
+           matrix:bg-matrix-background matrix:text-matrix-text
+           xmas:bg-xmas-background xmas:text-xmas-text;
   }
   h1,
   h2,
@@ -17,7 +18,9 @@
   h4,
   h5,
   h6 {
-    @apply font-heading matrix:text-matrix-highlight matrix:drop-shadow-[0_0_5px_theme(colors.matrix.glow)];
+    @apply font-heading
+           matrix:text-matrix-highlight matrix:drop-shadow-[0_0_5px_theme(colors.matrix.glow)]
+           xmas:text-xmas-gold xmas:drop-shadow-[0_0_8px_theme(colors.xmas.glow)];
   }
 }
 
@@ -66,20 +69,26 @@
 
   /* Card styling */
   .card {
-    @apply bg-white dark:bg-dracula-currentLine matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow rounded-lg shadow-sm;
+    @apply bg-white dark:bg-dracula-currentLine
+           matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow
+           rounded-lg shadow-sm;
   }
 
   /* Links styling */
   .link {
-    @apply text-github-blue hover:text-github-lightBlue 
-           dark:text-dracula-cyan dark:hover:text-dracula-pink 
+    @apply text-github-blue hover:text-github-lightBlue
+           dark:text-dracula-cyan dark:hover:text-dracula-pink
            matrix:text-matrix-highlight matrix:hover:text-matrix-glow matrix:hover:drop-shadow-[0_0_8px_theme(colors.matrix.glow)]
+           xmas:text-xmas-gold xmas:hover:text-xmas-goldLight xmas:hover:drop-shadow-[0_0_6px_theme(colors.xmas.glow)]
            transition-colors;
   }
 
   /* Button styling */
   .btn-primary {
-    @apply bg-github-blue text-white hover:bg-github-lightBlue dark:bg-dracula-purple dark:hover:bg-dracula-pink transition-colors;
+    @apply bg-github-blue text-white hover:bg-github-lightBlue
+           dark:bg-dracula-purple dark:hover:bg-dracula-pink
+           xmas:bg-xmas-red xmas:hover:bg-xmas-redLight
+           transition-colors;
   }
 }
 
@@ -89,7 +98,12 @@
   }
 
   .section-heading {
-    @apply text-2xl font-heading mb-4 text-github-text dark:text-dracula-foreground web2:text-web2-primaryDark matrix:text-matrix-text;
+    @apply text-2xl font-heading mb-4
+           text-github-text
+           dark:text-dracula-foreground
+           web2:text-web2-primaryDark
+           matrix:text-matrix-text
+           xmas:text-xmas-gold;
   }
 
   body.matrix-bg {

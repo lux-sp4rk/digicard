@@ -9,6 +9,10 @@
   background-color: var(--web2-primary);
 }
 
+.profileSectionXmas {
+  background-color: var(--xmas-red);
+}
+
 .profileImage {
   border-radius: 50%;
   overflow: hidden;
@@ -35,6 +39,11 @@
 
 .profileImageCsszen {
   border-color: var(--github-blue);
+}
+
+.profileImageXmas {
+  border-color: var(--xmas-gold);
+  box-shadow: 0 0 10px var(--xmas-glow);
 }
 
 .profilePhoto {
@@ -85,54 +94,8 @@
   text-decoration-color: var(--csszen-text);
 }
 
-.profileTitle {
-  font-size: 1.25rem;
-  font-weight: 300;
-}
-
-/* Theme-specific title styles */
-.profileTitleGithub {
-  color: var(--github-blue);
-}
-
-.profileTitleDracula {
-  color: var(--dracula-purple);
-}
-
-.profileTitleMatrix {
-  color: var(--matrix-highlight);
-}
-
-.profileTitleWeb2 {
-  color: white;
-}
-
-.profileTitleCsszen {
-  color: var(--csszen-green-dark);
-}
-
-.profileLocation {
-  font-size: 0.875rem;
-  opacity: 0.8;
-}
-
-/* Theme-specific location styles */
-.profileLocationGithub {
-  color: var(--github-secondaryText);
-}
-
-.profileLocationDracula {
-  color: var(--dracula-pink);
-}
-
-.profileLocationMatrix {
-  color: var(--matrix-glow);
-}
-
-.profileLocationWeb2 {
-  color: var(--web2-secondary);
-}
-
-.profileLocationCsszen {
-  color: var(--github-secondaryText);
+.profileNameXmas {
+  color: var(--xmas-background);
+  text-decoration-color: var(--xmas-red);
+  filter: drop-shadow(0 0 8px var(--xmas-glow));
 }
