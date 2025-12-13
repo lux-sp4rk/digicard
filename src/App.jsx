@@ -10,20 +10,13 @@ import MountainFooter from './components/MountainFooter';
 import { Web2NavBar } from './components/NavBar';
 import ErrorBoundary from './components/ErrorBoundary';
 import consoleEasterEgg from './utils/consoleEasterEgg';
+import { getInitialTheme } from './utils/themeInitializer';
 import clsx from 'clsx';
 import SocialLinks from './components/SocialLinks';
 import Snowfall from './components/Snowfall';
 
 function App() {
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = sessionStorage.getItem('theme');
-    // Default to xmas theme in December, otherwise dark
-    if (!savedTheme) {
-      const currentMonth = new Date().getMonth();
-      return currentMonth === 11 ? 'xmas' : 'dark'; // 11 = December
-    }
-    return savedTheme;
-  });
+  const [theme, setTheme] = useState(() => getInitialTheme());
 
   // Apply theme to body
   useEffect(() => {
