@@ -12,6 +12,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import consoleEasterEgg from './utils/consoleEasterEgg';
 import clsx from 'clsx';
 import SocialLinks from './components/SocialLinks';
+import Snowfall from './components/Snowfall';
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -60,6 +61,7 @@ function App() {
   return (
     <>
       <AnalyticsProvider />
+      {theme === 'xmas' && <Snowfall />}
       <div className="max-w-2xl mx-auto px-4 py-6 relative flex">
         <div style={{ flex: 1 }}>
           <Header theme={theme} setTheme={setTheme} />

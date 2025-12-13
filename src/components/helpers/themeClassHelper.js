@@ -11,6 +11,8 @@ export const getThemeClass = (styles, theme, baseClass) => {
     dark: 'Dracula',
     matrix: 'Matrix',
     web2: 'Web2',
+    xmas: 'Xmas',
+    csszen: 'Csszen',
   };
 
   const themeSuffix = themeMap[theme] || 'Github';
