@@ -57,6 +57,25 @@ export default {
           terminal: '#0D0208',
           rain: '#008F11',
         },
+        xmas: {
+          red: '#c41e3a',
+          redLight: '#e63946',
+          redDark: '#8b0000',
+          green: '#165b33',
+          greenLight: '#2d8659',
+          greenDark: '#0f3823',
+          gold: '#d4af37',
+          goldLight: '#ffd700',
+          goldDark: '#b8860b',
+          white: '#fffafa',
+          cream: '#f5f5dc',
+          background: '#0f1c14',
+          cardBg: '#1a2e1f',
+          text: '#fffafa',
+          textSecondary: '#c7d5ca',
+          accent: '#ff6b6b',
+          glow: '#ffd700',
+        },
       },
       fontFamily: {
         heading: ['"Raleway"', 'sans-serif'],
@@ -141,10 +160,10 @@ export default {
   },
   variants: {
     extend: {
-      backgroundColor: ['matrix', 'web2'],
-      textColor: ['matrix', 'web2'],
-      borderColor: ['matrix', 'web2'],
-      dropShadow: ['matrix', 'web2'],
+      backgroundColor: ['matrix', 'web2', 'xmas'],
+      textColor: ['matrix', 'web2', 'xmas'],
+      borderColor: ['matrix', 'web2', 'xmas'],
+      dropShadow: ['matrix', 'web2', 'xmas'],
       boxShadow: {
         web2: '0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
         'web2-hover':
@@ -163,6 +182,7 @@ export default {
     function ({ addVariant }) {
       addVariant('matrix', '.matrix &');
       addVariant('web2', '.web2 &');
+      addVariant('xmas', '.xmas &');
     },
   ],
 };

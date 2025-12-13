@@ -54,3 +54,4 @@ See [docs/architecture.md](docs/architecture.md) for a high-level, ever-green ov
 - **Prettier** for consistent formatting
 - **Husky** for Git hooks management
 - remember that this is a solo project, so there is no need for team workflows. optimize for solo dev with LLM
+- Never run npm run dev or any dev server command in this project

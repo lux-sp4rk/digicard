@@ -99,7 +99,10 @@ const YouTube = ({ theme }) => {
         theme !== 'web2' && 'border-t border-github-lightGray',
         'dark:border-dracula-currentLine',
         'matrix:border-matrix-glow',
-        'matrix:shadow-lg'
+        'matrix:shadow-lg',
+        'xmas:border-xmas-gold',
+        'xmas:shadow-lg',
+        'xmas:bg-xmas-red'
       )}
     >
       <div className={clsx('mx-auto', isShort ? 'max-w-sm' : 'max-w-2xl')}>
@@ -109,6 +112,7 @@ const YouTube = ({ theme }) => {
             'bg-white dark:bg-dracula-currentLine',
             'web2:bg-web2-cardBg',
             'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:hover:shadow-matrix-glow',
+            'xmas:bg-xmas-cardBg xmas:border-xmas-gold xmas:border-2 xmas:shadow-lg xmas:hover:shadow-xmas-glow',
             'flex flex-col'
           )}
         >

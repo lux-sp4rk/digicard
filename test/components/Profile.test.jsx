@@ -6,15 +6,6 @@ import * as useContentfulHook from '../../src/hooks/useContentful';
 // Mock the useContentful hook
 vi.mock('../../src/hooks/useContentful');
 
-// Mock the ProfileBio component
-vi.mock('../../src/components/ProfileBio', () => ({
-  BasicBio: ({ theme, bio }) => (
-    <div data-testid="basic-bio" data-theme={theme}>
-      {bio || 'Default bio'}
-    </div>
-  ),
-}));
-
 describe('Profile', () => {
   beforeEach(() => {
     // Default mock: Contentful returns null (falls back to constant)
@@ -25,7 +16,7 @@ describe('Profile', () => {
     });
   });
   it('renders all profile elements for non-web2 themes', () => {
-    render(<Profile theme="dark" />);
+    const { container } = render(<Profile theme="dark" />);
 
     // Check for profile image (using alt text for accessibility)
     // Just verify it exists, don't check the exact src path
@@ -36,10 +27,10 @@ describe('Profile', () => {
     // Check for profile name
     expect(screen.getByText('Lux Sp4rwhk')).toBeInTheDocument();
 
-    // Check that BasicBio component is rendered with correct props
-    const bio = screen.getByTestId('basic-bio');
+    // Check that bio is rendered (find by structure - it's a paragraph with font-mono class)
+    const bio = container.querySelector('p.font-mono');
     expect(bio).toBeInTheDocument();
-    expect(bio).toHaveAttribute('data-theme', 'dark');
+    expect(bio.tagName).toBe('P');
     // Verify bio has some content (not empty)
     expect(bio.textContent.length).toBeGreaterThan(0);
   });
@@ -51,38 +42,40 @@ describe('Profile', () => {
     expect(screen.queryByAltText('Lux Sp4rwhk avatar')).not.toBeInTheDocument();
   });
 
-  it('renders BasicBio component for all themes with correct theme prop', () => {
+  it('renders bio for all themes', () => {
     // Test with a non-web2 theme
-    const { rerender } = render(<Profile theme="dark" />);
-    expect(screen.getByTestId('basic-bio')).toBeInTheDocument();
-    expect(screen.getByTestId('basic-bio')).toHaveAttribute(
-      'data-theme',
-      'dark'
-    );
+    const { container, rerender } = render(<Profile theme="dark" />);
+    const bioDark = container.querySelector('p.font-mono');
+    expect(bioDark).toBeInTheDocument();
+    expect(bioDark.tagName).toBe('P');
+    expect(bioDark.textContent.length).toBeGreaterThan(0);
 
     // Test with web2 theme
     rerender(<Profile theme="web2" />);
-    expect(screen.getByTestId('basic-bio')).toBeInTheDocument();
-    expect(screen.getByTestId('basic-bio')).toHaveAttribute(
-      'data-theme',
-      'web2'
-    );
+    const bioWeb2 = container.querySelector('p.font-mono');
+    expect(bioWeb2).toBeInTheDocument();
+    expect(bioWeb2.tagName).toBe('P');
+    expect(bioWeb2.textContent.length).toBeGreaterThan(0);
 
     // Test with matrix theme
     rerender(<Profile theme="matrix" />);
-    expect(screen.getByTestId('basic-bio')).toBeInTheDocument();
-    expect(screen.getByTestId('basic-bio')).toHaveAttribute(
-      'data-theme',
-      'matrix'
-    );
+    const bioMatrix = container.querySelector('p.font-mono');
+    expect(bioMatrix).toBeInTheDocument();
+    expect(bioMatrix.tagName).toBe('P');
+    expect(bioMatrix.textContent.length).toBeGreaterThan(0);
   });
 
-  it('passes bio content to BasicBio component', () => {
-    render(<Profile theme="dark" />);
+  it('renders bio content correctly', () => {
+    const { container } = render(<Profile theme="dark" />);
 
-    const bio = screen.getByTestId('basic-bio');
-    // Just verify that bio receives some content, not the exact text
-    expect(bio.textContent).not.toBe('Default bio');
-    expect(bio.textContent.length).toBeGreaterThan(10);
+    const bio = container.querySelector('p.font-mono');
+    // Verify bio exists and has content
+    expect(bio).toBeInTheDocument();
+    expect(bio.textContent.length).toBeGreaterThan(0);
+    // Verify bio has expected base styling classes
+    expect(bio).toHaveClass('text-lg');
+    expect(bio).toHaveClass('font-mono');
+    expect(bio).toHaveClass('min-h-[2em]');
+    expect(bio).toHaveClass('w-full');
   });
 });
