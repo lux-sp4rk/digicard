@@ -6,7 +6,7 @@ const Snowfall = () => {
 
   useEffect(() => {
     // Generate snowflakes with random properties
-    const flakes = Array.from({ length: 50 }, (_, i) => ({
+    const flakes = Array.from({ length: 35 }, (_, i) => ({
       id: i,
       left: Math.random() * 100, // Random horizontal position (%)
       animationDuration: 5 + Math.random() * 10, // 5-15 seconds
@@ -20,7 +20,7 @@ const Snowfall = () => {
 
   return (
     <div className="snowfall-container">
-      {snowflakes.map((flake) => (
+      {snowflakes.map(flake => (
         <div
           key={flake.id}
           className="snowflake"
