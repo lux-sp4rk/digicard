@@ -1,1 +1,4 @@
-pnpm test
+#!/bin/sh
+#
+# Run linting and formatting on staged files
+npx lint-staged
