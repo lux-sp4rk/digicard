@@ -1,3 +1,5 @@
+const CACHE_MAX_AGE = 86400; // 24 hours in seconds
+
 export const handler = async event => {
   // Only allow GET requests
   if (event.httpMethod !== 'GET') {
@@ -53,6 +55,7 @@ export const handler = async event => {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'GET',
+        'Cache-Control': `public, s-maxage=${CACHE_MAX_AGE}, stale-while-revalidate=3600`,
       },
       body: JSON.stringify(data),
     };
