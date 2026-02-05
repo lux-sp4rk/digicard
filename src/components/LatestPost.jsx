@@ -3,7 +3,7 @@ import DynamicIcon from './DynamicIcon';
 import SectionHeading from './SectionHeading';
 
 import Loading from './Loading';
-import { useBeeHiiv } from '../hooks/useBeeHiiv';
+import { useSubstack } from '../hooks/useSubstack';
 import { useContentful } from '../hooks/useContentful';
 import { getSettings } from '../utils/contentful';
 
@@ -12,7 +12,7 @@ import { getSettings } from '../utils/contentful';
 import fallbackPostDataModule from '../dev-data/featuredPost.json';
 
 const LatestPost = ({ theme }) => {
-  const { post, loading } = useBeeHiiv();
+  const { post, loading } = useSubstack();
   const { data: settings, loading: settingsLoading } =
     useContentful(getSettings);
 
