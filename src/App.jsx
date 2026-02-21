@@ -3,6 +3,7 @@ import AnalyticsProvider from './components/AnalyticsProvider';
 import Header from './components/Header';
 import Profile from './components/Profile';
 import Projects from './components/Projects/Projects';
+import Services from './components/Services';
 import LatestPost from './components/LatestPost';
 import YouTube from './components/YouTube';
 import Footer from './components/Footer';
@@ -17,6 +18,7 @@ import Snowfall from './components/Snowfall';
 
 function App() {
   const [theme, setTheme] = useState(() => getInitialTheme());
+  const [activeTab, setActiveTab] = useState('work'); // 'work' or 'services'
 
   // Apply theme to body
   useEffect(() => {
@@ -74,25 +76,99 @@ function App() {
             )}
           >
             {theme === 'web2' && <Web2NavBar theme={theme} />}
+
+            {/* Tab Switcher */}
+            <div
+              className={clsx(
+                'flex border-b',
+                theme === 'catppuccin' && 'border-catppuccin-surface',
+                theme === 'flexoki' && 'border-flexoki-surface',
+                theme === 'rosepine' && 'border-rosepine-surface',
+                theme === 'matrix' && 'border-matrix-glow',
+                theme === 'web2' && 'border-web2-divider',
+                theme === 'dark' && 'border-dracula-comment'
+              )}
+            >
+              <button
+                onClick={() => setActiveTab('work')}
+                className={clsx(
+                  'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
+                  activeTab === 'work'
+                    ? [
+                        'border-b-2',
+                        theme === 'catppuccin' &&
+                          'border-catppuccin-blue text-catppuccin-blue',
+                        theme === 'flexoki' &&
+                          'border-flexoki-cyan text-flexoki-cyan',
+                        theme === 'rosepine' &&
+                          'border-rosepine-rose text-rosepine-rose',
+                        theme === 'matrix' &&
+                          'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
+                        theme === 'web2' &&
+                          'border-web2-primary text-web2-primary bg-web2-highlight',
+                        theme === 'dark' &&
+                          'border-dracula-purple text-dracula-purple',
+                      ]
+                    : 'opacity-50 hover:opacity-100'
+                )}
+              >
+                The Work
+              </button>
+              <button
+                onClick={() => setActiveTab('services')}
+                className={clsx(
+                  'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
+                  activeTab === 'services'
+                    ? [
+                        'border-b-2',
+                        theme === 'catppuccin' &&
+                          'border-catppuccin-blue text-catppuccin-blue',
+                        theme === 'flexoki' &&
+                          'border-flexoki-cyan text-flexoki-cyan',
+                        theme === 'rosepine' &&
+                          'border-rosepine-rose text-rosepine-rose',
+                        theme === 'matrix' &&
+                          'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
+                        theme === 'web2' &&
+                          'border-web2-primary text-web2-primary bg-web2-highlight',
+                        theme === 'dark' &&
+                          'border-dracula-purple text-dracula-purple',
+                      ]
+                    : 'opacity-50 hover:opacity-100'
+                )}
+              >
+                Services
+              </button>
+            </div>
+
             <ErrorBoundary theme={theme}>
               <Profile theme={theme} />
             </ErrorBoundary>
-            {/* Only show Links inline for non-web2 themes */}
-            {theme !== 'web2' && (
+
+            {activeTab === 'work' ? (
+              <>
+                {/* Only show Links inline for non-web2 themes */}
+                {theme !== 'web2' && (
+                  <ErrorBoundary theme={theme}>
+                    <SocialLinks />
+                  </ErrorBoundary>
+                )}
+                {/* Featured Content goes here */}
+                <ErrorBoundary theme={theme}>
+                  <YouTube theme={theme} featured={true} />
+                </ErrorBoundary>
+                <ErrorBoundary theme={theme}>
+                  <LatestPost theme={theme} featured={false} />
+                </ErrorBoundary>
+                <ErrorBoundary theme={theme}>
+                  <Projects theme={theme} />
+                </ErrorBoundary>
+              </>
+            ) : (
               <ErrorBoundary theme={theme}>
-                <SocialLinks />
+                <Services theme={theme} />
               </ErrorBoundary>
             )}
-            {/* Featured Content goes here */}
-            <ErrorBoundary theme={theme}>
-              <YouTube theme={theme} featured={true} />
-            </ErrorBoundary>
-            <ErrorBoundary theme={theme}>
-              <LatestPost theme={theme} featured={false} />
-            </ErrorBoundary>
-            <ErrorBoundary theme={theme}>
-              <Projects theme={theme} />
-            </ErrorBoundary>
           </main>
 
           {theme === 'web2' ? <MountainFooter /> : <Footer theme={theme} />}
