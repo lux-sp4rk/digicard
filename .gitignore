@@ -29,3 +29,6 @@ dist-ssr
 
 # Test coverage
 coverage
+
+# Git worktrees
+.worktrees
