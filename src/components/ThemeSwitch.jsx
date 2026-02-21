@@ -11,13 +11,27 @@ const ThemeSwitch = ({ theme, setTheme }) => {
           'web2:bg-web2-primaryDark web2:text-white web2:border-web2-border web2:shadow-web2-border web2:drop-shadow-web2-border',
         theme === 'matrix' &&
           'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow',
+        theme === 'catppuccin' &&
+          'catppuccin:bg-catppuccin-surface catppuccin:text-catppuccin-text',
+        theme === 'flexoki' &&
+          'flexoki:bg-flexoki-surface flexoki:text-flexoki-text',
+        theme === 'rosepine' &&
+          'rosepine:bg-rosepine-surface rosepine:text-rosepine-text',
         theme === 'light' && 'bg-white dark:bg-dracula-currentLine',
         theme === 'dark' && 'dark:bg-dracula-currentLine'
       )}
     >
-      <option value="light">Github</option>
-      <option value="dark">Dracula</option>
-      <option value="web2">Web 2.0</option>
+      <optgroup label="Modern Themes">
+        <option value="catppuccin">Catppuccin Mocha</option>
+        <option value="flexoki">Flexoki Light</option>
+        <option value="rosepine">Rosé Pine Dawn</option>
+      </optgroup>
+      <optgroup label="Classic Themes">
+        <option value="light">Github</option>
+        <option value="dark">Dracula</option>
+        <option value="web2">Web 2.0</option>
+        <option value="matrix">Matrix</option>
+      </optgroup>
     </select>
   );
 };

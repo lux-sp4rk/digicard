@@ -26,7 +26,10 @@ function App() {
       'matrix',
       'light',
       'web2',
-      'xmas'
+      'xmas',
+      'catppuccin',
+      'flexoki',
+      'rosepine'
     );
     // Add the current theme class
     document.documentElement.classList.add(theme);
@@ -64,7 +67,10 @@ function App() {
               'opacity-0 transform translate-y-5 animate-fade-in',
               'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow',
               'web2:bg-web2-background web2:border-web2-border',
-              'xmas:border-xmas-gold xmas:border-2 xmas:shadow-lg xmas:shadow-xmas-glow'
+              'xmas:border-xmas-gold xmas:border-2 xmas:shadow-lg xmas:shadow-xmas-glow',
+              'catppuccin:bg-catppuccin-base catppuccin:text-catppuccin-text catppuccin:border-catppuccin-surface catppuccin:border',
+              'flexoki:bg-flexoki-base flexoki:text-flexoki-text flexoki:border-flexoki-surface flexoki:border',
+              'rosepine:bg-rosepine-base rosepine:text-rosepine-text rosepine:border-rosepine-surface rosepine:border'
             )}
           >
             {theme === 'web2' && <Web2NavBar theme={theme} />}

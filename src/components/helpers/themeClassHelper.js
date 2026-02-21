@@ -13,6 +13,9 @@ export const getThemeClass = (styles, theme, baseClass) => {
     web2: 'Web2',
     xmas: 'Xmas',
     csszen: 'Csszen',
+    catppuccin: 'Catppuccin',
+    flexoki: 'Flexoki',
+    rosepine: 'Rosepine',
   };
 
   const themeSuffix = themeMap[theme] || 'Github';
