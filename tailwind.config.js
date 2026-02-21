@@ -76,6 +76,27 @@ export default {
           accent: '#ff6b6b',
           glow: '#ffd700',
         },
+        catppuccin: {
+          base: '#1e1e2e',
+          text: '#cdd6f4',
+          blue: '#89b4fa',
+          surface: '#313244',
+          crust: '#11111b',
+          mantle: '#181825',
+        },
+        flexoki: {
+          base: '#fffcf0',
+          text: '#101010',
+          cyan: '#24837b',
+          gold: '#ad8301',
+          surface: '#f2f0e5',
+        },
+        rosepine: {
+          base: '#faf4ed',
+          text: '#575279',
+          rose: '#d7827e',
+          surface: '#fffaf3',
+        },
       },
       fontFamily: {
         heading: ['"Raleway"', 'sans-serif'],
@@ -183,6 +204,9 @@ export default {
       addVariant('matrix', '.matrix &');
       addVariant('web2', '.web2 &');
       addVariant('xmas', '.xmas &');
+      addVariant('catppuccin', '.catppuccin &');
+      addVariant('flexoki', '.flexoki &');
+      addVariant('rosepine', '.rosepine &');
     },
   ],
 };

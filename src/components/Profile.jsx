@@ -73,10 +73,14 @@ const Profile = ({ theme }) => {
         className={clsx(
           'text-lg font-mono min-h-[2em] w-full',
           'web2:text-4xl web2:text-web2-secondary web2:font-web2Heading',
-          'matrix:text-matrix-glow'
+          'matrix:text-matrix-glow',
+          'flexoki:text-flexoki-text',
+          'rosepine:text-rosepine-text',
+          'catppuccin:text-catppuccin-text'
         )}
       >
-        {profile.bio || (theme === 'matrix' ? BIO_TEXT.matrix : BIO_TEXT.fallback)}
+        {profile.bio ||
+          (theme === 'matrix' ? BIO_TEXT.matrix : BIO_TEXT.fallback)}
       </p>
     </section>
   );

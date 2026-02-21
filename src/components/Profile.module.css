@@ -99,3 +99,30 @@
   text-decoration-color: var(--xmas-red);
   filter: drop-shadow(0 0 8px var(--xmas-glow));
 }
+
+.profileNameCatppuccin {
+  color: var(--catppuccin-text);
+  text-decoration-color: var(--catppuccin-blue);
+}
+
+.profileNameFlexoki {
+  color: var(--flexoki-text);
+  text-decoration-color: var(--flexoki-cyan);
+}
+
+.profileNameRosepine {
+  color: var(--rosepine-text);
+  text-decoration-color: var(--rosepine-rose);
+}
+
+.profileImageCatppuccin {
+  border-color: var(--catppuccin-blue);
+}
+
+.profileImageFlexoki {
+  border-color: var(--flexoki-gold);
+}
+
+.profileImageRosepine {
+  border-color: var(--rosepine-rose);
+}

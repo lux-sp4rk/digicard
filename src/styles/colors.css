@@ -85,4 +85,27 @@
   /* Font Families */
   --font-heading: 'Raleway', sans-serif;
   --font-body: 'Roboto', sans-serif;
+
+  /* Modern Themes */
+
+  /* Catppuccin Mocha (Dark) */
+  --catppuccin-base: #1e1e2e;
+  --catppuccin-text: #cdd6f4;
+  --catppuccin-blue: #89b4fa;
+  --catppuccin-surface: #313244;
+  --catppuccin-crust: #11111b;
+  --catppuccin-mantle: #181825;
+
+  /* Flexoki Light */
+  --flexoki-base: #fffcf0;
+  --flexoki-text: #101010;
+  --flexoki-cyan: #24837b;
+  --flexoki-gold: #ad8301;
+  --flexoki-surface: #f2f0e5;
+
+  /* Rosé Pine Dawn */
+  --rosepine-base: #faf4ed;
+  --rosepine-text: #575279;
+  --rosepine-rose: #d7827e;
+  --rosepine-surface: #fffaf3;
 }
