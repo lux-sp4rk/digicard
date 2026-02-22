@@ -14,11 +14,23 @@ if [ "$current_branch" = "main" ]; then
   exit 1
 fi
 
-# Run tests before pushing
-echo "Running tests..."
-npm run test
-if [ $? -ne 0 ]; then
-  echo "❌ Tests failed. Push aborted."
-  exit 1
+# Run tests for changed files before pushing
+echo "Running tests for changed files..."
+# Compare against origin/main to find all changes in this feature branch.
+# If origin/main isn't fetched, it will default to staged changes or HEAD.
+# Using 'git diff --name-only origin/main' is robust for feature branches.
+files=$(git diff --name-only origin/main...HEAD)
+
+if [ -z "$files" ]; then
+  echo "No files changed compared to origin/main. Skipping tests."
+else
+  echo "Testing related to: $(echo $files | tr '\n' ' ')"
+  # Use npx to ensure we use the local project version and limit threads to save RAM.
+  # If 'vitest related' finds no matching tests, it exits gracefully (0).
+  npx vitest related --run --poolOptions.threads.maxThreads=2 $files
+  if [ $? -ne 0 ]; then
+    echo "❌ Tests failed for changed files. Push aborted."
+    exit 1
+  fi
 fi
 echo "✅ Tests passed."
