@@ -90,6 +90,7 @@ export default {
           cyan: '#24837b',
           gold: '#ad8301',
           surface: '#f2f0e5',
+          crust: '#cecdc3',
         },
         rosepine: {
           base: '#faf4ed',
