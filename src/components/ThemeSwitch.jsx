@@ -14,21 +14,14 @@ const ThemeSwitch = ({ theme, setTheme }) => {
         theme === 'catppuccin' &&
           'catppuccin:bg-catppuccin-surface catppuccin:text-catppuccin-text',
         theme === 'flexoki' &&
-          'flexoki:bg-flexoki-surface flexoki:text-flexoki-text',
-        theme === 'rosepine' &&
-          'rosepine:bg-rosepine-surface rosepine:text-rosepine-text',
-        theme === 'light' && 'bg-white dark:bg-dracula-currentLine',
-        theme === 'dark' && 'dark:bg-dracula-currentLine'
+          'flexoki:bg-flexoki-surface flexoki:text-flexoki-text'
       )}
     >
       <optgroup label="Modern Themes">
         <option value="catppuccin">Catppuccin Mocha</option>
         <option value="flexoki">Flexoki Light</option>
-        <option value="rosepine">Rosé Pine Dawn</option>
       </optgroup>
       <optgroup label="Classic Themes">
-        <option value="light">Github</option>
-        <option value="dark">Dracula</option>
         <option value="web2">Web 2.0</option>
         <option value="matrix">Matrix</option>
       </optgroup>

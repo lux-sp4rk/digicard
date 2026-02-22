@@ -26,7 +26,7 @@ const services = [
   },
 ];
 
-const Services = ({ theme }) => {
+const Services = ({ theme = 'catppuccin' }) => {
   return (
     <section className={clsx('p-5 animate-fade-in')}>
       <SectionHeading>Services</SectionHeading>
@@ -41,15 +41,13 @@ const Services = ({ theme }) => {
                 'bg-catppuccin-surface border-catppuccin-surface text-catppuccin-text',
               theme === 'flexoki' &&
                 'bg-flexoki-surface border-flexoki-surface text-flexoki-text',
-              theme === 'rosepine' &&
-                'bg-rosepine-surface border-rosepine-surface text-rosepine-text',
               theme === 'matrix' &&
                 'bg-matrix-terminal border-matrix-glow text-matrix-glow shadow-[0_0_10px_rgba(0,255,0,0.1)]',
               theme === 'web2' &&
                 'bg-web2-background border-web2-border shadow-sm',
-              theme === 'dark' &&
-                'bg-dracula-currentLine border-dracula-comment text-dracula-foreground',
-              theme === 'light' && 'bg-gray-50 border-gray-200 text-gray-900'
+              // Fallback for deprecated or unknown themes
+              (theme === 'dark' || theme === 'light' || theme === 'rosepine') &&
+                'bg-catppuccin-surface border-catppuccin-surface text-catppuccin-text'
             )}
           >
             <div className="flex items-center gap-3 mb-3">
@@ -59,11 +57,12 @@ const Services = ({ theme }) => {
                 className={clsx(
                   theme === 'catppuccin' && 'text-catppuccin-blue',
                   theme === 'flexoki' && 'text-flexoki-cyan',
-                  theme === 'rosepine' && 'text-rosepine-rose',
                   theme === 'matrix' && 'text-matrix-glow',
                   theme === 'web2' && 'text-web2-primary',
-                  theme === 'dark' && 'text-dracula-purple',
-                  theme === 'light' && 'text-blue-600'
+                  (theme === 'dark' ||
+                    theme === 'light' ||
+                    theme === 'rosepine') &&
+                    'text-catppuccin-blue'
                 )}
               />
               <div>
@@ -93,10 +92,10 @@ const Services = ({ theme }) => {
           theme === 'catppuccin' &&
             'border-catppuccin-blue/30 text-catppuccin-text',
           theme === 'flexoki' && 'border-flexoki-cyan/30 text-flexoki-text',
-          theme === 'rosepine' && 'border-rosepine-rose/30 text-rosepine-text',
           theme === 'matrix' && 'border-matrix-glow/30 text-matrix-glow',
           theme === 'web2' && 'border-web2-primary/30 text-web2-text',
-          theme === 'dark' && 'border-dracula-purple/30 text-dracula-foreground'
+          (theme === 'dark' || theme === 'light' || theme === 'rosepine') &&
+            'border-catppuccin-blue/30 text-catppuccin-text'
         )}
       >
         <p className="text-lg font-bold mb-2">
@@ -108,11 +107,11 @@ const Services = ({ theme }) => {
             'inline-block px-6 py-2 rounded-full font-bold transition-transform hover:scale-105',
             theme === 'catppuccin' && 'bg-catppuccin-blue text-catppuccin-base',
             theme === 'flexoki' && 'bg-flexoki-cyan text-flexoki-base',
-            theme === 'rosepine' && 'bg-rosepine-rose text-rosepine-base',
             theme === 'matrix' &&
               'bg-matrix-glow text-matrix-terminal shadow-[0_0_15px_#0f0]',
             theme === 'web2' && 'bg-web2-primary text-white',
-            theme === 'dark' && 'bg-dracula-purple text-dracula-background'
+            (theme === 'dark' || theme === 'light' || theme === 'rosepine') &&
+              'bg-catppuccin-blue text-catppuccin-base'
           )}
         >
           Book a Consultation

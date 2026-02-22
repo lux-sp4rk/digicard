@@ -30,8 +30,7 @@ function App() {
       'web2',
       'xmas',
       'catppuccin',
-      'flexoki',
-      'rosepine'
+      'flexoki'
     );
     // Add the current theme class
     document.documentElement.classList.add(theme);
@@ -71,8 +70,7 @@ function App() {
               'web2:bg-web2-background web2:border-web2-border',
               'xmas:border-xmas-gold xmas:border-2 xmas:shadow-lg xmas:shadow-xmas-glow',
               'catppuccin:bg-catppuccin-base catppuccin:text-catppuccin-text catppuccin:border-catppuccin-surface catppuccin:border',
-              'flexoki:bg-flexoki-base flexoki:text-flexoki-text flexoki:border-flexoki-surface flexoki:border',
-              'rosepine:bg-rosepine-base rosepine:text-rosepine-text rosepine:border-rosepine-surface rosepine:border'
+              'flexoki:bg-flexoki-base flexoki:text-flexoki-text flexoki:border-flexoki-surface flexoki:border'
             )}
           >
             {theme === 'web2' && <Web2NavBar theme={theme} />}
@@ -83,14 +81,15 @@ function App() {
                 'flex border-b',
                 theme === 'catppuccin' && 'border-catppuccin-surface',
                 theme === 'flexoki' && 'border-flexoki-surface',
-                theme === 'rosepine' && 'border-rosepine-surface',
                 theme === 'matrix' && 'border-matrix-glow',
-                theme === 'web2' && 'border-web2-divider',
-                theme === 'dark' && 'border-dracula-comment'
+                theme === 'web2' && 'border-web2-divider'
               )}
             >
               <button
                 onClick={() => setActiveTab('work')}
+                aria-label="Switch to The Work tab"
+                aria-selected={activeTab === 'work'}
+                role="tab"
                 className={clsx(
                   'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
                   activeTab === 'work'
@@ -100,14 +99,10 @@ function App() {
                           'border-catppuccin-blue text-catppuccin-blue',
                         theme === 'flexoki' &&
                           'border-flexoki-cyan text-flexoki-cyan',
-                        theme === 'rosepine' &&
-                          'border-rosepine-rose text-rosepine-rose',
                         theme === 'matrix' &&
                           'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
                         theme === 'web2' &&
                           'border-web2-primary text-web2-primary bg-web2-highlight',
-                        theme === 'dark' &&
-                          'border-dracula-purple text-dracula-purple',
                       ]
                     : 'opacity-50 hover:opacity-100'
                 )}
@@ -116,6 +111,9 @@ function App() {
               </button>
               <button
                 onClick={() => setActiveTab('services')}
+                aria-label="Switch to Services tab"
+                aria-selected={activeTab === 'services'}
+                role="tab"
                 className={clsx(
                   'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
                   activeTab === 'services'
@@ -125,14 +123,10 @@ function App() {
                           'border-catppuccin-blue text-catppuccin-blue',
                         theme === 'flexoki' &&
                           'border-flexoki-cyan text-flexoki-cyan',
-                        theme === 'rosepine' &&
-                          'border-rosepine-rose text-rosepine-rose',
                         theme === 'matrix' &&
                           'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
                         theme === 'web2' &&
                           'border-web2-primary text-web2-primary bg-web2-highlight',
-                        theme === 'dark' &&
-                          'border-dracula-purple text-dracula-purple',
                       ]
                     : 'opacity-50 hover:opacity-100'
                 )}
