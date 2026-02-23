@@ -66,6 +66,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.22(postcss@8.5.6)
+      contentful-management:
+        specifier: ^11.72.0
+        version: 11.72.0
       dotenv:
         specifier: ^16.6.1
         version: 16.6.1
@@ -2132,6 +2135,9 @@ packages:
   axios@1.13.2:
     resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
 
+  axios@1.13.5:
+    resolution: {integrity: sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==}
+
   b4a@1.7.3:
     resolution: {integrity: sha512-5Q2mfq2WfGuFp3uS//0s6baOJLMoVduPYVeNmDYxu5OUA1/cBfvr2RIS7vi62LdNj/urk1hfmj867I3qt6uZ7Q==}
     peerDependencies:
@@ -2527,12 +2533,20 @@ packages:
     resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
     engines: {node: '>= 0.6'}
 
+  contentful-management@11.72.0:
+    resolution: {integrity: sha512-Yl1lI+14yJwEj1qP7/4Notw/RrJbTRA1Fozs5YpNPOSacZCTfVcvG1WW1eXKaDbB+QopdIxWQUuNkuwvqrDv7Q==}
+    engines: {node: '>=18'}
+
   contentful-resolve-response@1.9.4:
     resolution: {integrity: sha512-8qu2dM2IMoVQhBhp81BVGB9ISantPmPTZ3EELGxuM8e/t+jSe+xmsVk5yHE+a9AYMBKSwgupBnkjGZE4RzFowQ==}
     engines: {node: '>=4.7.2'}
 
   contentful-sdk-core@9.2.1:
     resolution: {integrity: sha512-Y+Qz2tGYE2ia6o42R8DG4uFSMSLJ6qfAbKQLU6p2+KxsqvbK1Fg60wKVKF+FHMShuCnlg2EwToOvxVsM2N+BrQ==}
+    engines: {node: '>=18'}
+
+  contentful-sdk-core@9.4.3:
+    resolution: {integrity: sha512-wUCrPSxOPZrmwYTPWAAe6fTQkxjElG0C3ClwhhKtguWJGzliHRXHLux9n8Hy+/jCIZJIIXWEwclSdg7bT2107A==}
     engines: {node: '>=18'}
 
   contentful@11.9.0:
@@ -4634,6 +4648,9 @@ packages:
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+
   log-process-errors@11.0.1:
     resolution: {integrity: sha512-HXYU83z3kH0VHfJgGyv9ZP9z7uNEayssgvpeQwSzh60mvpNqUBCPyXLSzCDSMxfGvAUUa0Kw06wJjVR46Ohd3A==}
     engines: {node: '>=16.17.0'}
@@ -5640,6 +5657,10 @@ packages:
 
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
+    engines: {node: '>=0.6'}
+
+  qs@6.15.0:
+    resolution: {integrity: sha512-mAZTtNCeetKMH+pSjrb76NAM8V9a05I9aBZOHztWy/UqcJdQYNsf59vrRKWnojAT9Y+GbIvoTBC++CPHqpDBhQ==}
     engines: {node: '>=0.6'}
 
   query-string@5.1.1:
@@ -9136,6 +9157,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@1.13.5:
+    dependencies:
+      follow-redirects: 1.15.11(debug@4.4.3)
+      form-data: 4.0.5
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   b4a@1.7.3: {}
 
   backoff@2.5.0:
@@ -9551,6 +9580,16 @@ snapshots:
 
   content-type@1.0.5: {}
 
+  contentful-management@11.72.0:
+    dependencies:
+      '@contentful/rich-text-types': 16.8.5
+      axios: 1.13.5
+      contentful-sdk-core: 9.4.3
+      fast-copy: 3.0.2
+      globals: 15.15.0
+    transitivePeerDependencies:
+      - debug
+
   contentful-resolve-response@1.9.4:
     dependencies:
       fast-copy: 3.0.2
@@ -9562,6 +9601,15 @@ snapshots:
       p-throttle: 6.2.0
       process: 0.11.10
       qs: 6.14.0
+    optionalDependencies:
+      '@rollup/rollup-linux-x64-gnu': 4.53.3
+
+  contentful-sdk-core@9.4.3:
+    dependencies:
+      fast-copy: 3.0.2
+      lodash: 4.17.23
+      process: 0.11.10
+      qs: 6.15.0
     optionalDependencies:
       '@rollup/rollup-linux-x64-gnu': 4.53.3
 
@@ -11980,6 +12028,8 @@ snapshots:
 
   lodash@4.17.21: {}
 
+  lodash@4.17.23: {}
+
   log-process-errors@11.0.1:
     dependencies:
       is-error-instance: 2.0.0
@@ -13052,6 +13102,10 @@ snapshots:
       side-channel: 1.1.0
 
   qs@6.14.0:
+    dependencies:
+      side-channel: 1.1.0
+
+  qs@6.15.0:
     dependencies:
       side-channel: 1.1.0
 
