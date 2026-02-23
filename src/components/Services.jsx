@@ -40,8 +40,51 @@ const fallbackServices = [
 ];
 
 /**
+ * Theme-specific Tailwind class bundles for service card elements.
+ * Extracts repeated theme logic from inline JSX expressions.
+ */
+const LEGACY_THEMES = ['dark', 'light', 'rosepine'];
+
+export const getServiceCardClasses = theme => {
+  if (theme === 'flexoki')
+    return 'bg-flexoki-surface border-flexoki-surface text-flexoki-text';
+  if (theme === 'matrix')
+    return 'bg-matrix-terminal border-matrix-glow text-matrix-glow shadow-[0_0_10px_rgba(0,255,0,0.1)]';
+  if (theme === 'web2')
+    return 'bg-web2-background border-web2-border shadow-sm';
+  // catppuccin + legacy themes all map to catppuccin styles
+  return 'bg-catppuccin-surface border-catppuccin-surface text-catppuccin-text';
+};
+
+export const getServiceIconClasses = theme => {
+  if (theme === 'flexoki') return 'text-flexoki-cyan';
+  if (theme === 'matrix') return 'text-matrix-glow';
+  if (theme === 'web2') return 'text-web2-primary';
+  return 'text-catppuccin-blue';
+};
+
+export const getServiceCtaBorderClasses = theme => {
+  if (theme === 'flexoki') return 'border-flexoki-cyan/30 text-flexoki-text';
+  if (theme === 'matrix') return 'border-matrix-glow/30 text-matrix-glow';
+  if (theme === 'web2') return 'border-web2-primary/30 text-web2-text';
+  return 'border-catppuccin-blue/30 text-catppuccin-text';
+};
+
+export const getServiceCtaButtonClasses = theme => {
+  if (theme === 'flexoki') return 'bg-flexoki-cyan text-flexoki-base';
+  if (theme === 'matrix')
+    return 'bg-matrix-glow text-matrix-terminal shadow-[0_0_15px_#0f0]';
+  if (theme === 'web2') return 'bg-web2-primary text-white';
+  return 'bg-catppuccin-blue text-catppuccin-base';
+};
+
+/**
  * Render a description field that may be a Contentful Rich Text document
  * or a plain string (from fallback data).
+ *
+ * Fix: Removed conflicting `text-base leading-relaxed` from the rich-text
+ * path — `prose prose-sm` already sets its own font-size and line-height,
+ * and mixing them caused override conflicts.
  */
 const ServiceDescription = ({ description, className }) => {
   if (!description) return null;
@@ -49,12 +92,7 @@ const ServiceDescription = ({ description, className }) => {
   // Rich Text document from Contentful has a nodeType property
   if (typeof description === 'object' && description.nodeType) {
     return (
-      <div
-        className={clsx(
-          'text-base leading-relaxed opacity-90 prose prose-sm max-w-none',
-          className
-        )}
-      >
+      <div className={clsx('opacity-90 prose prose-sm max-w-none', className)}>
         {documentToReactComponents(description)}
       </div>
     );
@@ -92,25 +130,13 @@ const Services = ({ theme = 'catppuccin' }) => {
 
       {!loading && (
         <div className="grid gap-6 grid-cols-1">
-          {sortedServices.map(service => (
+          {sortedServices.map((service, index) => (
             <div
-              key={service.id || service.title}
+              key={service.id || `service-${index}`}
               className={clsx(
                 'p-6 rounded-lg border transition-all duration-300',
                 'hover:scale-[1.01]',
-                theme === 'catppuccin' &&
-                  'bg-catppuccin-surface border-catppuccin-surface text-catppuccin-text',
-                theme === 'flexoki' &&
-                  'bg-flexoki-surface border-flexoki-surface text-flexoki-text',
-                theme === 'matrix' &&
-                  'bg-matrix-terminal border-matrix-glow text-matrix-glow shadow-[0_0_10px_rgba(0,255,0,0.1)]',
-                theme === 'web2' &&
-                  'bg-web2-background border-web2-border shadow-sm',
-                // Fallback for deprecated or unknown themes
-                (theme === 'dark' ||
-                  theme === 'light' ||
-                  theme === 'rosepine') &&
-                  'bg-catppuccin-surface border-catppuccin-surface text-catppuccin-text'
+                getServiceCardClasses(theme)
               )}
             >
               <div className="flex items-center gap-3 mb-3">
@@ -118,16 +144,7 @@ const Services = ({ theme = 'catppuccin' }) => {
                   <DynamicIcon
                     iconName={service.icon}
                     size={24}
-                    className={clsx(
-                      theme === 'catppuccin' && 'text-catppuccin-blue',
-                      theme === 'flexoki' && 'text-flexoki-cyan',
-                      theme === 'matrix' && 'text-matrix-glow',
-                      theme === 'web2' && 'text-web2-primary',
-                      (theme === 'dark' ||
-                        theme === 'light' ||
-                        theme === 'rosepine') &&
-                        'text-catppuccin-blue'
-                    )}
+                    className={getServiceIconClasses(theme)}
                   />
                 )}
                 <div>
@@ -156,13 +173,7 @@ const Services = ({ theme = 'catppuccin' }) => {
       <div
         className={clsx(
           'mt-8 p-6 rounded-xl text-center border-2 border-dashed',
-          theme === 'catppuccin' &&
-            'border-catppuccin-blue/30 text-catppuccin-text',
-          theme === 'flexoki' && 'border-flexoki-cyan/30 text-flexoki-text',
-          theme === 'matrix' && 'border-matrix-glow/30 text-matrix-glow',
-          theme === 'web2' && 'border-web2-primary/30 text-web2-text',
-          (theme === 'dark' || theme === 'light' || theme === 'rosepine') &&
-            'border-catppuccin-blue/30 text-catppuccin-text'
+          getServiceCtaBorderClasses(theme)
         )}
       >
         <p className="text-lg font-bold mb-2">
@@ -172,13 +183,7 @@ const Services = ({ theme = 'catppuccin' }) => {
           href="mailto:ulises@luxspark.com"
           className={clsx(
             'inline-block px-6 py-2 rounded-full font-bold transition-transform hover:scale-105',
-            theme === 'catppuccin' && 'bg-catppuccin-blue text-catppuccin-base',
-            theme === 'flexoki' && 'bg-flexoki-cyan text-flexoki-base',
-            theme === 'matrix' &&
-              'bg-matrix-glow text-matrix-terminal shadow-[0_0_15px_#0f0]',
-            theme === 'web2' && 'bg-web2-primary text-white',
-            (theme === 'dark' || theme === 'light' || theme === 'rosepine') &&
-              'bg-catppuccin-blue text-catppuccin-base'
+            getServiceCtaButtonClasses(theme)
           )}
         >
           Book a Consultation
