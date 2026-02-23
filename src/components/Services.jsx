@@ -92,7 +92,12 @@ const ServiceDescription = ({ description, className }) => {
   // Rich Text document from Contentful has a nodeType property
   if (typeof description === 'object' && description.nodeType) {
     return (
-      <div className={clsx('opacity-90 prose prose-sm max-w-none', className)}>
+      <div
+        className={clsx(
+          'opacity-90 prose prose-sm max-w-none dark:prose-invert catppuccin:prose-invert',
+          className
+        )}
+      >
         {documentToReactComponents(description)}
       </div>
     );

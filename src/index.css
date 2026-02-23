@@ -105,7 +105,9 @@
            dark:text-dracula-foreground
            web2:text-web2-primaryDark
            matrix:text-matrix-text
-           xmas:text-xmas-gold;
+           xmas:text-xmas-gold
+           catppuccin:text-catppuccin-blue
+           flexoki:text-flexoki-cyan;
   }
 
   body.matrix-bg {
