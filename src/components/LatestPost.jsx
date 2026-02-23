@@ -62,6 +62,8 @@ const Post = ({ post, theme, blogArchiveUrl }) => {
         'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:hover:shadow-matrix-glow',
         'web2:bg-web2-cardBg web2:border-web2-border',
         'xmas:bg-xmas-cardBg xmas:border-xmas-gold xmas:border-2 xmas:shadow-lg xmas:hover:shadow-xmas-glow',
+        'catppuccin:bg-catppuccin-surface catppuccin:border-catppuccin-surface',
+        'flexoki:bg-flexoki-surface flexoki:border-flexoki-surface',
         'rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all',
         'border dark:border-dracula-purple matrix:border-matrix-glow web2:border-web2-border xmas:border-xmas-gold dark:hover:border-bg-dracula-currentLine'
       )}

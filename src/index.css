@@ -10,7 +10,9 @@
     @apply font-body bg-github-bgGray text-github-text transition-colors
            dark:bg-dracula-background dark:text-dracula-foreground
            matrix:bg-matrix-background matrix:text-matrix-text
-           xmas:bg-xmas-background xmas:text-xmas-text;
+           xmas:bg-xmas-background xmas:text-xmas-text
+           catppuccin:bg-catppuccin-crust catppuccin:text-catppuccin-text
+           flexoki:bg-flexoki-crust flexoki:text-flexoki-text;
   }
   h1,
   h2,
