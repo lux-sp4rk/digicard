@@ -17,14 +17,9 @@ const ThemeSwitch = ({ theme, setTheme }) => {
           'flexoki:bg-flexoki-surface flexoki:text-flexoki-text'
       )}
     >
-      <optgroup label="Modern Themes">
-        <option value="catppuccin">Catppuccin Mocha</option>
-        <option value="flexoki">Flexoki Light</option>
-      </optgroup>
-      <optgroup label="Classic Themes">
-        <option value="web2">Web 2.0</option>
-        <option value="matrix">Matrix</option>
-      </optgroup>
+      <option value="catppuccin">Catppuccin Mocha</option>
+      <option value="flexoki">Flexoki Light</option>
+      <option value="web2">Web 2.0</option>
     </select>
   );
 };

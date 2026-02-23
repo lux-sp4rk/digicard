@@ -17,7 +17,7 @@ describe('ThemeSwitch', () => {
     const select = screen.getByRole('combobox');
     expect(select).toBeInTheDocument();
 
-    // Check all options are present
+    // Check all selectable options are present
     expect(
       screen.getByRole('option', { name: 'Catppuccin Mocha' })
     ).toBeInTheDocument();
@@ -25,7 +25,15 @@ describe('ThemeSwitch', () => {
       screen.getByRole('option', { name: 'Flexoki Light' })
     ).toBeInTheDocument();
     expect(screen.getByRole('option', { name: 'Web 2.0' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Matrix' })).toBeInTheDocument();
+  });
+
+  it('does not expose Matrix as a selectable option (easter egg theme)', () => {
+    render(<ThemeSwitch theme="catppuccin" setTheme={mockSetTheme} />);
+
+    // Matrix is an easter egg activated via the console, not the theme picker
+    expect(
+      screen.queryByRole('option', { name: 'Matrix' })
+    ).not.toBeInTheDocument();
   });
 
   it('displays the correct current theme value', () => {
@@ -143,8 +151,10 @@ describe('ThemeSwitch', () => {
       const options = screen.getAllByRole('option');
       const values = options.map(option => option.value);
 
-      expect(values).toEqual(['catppuccin', 'flexoki', 'web2', 'matrix']);
-      expect(options).toHaveLength(4);
+      expect(values).toEqual(['catppuccin', 'flexoki', 'web2']);
+      expect(options).toHaveLength(3);
+      // matrix must never appear here — it's an easter egg theme
+      expect(values).not.toContain('matrix');
     });
   });
 
