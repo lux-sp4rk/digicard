@@ -198,6 +198,27 @@ export const getSoundCloudTrack = async () => {
   }
 };
 
+export const getServices = async () => {
+  try {
+    const response = await client.getEntries({
+      content_type: 'service',
+      order: 'fields.order',
+    });
+    return response.items.map(item => ({
+      id: item.sys.id,
+      title: item.fields.title,
+      subtitle: item.fields.subtitle || '',
+      description: item.fields.description,
+      icon: item.fields.icon || null,
+      order: item.fields.order || 0,
+      active: item.fields.active !== false,
+    }));
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    return [];
+  }
+};
+
 export const getBio = async () => {
   try {
     const response = await client.getEntries({
