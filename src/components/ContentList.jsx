@@ -29,6 +29,12 @@ const renderMarkdown = text => {
     // Italic: *text* or _text_
     processed = processed.replace(/(\*|_)(.*?)\1/g, '<em>$2</em>');
 
+    // Links: [text](url)
+    processed = processed.replace(
+      /\[(.*?)\]\((.*?)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">$1</a>'
+    );
+
     // Simple Bullet points: "- " or "* " at start of line
     if (
       processed.trim().startsWith('- ') ||
