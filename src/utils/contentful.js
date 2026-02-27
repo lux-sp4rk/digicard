@@ -24,8 +24,31 @@ export const getProjects = async () => {
       icon: item.fields.icon || null,
     }));
   } catch (error) {
+    // If singular fails, try plural
+    if (error.message?.includes('unknownContentType')) {
+      try {
+        const response = await client.getEntries({
+          content_type: 'projects',
+          order: 'fields.order',
+        });
+        return response.items.map(item => ({
+          id: item.sys.id,
+          title: item.fields.title,
+          description: item.fields.description,
+          link: item.fields.link,
+          imgNormal: item.fields.image?.fields?.file?.url || '',
+          imgWide: item.fields.imageWide?.fields?.file?.url || '',
+          alt: item.fields.alt || item.fields.title,
+          order: item.fields.order || 0,
+          active: item.fields.active !== false,
+          icon: item.fields.icon || null,
+        }));
+      } catch (innerError) {
+        console.error('Error fetching projects (plural):', innerError);
+      }
+    }
     console.error('Error fetching projects:', error);
-    return [];
+    throw error;
   }
 };
 
@@ -199,11 +222,10 @@ export const getSoundCloudTrack = async () => {
 };
 
 export const getServices = async () => {
-  try {
-    const response = await client.getEntries({
-      content_type: 'service',
-      order: 'fields.order',
-    });
+  const tryFetch = async (contentType, useOrder = true) => {
+    const params = { content_type: contentType };
+    if (useOrder) params.order = 'fields.order';
+    const response = await client.getEntries(params);
     return response.items.map(item => ({
       id: item.sys.id,
       title: item.fields.title,
@@ -213,10 +235,72 @@ export const getServices = async () => {
       order: item.fields.order || 0,
       active: item.fields.active !== false,
     }));
+  };
+
+  try {
+    return await tryFetch('service');
   } catch (error) {
-    console.error('Error fetching services:', error);
-    return [];
+    console.warn('Error fetching services (singular):', error.message);
+    // If singular fails due to unknown type, try plural
+    if (error.message?.includes('unknownContentType')) {
+      try {
+        return await tryFetch('services');
+      } catch (pluralError) {
+        console.error('Error fetching services (plural):', pluralError.message);
+      }
+    }
+    // If ordering failed, try singular without order
+    try {
+      return await tryFetch('service', false);
+    } catch (innerError) {
+      // If that failed, try plural without order
+      try {
+        return await tryFetch('services', false);
+      } catch (lastError) {
+        console.error('All fetch attempts for services failed');
+        return [];
+      }
+    }
   }
+};
+
+export const getSkills = async () => {
+  const tryFetch = async (contentType, useOrder = true) => {
+    const params = { content_type: contentType };
+    if (useOrder) params.order = 'fields.order';
+    const response = await client.getEntries(params);
+    return response.items.map(item => ({
+      id: item.sys.id,
+      title: item.fields.title,
+      subtitle: item.fields.subtitle || '',
+      description: item.fields.description,
+      icon: item.fields.icon || null,
+      order: item.fields.order || 0,
+      active: item.fields.active !== false,
+    }));
+  };
+
+  // Try the specific ID from Contentful first, then fall back to 'skill'/'skills'
+  const idsToTry = ['6iJCkjpxHxeOEeic4bVobd', 'skill', 'skills'];
+
+  for (const id of idsToTry) {
+    try {
+      return await tryFetch(id);
+    } catch (error) {
+      if (error.message?.includes('unknownContentType')) {
+        continue;
+      }
+      // If it's an ordering error, try without order
+      try {
+        return await tryFetch(id, false);
+      } catch (innerError) {
+        continue;
+      }
+    }
+  }
+
+  console.error('All fetch attempts for skills failed');
+  throw new Error('Skills content type not found in Contentful');
 };
 
 export const getBio = async () => {

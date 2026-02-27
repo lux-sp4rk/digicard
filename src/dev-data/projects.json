@@ -1,0 +1,38 @@
+[
+  {
+    "id": "3oCySvKDxiXif6Wi48CSwh",
+    "title": "Word Loom",
+    "description": "A calm, senior-first word puzzle game built in Godot. Features bilingual support (EN/ES), gravity mechanics, and a zen aesthetic.",
+    "link": "http://word-loom-lux.netlify.app",
+    "imgNormal": "//images.ctfassets.net/flqyygd484v1/6U2EOhtswvotDUySnbGu2X/bf111ee37a6b49d3c521507ca368a958/word-loom-screen.png",
+    "imgWide": "//images.ctfassets.net/flqyygd484v1/6U2EOhtswvotDUySnbGu2X/bf111ee37a6b49d3c521507ca368a958/word-loom-screen.png",
+    "alt": "Word Loom Game",
+    "order": 2,
+    "active": true,
+    "icon": null
+  },
+  {
+    "id": "2eExwHB0d7r82p1sxTJey6",
+    "title": "Slopapotamous Rex",
+    "description": "Art collective embracing AI as production tool, not cultural threat. The tool doesn't determine artistic merit; the directing mind does. Making effective art for the attention economy.",
+    "link": "https://soundcloud.com/sloppyrex",
+    "imgNormal": "//images.ctfassets.net/flqyygd484v1/5364i5lpDiYdCDVIVn6XEn/9f484636691ccfb09e9daf1f291a718e/4a9f9b54-12fc-44d1-ac31-48a93411dee5.png",
+    "imgWide": "//images.ctfassets.net/flqyygd484v1/5364i5lpDiYdCDVIVn6XEn/9f484636691ccfb09e9daf1f291a718e/4a9f9b54-12fc-44d1-ac31-48a93411dee5.png",
+    "alt": "Slopapotamous Rex",
+    "order": 2,
+    "active": false,
+    "icon": null
+  },
+  {
+    "id": "2L7Z4Vcc6mUROY1PfwwhPY",
+    "title": "Bin Juice Saga",
+    "description": "Jax Karu (gonzo raccoon) and Seagull Breakwater (gutter poet) lead a crew of scavengers through Austin’s dumpsters—where garbage is currency and meaning is always contested.",
+    "link": "https://binjuicesaga.beehiiv.com/",
+    "imgNormal": "//images.ctfassets.net/flqyygd484v1/51mRecZDfJ9oDdvUVqVJiK/e5b6d2b2e49aa4a73ee4260d0059c572/DALLÂ_E_2025-01-27_11.23.45_-_A_minimalist_logo_featuring_a_silhouette_of_a_seagull_wearing_a_tattered_trucker_hat._The_sea.webp",
+    "imgWide": "",
+    "alt": "Bin Juice Saga",
+    "order": 3,
+    "active": true,
+    "icon": null
+  }
+]

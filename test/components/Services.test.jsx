@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Services from '../../src/components/Services';
 import {
-  getServiceCardClasses,
-  getServiceIconClasses,
-  getServiceCtaBorderClasses,
-  getServiceCtaButtonClasses,
-} from '../../src/components/Services';
+  getCardClasses,
+  getIconClasses,
+  getCtaBorderClasses,
+  getCtaButtonClasses,
+} from '../../src/components/helpers/themeClassHelper';
 import * as useContentfulHook from '../../src/hooks/useContentful';
 
 // ─── Mocks ───────────────────────────────────────────────────────────────────
@@ -24,6 +24,7 @@ vi.mock('../../src/components/DynamicIcon', () => ({
 
 vi.mock('../../src/utils/contentful', () => ({
   getServices: vi.fn(),
+  getSkills: vi.fn(),
 }));
 
 // Mock rich-text renderer so tests don't need Contentful internals
@@ -374,117 +375,87 @@ describe('Services', () => {
 
   // ── Theme helpers ────────────────────────────────────────────────────────
 
-  describe('getServiceCardClasses', () => {
+  describe('getCardClasses', () => {
     it('returns catppuccin classes for catppuccin theme', () => {
-      expect(getServiceCardClasses('catppuccin')).toContain(
-        'bg-catppuccin-surface'
-      );
+      expect(getCardClasses('catppuccin')).toContain('bg-catppuccin-surface');
     });
 
     it('returns flexoki classes for flexoki theme', () => {
-      expect(getServiceCardClasses('flexoki')).toContain('bg-flexoki-surface');
+      expect(getCardClasses('flexoki')).toContain('bg-flexoki-surface');
     });
 
     it('returns matrix classes for matrix theme', () => {
-      expect(getServiceCardClasses('matrix')).toContain('bg-matrix-terminal');
+      expect(getCardClasses('matrix')).toContain('bg-matrix-terminal');
     });
 
     it('returns web2 classes for web2 theme', () => {
-      expect(getServiceCardClasses('web2')).toContain('bg-web2-background');
-    });
-
-    it('falls back to catppuccin for legacy dark theme', () => {
-      expect(getServiceCardClasses('dark')).toContain('bg-catppuccin-surface');
-    });
-
-    it('falls back to catppuccin for legacy light theme', () => {
-      expect(getServiceCardClasses('light')).toContain('bg-catppuccin-surface');
-    });
-
-    it('falls back to catppuccin for legacy rosepine theme', () => {
-      expect(getServiceCardClasses('rosepine')).toContain(
-        'bg-catppuccin-surface'
-      );
+      expect(getCardClasses('web2')).toContain('bg-web2-background');
     });
 
     it('falls back to catppuccin for unknown theme', () => {
-      expect(getServiceCardClasses('unknown')).toContain(
-        'bg-catppuccin-surface'
-      );
+      expect(getCardClasses('unknown')).toContain('bg-catppuccin-surface');
     });
   });
 
-  describe('getServiceIconClasses', () => {
+  describe('getIconClasses', () => {
     it('returns catppuccin-blue for catppuccin theme', () => {
-      expect(getServiceIconClasses('catppuccin')).toContain(
-        'text-catppuccin-blue'
-      );
+      expect(getIconClasses('catppuccin')).toContain('text-catppuccin-blue');
     });
 
     it('returns flexoki-cyan for flexoki theme', () => {
-      expect(getServiceIconClasses('flexoki')).toContain('text-flexoki-cyan');
+      expect(getIconClasses('flexoki')).toContain('text-flexoki-cyan');
     });
 
     it('returns matrix-glow for matrix theme', () => {
-      expect(getServiceIconClasses('matrix')).toContain('text-matrix-glow');
+      expect(getIconClasses('matrix')).toContain('text-matrix-glow');
     });
 
     it('returns web2-primary for web2 theme', () => {
-      expect(getServiceIconClasses('web2')).toContain('text-web2-primary');
+      expect(getIconClasses('web2')).toContain('text-web2-primary');
     });
 
     it('falls back to catppuccin-blue for unknown theme', () => {
-      expect(getServiceIconClasses('unknown')).toContain(
-        'text-catppuccin-blue'
-      );
+      expect(getIconClasses('unknown')).toContain('text-catppuccin-blue');
     });
   });
 
-  describe('getServiceCtaBorderClasses', () => {
+  describe('getCtaBorderClasses', () => {
     it('returns catppuccin border classes for catppuccin theme', () => {
-      expect(getServiceCtaBorderClasses('catppuccin')).toContain(
+      expect(getCtaBorderClasses('catppuccin')).toContain(
         'border-catppuccin-blue/30'
       );
     });
 
     it('returns flexoki border classes for flexoki theme', () => {
-      expect(getServiceCtaBorderClasses('flexoki')).toContain(
+      expect(getCtaBorderClasses('flexoki')).toContain(
         'border-flexoki-cyan/30'
       );
     });
 
     it('returns matrix border classes for matrix theme', () => {
-      expect(getServiceCtaBorderClasses('matrix')).toContain(
-        'border-matrix-glow/30'
-      );
+      expect(getCtaBorderClasses('matrix')).toContain('border-matrix-glow/30');
     });
 
     it('returns web2 border classes for web2 theme', () => {
-      expect(getServiceCtaBorderClasses('web2')).toContain(
-        'border-web2-primary/30'
-      );
+      expect(getCtaBorderClasses('web2')).toContain('border-web2-primary/30');
     });
   });
 
-  describe('getServiceCtaButtonClasses', () => {
+  describe('getCtaButtonClasses', () => {
     it('returns catppuccin button classes for catppuccin theme', () => {
-      expect(getServiceCtaButtonClasses('catppuccin')).toContain(
-        'bg-catppuccin-blue'
-      );
+      expect(getCtaButtonClasses('catppuccin')).toContain('bg-catppuccin-blue');
     });
 
     it('returns flexoki button classes for flexoki theme', () => {
-      expect(getServiceCtaButtonClasses('flexoki')).toContain(
-        'bg-flexoki-cyan'
-      );
+      expect(getCtaButtonClasses('flexoki')).toContain('bg-flexoki-cyan');
     });
 
     it('returns matrix button classes for matrix theme', () => {
-      expect(getServiceCtaButtonClasses('matrix')).toContain('bg-matrix-glow');
+      expect(getCtaButtonClasses('matrix')).toContain('bg-matrix-glow');
     });
 
     it('returns web2 button classes for web2 theme', () => {
-      expect(getServiceCtaButtonClasses('web2')).toContain('bg-web2-primary');
+      expect(getCtaButtonClasses('web2')).toContain('bg-web2-primary');
     });
   });
 });

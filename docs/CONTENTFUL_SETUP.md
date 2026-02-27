@@ -47,6 +47,28 @@ Create the following content models in your Contentful space:
   - `bio` (Long text, required)
   - `profileImage` (Media, required)
 
+### Service Content Model
+
+- **Content Type ID**: `service`
+- **Fields**:
+  - `title` (Short text, required)
+  - `subtitle` (Short text, optional)
+  - `description` (Long text or Rich Text, required)
+  - `icon` (Short text, optional - React icon name)
+  - `order` (Integer, required)
+  - `active` (Boolean, optional, default: true)
+
+### Skill Content Model
+
+- **Content Type ID**: `skill`
+- **Fields**:
+  - `title` (Short text, required)
+  - `subtitle` (Short text, optional)
+  - `description` (Long text or Rich Text, required)
+  - `icon` (Short text, optional - React icon name)
+  - `order` (Integer, required)
+  - `active` (Boolean, optional, default: true)
+
 ### Settings Content Model
 
 - **Content Type ID**: `settings`
