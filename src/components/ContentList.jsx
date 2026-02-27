@@ -49,7 +49,9 @@ const ContentList = ({
 }) => {
   const { data: cmsItems, loading, error } = useContentful(fetchFn);
 
-  const items = cmsItems && cmsItems.length > 0 ? cmsItems : fallbackData;
+  // If we have an error or if we've finished loading and got nothing, use fallback
+  const items =
+    cmsItems && cmsItems.length > 0 ? cmsItems : loading ? [] : fallbackData;
 
   const sortedItems = [...items]
     .filter(i => i.active)

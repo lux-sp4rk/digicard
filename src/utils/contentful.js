@@ -25,7 +25,7 @@ export const getProjects = async () => {
     }));
   } catch (error) {
     console.error('Error fetching projects:', error);
-    return [];
+    throw error;
   }
 };
 
@@ -215,7 +215,7 @@ export const getServices = async () => {
     }));
   } catch (error) {
     console.error('Error fetching services:', error);
-    return [];
+    throw error;
   }
 };
 
@@ -236,7 +236,7 @@ export const getSkills = async () => {
     }));
   } catch (error) {
     console.error('Error fetching skills:', error);
-    return [];
+    throw error;
   }
 };
 

@@ -1,0 +1,104 @@
+[
+  {
+    "id": "70dHmns82G59iNOH6FvTtH",
+    "title": "AI Dev Partner",
+    "subtitle": " AI for Creatives",
+    "description": {
+      "nodeType": "document",
+      "data": {},
+      "content": [
+        {
+          "nodeType": "paragraph",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "text",
+              "value": "Stop struggling with syntax and start directing the build. This coaching treats AI like a lead animator or a session musician—a partner that handles the technical heavy lifting so you can focus on the vision. Move past the \"how\" and start shipping the \"what\" by learning the mental shift required to guide LLMs through complex projects and turn ideas into functional, high-quality content and",
+              "marks": [],
+              "data": {}
+            },
+            {
+              "nodeType": "text",
+              "value": "/or",
+              "marks": [],
+              "data": {}
+            },
+            {
+              "nodeType": "text",
+              "value": " products.",
+              "marks": [],
+              "data": {}
+            }
+          ]
+        }
+      ]
+    },
+    "icon": "FaProjectDiagram",
+    "order": 10,
+    "active": true
+  },
+  {
+    "id": "7AnhVW1HBsPbHr8Wrq1Zv6",
+    "title": "Project Revival & Refinement",
+    "subtitle": "The Technical Director for your Vision",
+    "description": {
+      "nodeType": "document",
+      "data": {},
+      "content": [
+        {
+          "nodeType": "paragraph",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "text",
+              "value": "Don’t let technical friction kill your momentum. I step in as your Technical Director to unblock your creative pipeline and rescue stalled projects. By combining 15 years of big-tech engineering with a deep understanding of film and gaming, I clear the technical debt and integrate modern AI workflows so you can stop wrestling with the tools and get back to the art.",
+              "marks": [],
+              "data": {}
+            }
+          ]
+        }
+      ]
+    },
+    "icon": "FaBrain",
+    "order": 20,
+    "active": true
+  },
+  {
+    "id": "4ZTruuEmRIOxYyFBzvvJbD",
+    "title": "AI Familiars",
+    "subtitle": "The Steward of Your World",
+    "description": {
+      "nodeType": "document",
+      "data": {},
+      "content": [
+        {
+          "nodeType": "paragraph",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "text",
+              "value": "An AI Familiar is a persistent presence that extends far beyond the edges of your desk, acting as a private steward for both your work and home. By holding the threads of your creative projects, family history, and daily details, it ensures that your ideas and needs are never lost in the shuffle. ",
+              "marks": [],
+              "data": {}
+            }
+          ]
+        },
+        {
+          "nodeType": "paragraph",
+          "data": {},
+          "content": [
+            {
+              "nodeType": "text",
+              "value": "This isn't just automation; it’s about architecting a shared legacy with a loyal partner that maintains context across every interaction, watching over the small things so you can focus on the big ones.",
+              "marks": [],
+              "data": {}
+            }
+          ]
+        }
+      ]
+    },
+    "icon": "FaCloudUploadAlt",
+    "order": 30,
+    "active": true
+  }
+]
