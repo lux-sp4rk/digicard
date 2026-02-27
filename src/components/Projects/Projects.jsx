@@ -7,6 +7,99 @@ import DynamicIcon from '../DynamicIcon';
 import SectionHeading from '../SectionHeading';
 import styles from './Projects.module.css';
 import { createThemeClassGetter } from '../helpers/themeClassHelper';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+
+/**
+ * Simple Markdown-to-HTML formatter for basic formatting (bold, italic, bullets).
+ * Used when Contentful returns a string instead of Rich Text.
+ */
+const renderMarkdown = text => {
+  if (!text || typeof text !== 'string') return text;
+
+  // Split by newlines to handle bullet points
+  const lines = text.split('\n');
+  const processedLines = lines.map(line => {
+    let processed = line;
+
+    // Bold: **text** or __text__
+    processed = processed.replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>');
+
+    // Italic: *text* or _text_
+    processed = processed.replace(/(\*|_)(.*?)\1/g, '<em>$2</em>');
+
+    // Simple Bullet points: "- " or "* " at start of line
+    if (
+      processed.trim().startsWith('- ') ||
+      processed.trim().startsWith('* ')
+    ) {
+      const content = processed.trim().substring(2);
+      return `<li class="ml-4 list-disc">${content}</li>`;
+    }
+
+    return processed;
+  });
+
+  // Re-join and wrap lists
+  let html = processedLines.join('\n');
+
+  // Wrap groups of <li> in <ul>
+  html = html.replace(/(<li.*?>.*?<\/li>\n?)+/g, match => {
+    return `<ul class="my-2">${match}</ul>`;
+  });
+
+  // Wrap non-list paragraphs in <p> if they aren't already part of something
+  html = html
+    .split('\n')
+    .map(line => {
+      if (!line.trim()) return '<br/>';
+      const trimmedLine = line.trim();
+      if (
+        trimmedLine.startsWith('<ul') ||
+        trimmedLine.startsWith('<li') ||
+        trimmedLine.startsWith('<p') ||
+        trimmedLine.startsWith('</ul')
+      )
+        return line;
+      return `<p class="mb-2">${line}</p>`;
+    })
+    .join('\n');
+
+  return html;
+};
+
+/**
+ * Render a description field that may be a Contentful Rich Text document
+ * or a plain string (from fallback data).
+ */
+const ContentDescription = ({ description, className, theme }) => {
+  if (!description) return null;
+
+  if (typeof description === 'object' && description.nodeType) {
+    return (
+      <div
+        className={clsx(
+          'opacity-90 prose prose-sm max-w-none dark:prose-invert catppuccin:prose-invert',
+          theme === 'matrix' && 'text-matrix-glow',
+          className
+        )}
+      >
+        {documentToReactComponents(description)}
+      </div>
+    );
+  }
+
+  // Handle plain string (Markdown fallback)
+  return (
+    <div
+      className={clsx(
+        'opacity-90 prose prose-sm max-w-none dark:prose-invert catppuccin:prose-invert',
+        theme === 'matrix' && 'text-matrix-glow',
+        className
+      )}
+      dangerouslySetInnerHTML={{ __html: renderMarkdown(description) }}
+    />
+  );
+};
 
 // Theme class resolver for this component
 const getThemeClass = createThemeClassGetter(styles);
@@ -52,15 +145,13 @@ const ProjectCard = ({
         {title}
       </h3>
     </div>
-    <p
-      className={clsx(
-        'px-4 pb-4',
-        styles.descBase,
-        getThemeClass(theme, 'desc')
-      )}
-    >
-      {description}
-    </p>
+    <div className="px-4 pb-4">
+      <ContentDescription
+        description={description}
+        className={clsx(styles.descBase, getThemeClass(theme, 'desc'))}
+        theme={theme}
+      />
+    </div>
     <div className="flex-1" />
     <a
       href={link}
@@ -146,7 +237,6 @@ const Projects = ({ theme }) => {
   // sort projects by order
   const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
 
-
   // Modern card layout for other themes
   return (
     <section
@@ -156,19 +246,13 @@ const Projects = ({ theme }) => {
         getThemeClass(theme, 'section')
       )}
     >
-      <div
-        className={clsx(
-          'grid gap-6',
-          'grid-cols-1 md:grid-cols-2'
-        )}
-      >
+      <div className={clsx('grid gap-6', 'grid-cols-1 md:grid-cols-2')}>
         {sortedProjects
           .filter(projectItem => projectItem.active)
           .map(projectItem => {
-            const imageSrc =
-              projectItem.imgWide
-                ? projectItem.imgWide
-                : projectItem.imgNormal;
+            const imageSrc = projectItem.imgWide
+              ? projectItem.imgWide
+              : projectItem.imgNormal;
             return (
               <ProjectCard
                 key={projectItem.title}
@@ -228,9 +312,11 @@ const ClassicProjectsList = ({ theme, projects }) => (
                 {project.title}
               </a>
             </h3>
-            <p className={clsx('mb-2', getThemeClass(theme, 'classicDesc'))}>
-              {project.description}
-            </p>
+            <ContentDescription
+              description={project.description}
+              className={clsx('mb-2', getThemeClass(theme, 'classicDesc'))}
+              theme={theme}
+            />
             {/* Optionally add meta info here */}
           </div>
         </div>
