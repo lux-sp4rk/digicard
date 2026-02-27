@@ -215,7 +215,7 @@ export const getServices = async () => {
     }));
   } catch (error) {
     console.error('Error fetching services:', error);
-    throw error;
+    return [];
   }
 };
 
