@@ -15,6 +15,11 @@ import {
   FaUserShield,
   FaUserTie,
   FaLifeRing,
+  FaRobot,
+  FaBrain,
+  FaCode,
+  FaProjectDiagram,
+  FaCloudUploadAlt,
 } from 'react-icons/fa';
 
 import { FaThreads, FaMugHot, FaX } from 'react-icons/fa6';
@@ -45,6 +50,11 @@ const iconMap = {
   FaUserShield,
   FaUserTie,
   FaLifeRing,
+  FaRobot,
+  FaBrain,
+  FaCode,
+  FaProjectDiagram,
+  FaCloudUploadAlt,
 };
 
 export const getIcon = iconName => {
