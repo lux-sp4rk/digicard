@@ -60,7 +60,34 @@ async function fetchServices() {
 
     return services;
   } catch (err) {
-    error(`Failed to fetch services: ${err.message}`);
+    if (
+      err.message?.includes('400') ||
+      err.statusText?.includes('Bad Request')
+    ) {
+      log(
+        '⚠ Services content model not found or "order" field is missing (ID: "service")'
+      );
+      // Retry without order
+      try {
+        log('Retrying services fetch without sorting...');
+        const response = await client.getEntries({
+          content_type: 'service',
+        });
+        return response.items.map(item => ({
+          id: item.sys.id,
+          title: item.fields.title,
+          subtitle: item.fields.subtitle || '',
+          description: item.fields.description,
+          icon: item.fields.icon || null,
+          order: item.fields.order || 0,
+          active: item.fields.active !== false,
+        }));
+      } catch (retryErr) {
+        log(`⚠ Retry failed: ${retryErr.message}`);
+      }
+    } else {
+      error(`Failed to fetch services: ${err.message}`);
+    }
     return [];
   }
 }
@@ -123,7 +150,27 @@ async function fetchSkills() {
       err.message?.includes('400') ||
       err.statusText?.includes('Bad Request')
     ) {
-      log('⚠ Skills content model not found (skipping)');
+      log(
+        '⚠ Skills content model not found or "order" field is missing (ID: "skill")'
+      );
+      // Retry without order
+      try {
+        log('Retrying skills fetch without sorting...');
+        const response = await client.getEntries({
+          content_type: 'skill',
+        });
+        return response.items.map(item => ({
+          id: item.sys.id,
+          title: item.fields.title,
+          subtitle: item.fields.subtitle || '',
+          description: item.fields.description,
+          icon: item.fields.icon || null,
+          order: item.fields.order || 0,
+          active: item.fields.active !== false,
+        }));
+      } catch (retryErr) {
+        log(`⚠ Retry failed: ${retryErr.message}`);
+      }
     } else {
       error(`Failed to fetch skills: ${err.message}`);
     }

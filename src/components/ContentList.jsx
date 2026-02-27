@@ -57,11 +57,17 @@ const ContentList = ({
     .filter(i => i.active)
     .sort((a, b) => a.order - b.order);
 
-  if (error) {
-    console.warn(
-      `Contentful error for ${sectionTitle}, using fallback data:`,
-      error
-    );
+  if (!loading) {
+    if (error) {
+      console.warn(
+        `[ContentList] Error fetching ${sectionTitle}, using fallback:`,
+        error
+      );
+    } else if (!cmsItems || cmsItems.length === 0) {
+      console.info(
+        `[ContentList] No published entries for ${sectionTitle} from Contentful, using fallback data.`
+      );
+    }
   }
 
   return (

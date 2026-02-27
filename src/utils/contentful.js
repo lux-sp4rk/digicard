@@ -215,7 +215,24 @@ export const getServices = async () => {
     }));
   } catch (error) {
     console.error('Error fetching services:', error);
-    return [];
+    // Try one more time without sorting, in case the 'order' field is missing from content model
+    try {
+      const response = await client.getEntries({
+        content_type: 'service',
+      });
+      return response.items.map(item => ({
+        id: item.sys.id,
+        title: item.fields.title,
+        subtitle: item.fields.subtitle || '',
+        description: item.fields.description,
+        icon: item.fields.icon || null,
+        order: item.fields.order || 0,
+        active: item.fields.active !== false,
+      }));
+    } catch (innerError) {
+      console.error('Retry fetching services failed:', innerError);
+      return [];
+    }
   }
 };
 
@@ -236,7 +253,24 @@ export const getSkills = async () => {
     }));
   } catch (error) {
     console.error('Error fetching skills:', error);
-    throw error;
+    // Try one more time without sorting, in case the 'order' field is missing from content model
+    try {
+      const response = await client.getEntries({
+        content_type: 'skill',
+      });
+      return response.items.map(item => ({
+        id: item.sys.id,
+        title: item.fields.title,
+        subtitle: item.fields.subtitle || '',
+        description: item.fields.description,
+        icon: item.fields.icon || null,
+        order: item.fields.order || 0,
+        active: item.fields.active !== false,
+      }));
+    } catch (innerError) {
+      console.error('Retry fetching skills failed:', innerError);
+      throw error; // Re-throw original error to trigger fallback in UI
+    }
   }
 };
 
