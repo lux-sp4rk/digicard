@@ -127,55 +127,61 @@ async function fetchProjects() {
  * Fetch skills from Contentful (optional, may not exist)
  */
 async function fetchSkills() {
-  try {
-    log('Fetching skills...');
-    const response = await client.getEntries({
-      content_type: 'skill',
-      order: 'fields.order',
-    });
+  const idsToTry = ['6iJCkjpxHxeOEeic4bVobd', 'skill', 'skills'];
 
-    const skills = response.items.map(item => ({
-      id: item.sys.id,
-      title: item.fields.title,
-      subtitle: item.fields.subtitle || '',
-      description: item.fields.description,
-      icon: item.fields.icon || null,
-      order: item.fields.order || 0,
-      active: item.fields.active !== false,
-    }));
+  for (const id of idsToTry) {
+    try {
+      log(`Fetching skills (ID: "${id}")...`);
+      const response = await client.getEntries({
+        content_type: id,
+        order: 'fields.order',
+      });
 
-    return skills;
-  } catch (err) {
-    if (
-      err.message?.includes('400') ||
-      err.statusText?.includes('Bad Request')
-    ) {
-      log(
-        '⚠ Skills content model not found or "order" field is missing (ID: "skill")'
-      );
-      // Retry without order
-      try {
-        log('Retrying skills fetch without sorting...');
-        const response = await client.getEntries({
-          content_type: 'skill',
-        });
-        return response.items.map(item => ({
-          id: item.sys.id,
-          title: item.fields.title,
-          subtitle: item.fields.subtitle || '',
-          description: item.fields.description,
-          icon: item.fields.icon || null,
-          order: item.fields.order || 0,
-          active: item.fields.active !== false,
-        }));
-      } catch (retryErr) {
-        log(`⚠ Retry failed: ${retryErr.message}`);
+      const skills = response.items.map(item => ({
+        id: item.sys.id,
+        title: item.fields.title,
+        subtitle: item.fields.subtitle || '',
+        description: item.fields.description,
+        icon: item.fields.icon || null,
+        order: item.fields.order || 0,
+        active: item.fields.active !== false,
+      }));
+
+      return skills;
+    } catch (err) {
+      if (
+        err.message?.includes('400') ||
+        err.statusText?.includes('Bad Request')
+      ) {
+        log(`⚠ Skills ID "${id}" not found, trying next...`);
+        // If it was the last one, retry without order
+        if (id === idsToTry[idsToTry.length - 1]) {
+          try {
+            log('Retrying skills fetch without sorting...');
+            const response = await client.getEntries({
+              content_type: id,
+            });
+            return response.items.map(item => ({
+              id: item.sys.id,
+              title: item.fields.title,
+              subtitle: item.fields.subtitle || '',
+              description: item.fields.description,
+              icon: item.fields.icon || null,
+              order: item.fields.order || 0,
+              active: item.fields.active !== false,
+            }));
+          } catch (retryErr) {
+            log(`⚠ Retry failed: ${retryErr.message}`);
+          }
+        }
+        continue;
+      } else {
+        error(`Failed to fetch skills: ${err.message}`);
+        return [];
       }
-    } else {
-      error(`Failed to fetch skills: ${err.message}`);
     }
-    return [];
   }
+  return [];
 }
 
 /**
