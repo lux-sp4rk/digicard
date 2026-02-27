@@ -280,31 +280,27 @@ export const getSkills = async () => {
     }));
   };
 
-  try {
-    return await tryFetch('skill');
-  } catch (error) {
-    console.warn('Error fetching skills (singular):', error.message);
-    // If singular fails due to unknown type, try plural
-    if (error.message?.includes('unknownContentType')) {
-      try {
-        return await tryFetch('skills');
-      } catch (pluralError) {
-        console.error('Error fetching skills (plural):', pluralError.message);
-      }
-    }
-    // If ordering failed, try singular without order
+  // Try the specific ID from Contentful first, then fall back to 'skill'/'skills'
+  const idsToTry = ['6iJCkjpxHxeOEeic4bVobd', 'skill', 'skills'];
+
+  for (const id of idsToTry) {
     try {
-      return await tryFetch('skill', false);
-    } catch (innerError) {
-      // If that failed, try plural without order
+      return await tryFetch(id);
+    } catch (error) {
+      if (error.message?.includes('unknownContentType')) {
+        continue;
+      }
+      // If it's an ordering error, try without order
       try {
-        return await tryFetch('skills', false);
-      } catch (lastError) {
-        console.error('All fetch attempts for skills failed');
-        throw error; // Trigger fallback
+        return await tryFetch(id, false);
+      } catch (innerError) {
+        continue;
       }
     }
   }
+
+  console.error('All fetch attempts for skills failed');
+  throw new Error('Skills content type not found in Contentful');
 };
 
 export const getBio = async () => {
