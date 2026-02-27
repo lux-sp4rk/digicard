@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Profile from './components/Profile';
 import Projects from './components/Projects/Projects';
 import Services from './components/Services';
+import Skills from './components/Skills';
 import LatestPost from './components/LatestPost';
 import YouTube from './components/YouTube';
 import Footer from './components/Footer';
@@ -18,7 +19,7 @@ import Snowfall from './components/Snowfall';
 
 function App() {
   const [theme, setTheme] = useState(() => getInitialTheme());
-  const [activeTab, setActiveTab] = useState('work'); // 'work' or 'services'
+  const [activeTab, setActiveTab] = useState('work'); // 'work', 'services', or 'skills'
 
   // Apply theme to body
   useEffect(() => {
@@ -110,6 +111,30 @@ function App() {
                 The Work
               </button>
               <button
+                onClick={() => setActiveTab('skills')}
+                aria-label="Switch to Skills tab"
+                aria-selected={activeTab === 'skills'}
+                role="tab"
+                className={clsx(
+                  'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
+                  activeTab === 'skills'
+                    ? [
+                        'border-b-2',
+                        theme === 'catppuccin' &&
+                          'border-catppuccin-blue text-catppuccin-blue',
+                        theme === 'flexoki' &&
+                          'border-flexoki-cyan text-flexoki-cyan',
+                        theme === 'matrix' &&
+                          'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
+                        theme === 'web2' &&
+                          'border-web2-primary text-web2-primary bg-web2-highlight',
+                      ]
+                    : 'opacity-50 hover:opacity-100'
+                )}
+              >
+                Skills
+              </button>
+              <button
                 onClick={() => setActiveTab('services')}
                 aria-label="Switch to Services tab"
                 aria-selected={activeTab === 'services'}
@@ -139,7 +164,7 @@ function App() {
               <Profile theme={theme} />
             </ErrorBoundary>
 
-            {activeTab === 'work' ? (
+            {activeTab === 'work' && (
               <>
                 {/* Only show Links inline for non-web2 themes */}
                 {theme !== 'web2' && (
@@ -158,7 +183,15 @@ function App() {
                   <Projects theme={theme} />
                 </ErrorBoundary>
               </>
-            ) : (
+            )}
+
+            {activeTab === 'skills' && (
+              <ErrorBoundary theme={theme}>
+                <Skills theme={theme} />
+              </ErrorBoundary>
+            )}
+
+            {activeTab === 'services' && (
               <ErrorBoundary theme={theme}>
                 <Services theme={theme} />
               </ErrorBoundary>

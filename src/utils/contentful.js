@@ -219,6 +219,27 @@ export const getServices = async () => {
   }
 };
 
+export const getSkills = async () => {
+  try {
+    const response = await client.getEntries({
+      content_type: 'skill',
+      order: 'fields.order',
+    });
+    return response.items.map(item => ({
+      id: item.sys.id,
+      title: item.fields.title,
+      subtitle: item.fields.subtitle || '',
+      description: item.fields.description,
+      icon: item.fields.icon || null,
+      order: item.fields.order || 0,
+      active: item.fields.active !== false,
+    }));
+  } catch (error) {
+    console.error('Error fetching skills:', error);
+    return [];
+  }
+};
+
 export const getBio = async () => {
   try {
     const response = await client.getEntries({
