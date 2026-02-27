@@ -6,14 +6,17 @@ import { getProjects } from '../../utils/contentful';
 import DynamicIcon from '../DynamicIcon';
 import SectionHeading from '../SectionHeading';
 import styles from './Projects.module.css';
-import { createThemeClassGetter } from '../helpers/themeClassHelper';
+import {
+  createThemeClassGetter,
+  getCtaButtonClasses,
+} from '../helpers/themeClassHelper';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 /**
  * Simple Markdown-to-HTML formatter for basic formatting (bold, italic, bullets).
  * Used when Contentful returns a string instead of Rich Text.
  */
-const renderMarkdown = text => {
+const renderMarkdown = (text, theme = 'catppuccin') => {
   if (!text || typeof text !== 'string') return text;
 
   // Split by newlines to handle bullet points
@@ -26,6 +29,16 @@ const renderMarkdown = text => {
 
     // Italic: *text* or _text_
     processed = processed.replace(/(\*|_)(.*?)\1/g, '<em>$2</em>');
+
+    // Links: [text](url) -> styled as buttons
+    const btnClasses = clsx(
+      'inline-block px-4 py-1.5 rounded-full text-sm font-bold transition-all hover:scale-105 my-2 no-underline shadow-sm',
+      getCtaButtonClasses(theme)
+    );
+    processed = processed.replace(
+      /\[(.*?)\]\((.*?)\)/g,
+      `<a href="$2" target="_blank" rel="noopener noreferrer" class="${btnClasses}">$1</a>`
+    );
 
     // Simple Bullet points: "- " or "* " at start of line
     if (
@@ -57,6 +70,7 @@ const renderMarkdown = text => {
         trimmedLine.startsWith('<ul') ||
         trimmedLine.startsWith('<li') ||
         trimmedLine.startsWith('<p') ||
+        trimmedLine.startsWith('<a') || // Don't wrap our button links in <p> if they are standalone
         trimmedLine.startsWith('</ul')
       )
         return line;
@@ -96,7 +110,7 @@ const ContentDescription = ({ description, className, theme }) => {
         theme === 'matrix' && 'text-matrix-glow',
         className
       )}
-      dangerouslySetInnerHTML={{ __html: renderMarkdown(description) }}
+      dangerouslySetInnerHTML={{ __html: renderMarkdown(description, theme) }}
     />
   );
 };

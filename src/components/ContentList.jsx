@@ -15,7 +15,7 @@ import {
  * Simple Markdown-to-HTML formatter for basic formatting (bold, italic, bullets).
  * Used when Contentful returns a string instead of Rich Text.
  */
-const renderMarkdown = text => {
+const renderMarkdown = (text, theme = 'catppuccin') => {
   if (!text || typeof text !== 'string') return text;
 
   // Split by newlines to handle bullet points
@@ -29,10 +29,14 @@ const renderMarkdown = text => {
     // Italic: *text* or _text_
     processed = processed.replace(/(\*|_)(.*?)\1/g, '<em>$2</em>');
 
-    // Links: [text](url)
+    // Links: [text](url) -> styled as buttons
+    const btnClasses = clsx(
+      'inline-block px-4 py-1.5 rounded-full text-sm font-bold transition-all hover:scale-105 my-2 no-underline shadow-sm',
+      getCtaButtonClasses(theme)
+    );
     processed = processed.replace(
       /\[(.*?)\]\((.*?)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">$1</a>'
+      `<a href="$2" target="_blank" rel="noopener noreferrer" class="${btnClasses}">$1</a>`
     );
 
     // Simple Bullet points: "- " or "* " at start of line
@@ -60,10 +64,12 @@ const renderMarkdown = text => {
     .split('\n')
     .map(line => {
       if (!line.trim()) return '<br/>';
+      const trimmedLine = line.trim();
       if (
-        line.startsWith('<ul') ||
-        line.startsWith('<li') ||
-        line.startsWith('<p')
+        trimmedLine.startsWith('<ul') ||
+        trimmedLine.startsWith('<li') ||
+        trimmedLine.startsWith('<p') ||
+        trimmedLine.startsWith('<a') // Don't wrap our button links in <p> if they are standalone
       )
         return line;
       return `<p class="mb-2">${line}</p>`;
@@ -77,7 +83,7 @@ const renderMarkdown = text => {
  * Render a description field that may be a Contentful Rich Text document
  * or a plain string (from fallback data).
  */
-const ContentDescription = ({ description, className }) => {
+const ContentDescription = ({ description, className, theme }) => {
   if (!description) return null;
 
   if (typeof description === 'object' && description.nodeType) {
@@ -100,7 +106,7 @@ const ContentDescription = ({ description, className }) => {
         'opacity-90 prose prose-sm max-w-none dark:prose-invert catppuccin:prose-invert',
         className
       )}
-      dangerouslySetInnerHTML={{ __html: renderMarkdown(description) }}
+      dangerouslySetInnerHTML={{ __html: renderMarkdown(description, theme) }}
     />
   );
 };
@@ -182,7 +188,10 @@ const ContentList = ({
                   )}
                 </div>
               </div>
-              <ContentDescription description={item.description} />
+              <ContentDescription
+                description={item.description}
+                theme={theme}
+              />
             </div>
           ))}
         </div>
