@@ -50,7 +50,7 @@ async function tallyToAirtable(event) {
     }
 
     // Extract fields from Tally response
-    // Tally sends an array of field objects with { key (UUID), label, value }
+    // Tally sends an array of field objects with { key (UUID/groupUuid), label, value }
     const fields = payload.data.fields;
     const fieldMap = {};
 
@@ -58,17 +58,17 @@ async function tallyToAirtable(event) {
       fieldMap[field.key] = field.value;
     });
 
-    // UUID mapping from Tally form gD5QY1
+    // UUID mapping from Tally form ODAodA (Consulting)
     const uuidMap = {
-      name: '94ee63aa-4c0b-4c60-8c7d-8473be13f3ec', // What's your name?
-      email: 'd2e53990-8870-4db9-a07d-051f37cf3b61', // Contact email
-      creativeRole: 'dd083cca-f13c-424a-a578-fe0f876958d4', // What's your creative role?
-      bottleneck: '77ed5efe-3d05-4da1-b011-a4b061f79f4a', // Biggest creative bottleneck
-      projectStatus: '1ea845a3-f9f1-45ab-a65c-e912876cbb03', // Current project status
-      situation: 'c66151ae-1a81-440b-bc72-be3ea48f3374', // Tell us about your situation
-      service: 'b70956ed-4b49-4f2d-a446-e3846d904719', // Which service interests you most?
-      budget: '03c7ff03-cb06-40e9-80f2-d7ff8ac01483', // Budget range?
-      wildcard: '5521e146-6d6b-4469-bf0d-d9bb4f90ffcc', // Anything else?
+      name: 'db865fe4-c876-4888-a74e-46844149cd85', // What is your name? (INPUT_TEXT)
+      email: '5527fdb4-f063-4df2-9283-896ba46c6f6a', // Contact Email (INPUT_EMAIL)
+      creativeRole: 'edf8e9bd-5d62-48ff-88a9-2d98054623cb', // What is your creative role? (DROPDOWN)
+      bottleneck: '90c97c61-9a40-4ec2-add7-84c33d08e016', // What's your biggest creative bottleneck? (DROPDOWN)
+      projectStatus: 'b3f25a92-e853-4b67-a61b-c2ec3323aedb', // Current project status? (DROPDOWN)
+      situation: 'c31704ed-820b-4bd4-92bc-cee28a805b38', // What's the biggest friction point? (TEXTAREA)
+      service: '44ad2b9e-1dc7-4966-9eed-8cb49dfd9e1a', // Which service interests you most? (DROPDOWN)
+      budget: '0dd30ff5-a7f5-4121-912a-970f68dfdd5f', // Budget range? (DROPDOWN)
+      notes: '5b06bc26-a4e1-400b-b3aa-941d0cab592f', // Anything else? (TEXTAREA)
     };
 
     const airtableRecord = {
