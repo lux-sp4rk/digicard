@@ -44,7 +44,7 @@ const Services = ({ theme = 'catppuccin' }) => {
       sectionTitle="Services"
       ctaHeading="Ready to architect your continuity?"
       ctaButtonText="Book a Consultation"
-      ctaHref="mailto:ulises@luxspark.com"
+      ctaHref="https://tally.so/r/ODAodA"
       theme={theme}
     />
   );
