@@ -1,7 +1,7 @@
 const https = require('https');
 
 const AIRTABLE_BASE_ID = 'appUqWFkWdtI4vxNC';
-const AIRTABLE_TABLE_ID = 'tblpZMgRZq8MVJaGi'; // From Airtable URL
+const AIRTABLE_TABLE_NAME = 'Contacts'; // Use table name, not ID
 const AIRTABLE_API_KEY = process.env.AIRTABLE_ACCESS_TOKEN;
 
 function makeAirtableRequest(method, endpoint, body = null) {
@@ -91,17 +91,20 @@ async function tallyToAirtable(event) {
     // Write to Airtable
     const response = await makeAirtableRequest(
       'POST',
-      `${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}`,
-      airtableRecord
+      `${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`,
+      {
+        records: [airtableRecord],
+      }
     );
 
-    console.log('Airtable record created:', response.id);
+    const recordId = response.records[0].id;
+    console.log('Airtable record created:', recordId);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         success: true,
-        recordId: response.id,
+        recordId,
         contact: {
           name: airtableRecord.fields['Name'],
           email: airtableRecord.fields['Email'],
