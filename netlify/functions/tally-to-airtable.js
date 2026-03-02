@@ -71,15 +71,32 @@ async function tallyToAirtable(event) {
       notes: '5b06bc26-a4e1-400b-b3aa-941d0cab592f', // Anything else? (TEXTAREA)
     };
 
+    // Map Tally dropdown values to Airtable select options
+    const selectMapping = {
+      'Indie Writer/Author': 'Writer/Author',
+      'Solo Dev / Technical / Artist': 'Solo Dev/Founder',
+      'Studio Lead (2-5 people)': 'Studio Lead',
+      'Animator / Motion Designer': 'Content Creator/Podcaster', // map to closest
+      'Content Creator / Podcaster': 'Content Creator/Podcaster',
+      Other: 'Other',
+      'Dev Tutor': 'Dev Tutor',
+      'AI Familiars': 'AI Familiars',
+      'Project Revival': 'Project Revival',
+      'Not sure yet': '', // Empty value
+    };
+
+    const mapSelectValue = value =>
+      selectMapping[value] !== undefined ? selectMapping[value] : value;
+
     const airtableRecord = {
       fields: {
         Name: fieldMap[uuidMap.name] || '',
         Email: fieldMap[uuidMap.email] || '',
-        'Creative Role': fieldMap[uuidMap.creativeRole] || '',
+        'Creative Role': mapSelectValue(fieldMap[uuidMap.creativeRole]) || '',
         Bottleneck: fieldMap[uuidMap.bottleneck] || '',
         'Project Status': fieldMap[uuidMap.projectStatus] || '',
         Situation: fieldMap[uuidMap.situation] || '',
-        'Service Package': fieldMap[uuidMap.service] || '',
+        'Service Package': mapSelectValue(fieldMap[uuidMap.service]) || '',
         'Budget Range': fieldMap[uuidMap.budget] || '',
         Notes: fieldMap[uuidMap.wildcard] || '',
       },
