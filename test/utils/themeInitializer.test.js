@@ -25,7 +25,7 @@ describe('getInitialTheme', () => {
   describe('when theme is saved in storage', () => {
     it('should return saved theme from storage (non-December)', () => {
       const mockStorage = createMockStorage({ theme: 'matrix' });
-      const januaryDate = new Date('2024-01-15');
+      const januaryDate = new Date(2024, 0, 15); // Jan 15 (local)
       const result = getInitialTheme({
         storage: mockStorage,
         currentDate: januaryDate,
@@ -37,7 +37,7 @@ describe('getInitialTheme', () => {
 
     it('should force xmas theme during December even if another theme is saved (date takes priority)', () => {
       const mockStorage = createMockStorage({ theme: 'light' });
-      const decemberDate = new Date('2024-12-15');
+      const decemberDate = new Date(2024, 11, 15); // Dec 15 (local)
       const result = getInitialTheme({
         storage: mockStorage,
         currentDate: decemberDate,
@@ -51,7 +51,7 @@ describe('getInitialTheme', () => {
     });
 
     it('should handle all theme types from storage (non-December)', () => {
-      const januaryDate = new Date('2024-01-15');
+      const januaryDate = new Date(2024, 0, 15); // Jan 15 (local)
 
       // Active themes return as-is
       ['catppuccin', 'flexoki', 'matrix', 'web2', 'xmas'].forEach(theme => {
@@ -79,10 +79,10 @@ describe('getInitialTheme', () => {
     it('should return "xmas" in December (month 11) as seasonal override', () => {
       const mockStorage = createMockStorage();
       const decemberDates = [
-        new Date('2024-12-01'),
-        new Date('2024-12-15'),
-        new Date('2024-12-25'),
-        new Date('2024-12-31'),
+        new Date(2024, 11, 1), // Dec 1 (local)
+        new Date(2024, 11, 15), // Dec 15 (local)
+        new Date(2024, 11, 25), // Dec 25 (local)
+        new Date(2024, 11, 31), // Dec 31 (local)
       ];
 
       decemberDates.forEach(date => {
@@ -100,17 +100,17 @@ describe('getInitialTheme', () => {
     it('should return "catppuccin" for non-December months', () => {
       const mockStorage = createMockStorage();
       const nonDecemberMonths = [
-        new Date('2024-01-15'), // January
-        new Date('2024-02-15'), // February
-        new Date('2024-03-15'), // March
-        new Date('2024-04-15'), // April
-        new Date('2024-05-15'), // May
-        new Date('2024-06-15'), // June
-        new Date('2024-07-15'), // July
-        new Date('2024-08-15'), // August
-        new Date('2024-09-15'), // September
-        new Date('2024-10-15'), // October
-        new Date('2024-11-15'), // November
+        new Date(2024, 0, 15), // January
+        new Date(2024, 1, 15), // February
+        new Date(2024, 2, 15), // March
+        new Date(2024, 3, 15), // April
+        new Date(2024, 4, 15), // May
+        new Date(2024, 5, 15), // June
+        new Date(2024, 6, 15), // July
+        new Date(2024, 7, 15), // August
+        new Date(2024, 8, 15), // September
+        new Date(2024, 9, 15), // October
+        new Date(2024, 10, 15), // November
       ];
 
       nonDecemberMonths.forEach(date => {
@@ -124,7 +124,7 @@ describe('getInitialTheme', () => {
 
     it('should return "catppuccin" for November (month 10)', () => {
       const mockStorage = createMockStorage();
-      const novemberDate = new Date('2024-11-15');
+      const novemberDate = new Date(2024, 10, 15); // Nov 15 (local)
       const result = getInitialTheme({
         storage: mockStorage,
         currentDate: novemberDate,
@@ -135,7 +135,7 @@ describe('getInitialTheme', () => {
 
     it('should return "catppuccin" for January (month 0)', () => {
       const mockStorage = createMockStorage();
-      const januaryDate = new Date('2024-01-15');
+      const januaryDate = new Date(2024, 0, 15); // Jan 15 (local)
       const result = getInitialTheme({
         storage: mockStorage,
         currentDate: januaryDate,
@@ -148,7 +148,7 @@ describe('getInitialTheme', () => {
   describe('edge cases', () => {
     it('should handle empty string in storage and force xmas during December', () => {
       const mockStorage = createMockStorage({ theme: '' });
-      const decemberDate = new Date('2024-12-15');
+      const decemberDate = new Date(2024, 11, 15); // Dec 15 (local)
       const result = getInitialTheme({
         storage: mockStorage,
         currentDate: decemberDate,
@@ -165,7 +165,7 @@ describe('getInitialTheme', () => {
         getItem: vi.fn(() => null),
         setItem: vi.fn(),
       };
-      const decemberDate = new Date('2024-12-15');
+      const decemberDate = new Date(2024, 11, 15); // Dec 15 (local)
       const result = getInitialTheme({
         storage: mockStorage,
         currentDate: decemberDate,
@@ -181,7 +181,7 @@ describe('getInitialTheme', () => {
         getItem: vi.fn(() => undefined),
         setItem: vi.fn(),
       };
-      const decemberDate = new Date('2024-12-15');
+      const decemberDate = new Date(2024, 11, 15); // Dec 15 (local)
       const result = getInitialTheme({
         storage: mockStorage,
         currentDate: decemberDate,
@@ -246,7 +246,7 @@ describe('getInitialTheme', () => {
         }),
         setItem: vi.fn(),
       };
-      const januaryDate = new Date('2024-01-15');
+      const januaryDate = new Date(2024, 0, 15); // Jan 15 (local)
 
       expect(() => {
         getInitialTheme({ storage: errorStorage, currentDate: januaryDate });
@@ -318,7 +318,7 @@ describe('getInitialTheme', () => {
   describe('integration scenarios', () => {
     it('should force xmas theme during December, overriding saved theme (date takes priority)', () => {
       const mockStorage = createMockStorage({ theme: 'matrix' });
-      const decemberDate = new Date('2024-12-15');
+      const decemberDate = new Date(2024, 11, 15); // Dec 15 (local)
 
       const result = getInitialTheme({
         storage: mockStorage,
@@ -338,7 +338,7 @@ describe('getInitialTheme', () => {
       // During December, xmas is forced (date takes priority)
       const decemberResult = getInitialTheme({
         storage: mockStorage,
-        currentDate: new Date('2024-12-31'),
+        currentDate: new Date(2024, 11, 31), // Dec 31 (local)
       });
 
       expect(decemberResult).toBe('xmas');
@@ -350,7 +350,7 @@ describe('getInitialTheme', () => {
       // In January, should go back to saved theme (seasonal override ends)
       const januaryResult = getInitialTheme({
         storage: mockStorage,
-        currentDate: new Date('2025-01-01'),
+        currentDate: new Date(2025, 0, 1), // Jan 1 (local)
       });
 
       expect(januaryResult).toBe('matrix');
@@ -362,7 +362,7 @@ describe('getInitialTheme', () => {
       // In November, should use saved theme
       const novemberResult = getInitialTheme({
         storage: mockStorage,
-        currentDate: new Date('2024-11-30'),
+        currentDate: new Date(2024, 10, 30), // Nov 30 (local)
       });
 
       expect(novemberResult).toBe('matrix');
@@ -371,7 +371,7 @@ describe('getInitialTheme', () => {
       // In December, should force xmas (date takes priority, seasonal override)
       const decemberResult = getInitialTheme({
         storage: mockStorage,
-        currentDate: new Date('2024-12-01'),
+        currentDate: new Date(2024, 11, 1), // Dec 1 (local)
       });
 
       expect(decemberResult).toBe('xmas');

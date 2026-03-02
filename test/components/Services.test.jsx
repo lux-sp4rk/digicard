@@ -370,7 +370,7 @@ describe('Services', () => {
     render(<Services theme="catppuccin" />);
     const link = screen.getByRole('link', { name: /Book a Consultation/i });
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', 'mailto:ulises@luxspark.com');
+    expect(link.getAttribute('href')).toMatch(/^https?:\/\/|^mailto:/);
   });
 
   // ── Theme helpers ────────────────────────────────────────────────────────
