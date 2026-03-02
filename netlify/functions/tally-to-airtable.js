@@ -82,9 +82,6 @@ async function tallyToAirtable(event) {
         'Service Package': fieldMap[uuidMap.service] || '',
         'Budget Range': fieldMap[uuidMap.budget] || '',
         Notes: fieldMap[uuidMap.wildcard] || '',
-        Source: 'Tally',
-        Timestamp: new Date().toISOString(),
-        'Form ID': 'gD5QY1',
       },
     };
 
