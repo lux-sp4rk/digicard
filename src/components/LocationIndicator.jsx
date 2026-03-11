@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 /**
  * LocationIndicator - Theme-aware location display for Local SEO
- *
+ * Bug Hunter test: trigger code review workflow
  * Shows Austin, TX location with dynamic formatting based on active theme:
  * - Terminal/Catppuccin: "LOC: ATX_USA" or "system.origin: austin_tx"
  * - Web 2.0 / Flexoki: "📍 Austin, TX"
