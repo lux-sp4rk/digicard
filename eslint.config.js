@@ -4,7 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
-  { ignores: ['dist', '.netlify', 'coverage'] },
+  { ignores: ['dist', '.netlify', 'coverage', 'scripts', '.worktrees'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -42,7 +42,7 @@ export default [
     },
   },
   {
-    files: ['netlify/functions/**/*.js'],
+    files: ['netlify/functions/**/*.js', '**/netlify/functions/**/*.js'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
@@ -58,7 +58,12 @@ export default [
     },
   },
   {
-    files: ['test/**/*.js'],
+    files: [
+      'test/**/*.js',
+      'test/**/*.jsx',
+      '**/test/**/*.js',
+      '**/test/**/*.jsx',
+    ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
@@ -72,6 +77,7 @@ export default [
         beforeAll: 'readonly',
         afterAll: 'readonly',
         global: 'readonly',
+        process: 'readonly',
       },
       parserOptions: {
         ecmaVersion: 'latest',

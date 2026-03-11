@@ -1,67 +1,97 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for AI coding agents working on DigiCard.
 
-## Project Overview
+## Project Intent
 
-DigiCard is a React-based digital portfolio/business card application featuring multiple dynamic themes and interactive console easter eggs. The application showcases projects, social links, and a featured post in various visual styles.
+DigiCard is a React-based digital portfolio with dynamic theming and CMS integration. Core purpose: showcase projects, social links, and featured content across multiple visual themes.
 
-## Architecture
+## Stack & Tooling
 
-See [docs/architecture.md](docs/architecture.md) for a high-level, ever-green overview of the technical architecture of the application.
+| Layer           | Technology                                |
+| --------------- | ----------------------------------------- |
+| Framework       | React 18 + Vite                           |
+| Styling         | Tailwind (layout) + CSS Modules (theming) |
+| CMS             | Contentful with static fallback           |
+| Testing         | Vitest + React Testing Library            |
+| Package Manager | **pnpm** (not npm)                        |
+| Deployment      | Netlify                                   |
 
-## Development
+## Essential Commands
 
-### Core Commands
+```bash
+# Install dependencies
+pnpm install
 
-- `npm install` - Install dependencies
-- `npm run dev` - Start development server with Vite
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint with error reporting
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
+# Development (DON'T run dev server - use Docker)
+pnpm run dev          # Only for Docker container
 
-### Git Hooks
+# Testing
+pnpm run test         # Run tests
+pnpm run test:coverage
 
-- Pre-commit hooks are configured via Husky to run linting and formatting
-- Lint-staged runs ESLint and Prettier on staged files before commits
+# Code Quality
+pnpm run lint
+pnpm run format       # Prettier fix
+pnpm run format:check
 
-### Theme Development
+# Build
+pnpm run build
+```
 
-- New themes require CSS class additions in `src/index.css`
-- Theme switching logic in `App.jsx` handles body class management
-- Component styling uses conditional classes with `clsx`
+## Git Workflow (Mandatory)
 
-### Project Management
+**PR-first. Never push to main.**
 
-- Projects are defined in `Projects.jsx` with order-based sorting
-- Image optimization is handled by Vite plugin
-- Different image variants can be used based on layout requirements
+```bash
+# Branch naming
+git feature issue-123-description   # → feature/issue-123-description
+# Alt: feat/, fix/, hotfix/, chore/, docs/, refactor/
 
-### Console Easter Eggs
+# PR requirements
+gh pr create --title "..." --body "Closes #ID"
+```
 
-- Interactive commands are defined in `consoleEasterEgg.js`
-- Commands can trigger theme changes and special effects
-- Cleanup function provided for proper component unmounting
+### Issue Readiness Protocol
 
-### Git & PR Workflow (Mandatory)
+Before starting any issue:
 
-This repository enforces a **PR-first workflow**. No direct pushes to `main`.
+```bash
+gh issue view [N] --json labels
+```
 
-1. **Issue First**: Every change must start with a GitHub Issue.
-2. **Branching**: Create a feature branch named `feat/issue-[ID]-[brief-description]`.
-3. **Implementation**: Work on the branch. Ensure tests pass if applicable.
-4. **Pull Request**: Open a PR linking to the issue (e.g., "Closes #ID").
-5. **Preview & Test**: Verify changes via the Netlify Deploy Preview link generated on the PR.
-6. **Merge**: Only merge to `main` after the preview is verified and any CI checks pass.
+- **Must have**: `ready_for_dev` label
+- **If missing**: Stop. Report blocker. Suggest adding label.
 
-## Build Configuration
+## Key Patterns
 
-- **Vite** for fast development and optimized builds
-- **React SWC** for faster compilation
-- **Image optimization** via vite-plugin-imagemin
-- **ESLint** for code quality
-- **Prettier** for consistent formatting
-- **Husky** for Git hooks management
-- Never run `npm run dev` or any dev server command in this project.
+### Theme System
+
+- Themes defined in: `src/index.css`
+- Switching logic: `App.jsx:25-45`
+- Use `clsx` for conditional classes
+
+### Project Data
+
+- Source: `src/components/Projects/Projects.jsx`
+- Sorting: `order` field (number)
+
+### Testing
+
+- Location: `test/` directory
+- Pattern: `*.test.{js,jsx}`
+- Coverage threshold: 80%
+
+## Quick References
+
+- Architecture: `docs/architecture.md`
+- Contentful setup: `docs/CONTENTFUL_SETUP.md`
+- Pre-commit hooks: `.husky/pre-commit`
+- Vitest config: `vitest.config.js:12-14` (coverage reporters)
+
+## Constraints
+
+- Node: v25.2.1 (see `.nvmrc`)
+- No dev server in host environment (Docker only)
+- Pre-commit hooks enforce lint/format
+- Branch naming enforced via hooks

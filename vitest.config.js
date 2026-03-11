@@ -11,11 +11,14 @@ export default defineConfig({
     exclude: ['**/node_modules/**', '**/.worktrees/**', '**/dist/**'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'json-summary', 'html'],
       exclude: [
         'node_modules/',
         'test/',
         'dist/',
+        '.worktrees/',
+        'scripts/',
+        '.netlify/functions-serve/',
         '**/*.config.js',
         '**/*.config.ts',
         'src/main.jsx',

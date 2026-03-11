@@ -32,3 +32,5 @@ coverage
 
 # Git worktrees
 .worktrees
+
+thoughts/
