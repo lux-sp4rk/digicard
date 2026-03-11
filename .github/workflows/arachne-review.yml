@@ -5,10 +5,10 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  review:
-    uses: lux-sp4rk/dotfiles/gh-actions/.github/workflows/arachne-review.yml@main
+  arachne-review:
+    uses: lux-sp4rk/dotfiles/gh-actions/workflows/arachne-review.yml@main
     secrets:
       ARCEE_API_KEY: ${{ secrets.ARCEE_API_KEY }}
     with:
       passes: 'logic,security,judge'
-      max-files: 20
+      severity-threshold: 'warning'
