@@ -77,11 +77,11 @@ git feature issue-123-add-login
 **When Uli says "work on issue #[N]":**
 
 1. Check if issue #[N] has the `ready_for_dev` label
-2. If **YES**: Proceed with implementation
-3. If **NO**: Stop and report:
+2. If **NO**: Stop and report:
    - Current issue status and labels
    - Blocker: Issue not marked ready for development
    - Suggested next steps (add label, clarify requirements, etc.)
+3. If **YES**: Follow **Agent Role Boundary** below
 
 **Why this matters:**
 
@@ -94,6 +94,31 @@ git feature issue-123-add-login
 ```bash
 gh issue view [N] --json number,title,labels,state
 ```
+
+### Agent Role Boundary
+
+**Talena (🦉 CEO/DevOps)** — Handles:
+
+- ✅ Infrastructure, automation, DevOps scripts
+- ✅ Workflow tooling (GitHub Actions, hooks)
+- ✅ Task management, labeling, triage
+- ✅ Code review, PR merges
+- ✅ Glue code, cron jobs, CLI tooling
+- ❌ Feature implementation (React components, business logic)
+
+**Arachne (🔧 Specialist)** — Handles:
+
+- ✅ Feature implementation from `ready_for_dev` issues
+- ✅ React components, JSX, CSS
+- ✅ Business logic, API integration
+- ✅ Tests for implemented features
+- ❌ Infrastructure, labeling, strategic decisions
+
+**Rule of thumb:**
+
+- If it's "how the app works" → **Arachne**
+- If it's "how the team works" → **Talena**
+- When in doubt, ask Uli or delegate to Arachne
 
 ## Build Configuration
 
