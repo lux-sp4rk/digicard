@@ -1,131 +1,106 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for AI coding agents working on DigiCard.
 
-## Project Overview
+## Project Intent
 
-DigiCard is a React-based digital portfolio/business card application featuring multiple dynamic themes and interactive console easter eggs. The application showcases projects, social links, and a featured post in various visual styles.
+DigiCard is a React-based digital portfolio with dynamic theming and CMS integration. Core purpose: showcase projects, social links, and featured content across multiple visual themes.
 
-## Architecture
+## Stack & Tooling
 
-See [docs/architecture.md](docs/architecture.md) for a high-level, ever-green overview of the technical architecture of the application.
+| Layer           | Technology                                |
+| --------------- | ----------------------------------------- |
+| Framework       | React 18 + Vite                           |
+| Styling         | Tailwind (layout) + CSS Modules (theming) |
+| CMS             | Contentful with static fallback           |
+| Testing         | Vitest + React Testing Library            |
+| Package Manager | **pnpm** (not npm)                        |
+| Deployment      | Netlify                                   |
 
-## Development
-
-### Core Commands
-
-- `npm install` - Install dependencies
-- `npm run dev` - Start development server with Vite
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint with error reporting
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
-
-### Git Hooks
-
-- Pre-commit hooks are configured via Husky to run linting and formatting
-- Lint-staged runs ESLint and Prettier on staged files before commits
-
-### Theme Development
-
-- New themes require CSS class additions in `src/index.css`
-- Theme switching logic in `App.jsx` handles body class management
-- Component styling uses conditional classes with `clsx`
-
-### Project Management
-
-- Projects are defined in `Projects.jsx` with order-based sorting
-- Image optimization is handled by Vite plugin
-- Different image variants can be used based on layout requirements
-
-### Console Easter Eggs
-
-- Interactive commands are defined in `consoleEasterEgg.js`
-- Commands can trigger theme changes and special effects
-- Cleanup function provided for proper component unmounting
-
-### Git & PR Workflow (Mandatory)
-
-This repository enforces a **PR-first workflow**. No direct pushes to `main`.
-
-1. **Issue First**: Every change must start with a GitHub Issue.
-2. **Branching**: Create a feature branch using `git feature` (GitNow) or manual naming:
-   - Preferred: `git feature issue-[ID]-brief-description` → `feature/issue-[ID]-brief-description`
-   - Alternative prefixes: `feat/`, `fix/`, `hotfix/`, `chore/`, `docs/`, `refactor/`
-   - Pre-commit hook enforces valid branch names
-3. **Implementation**: Work on the branch. Ensure tests pass if applicable.
-4. **Pull Request**: Open a PR linking to the issue (e.g., "Closes #ID").
-5. **Preview & Test**: Verify changes via the Netlify Deploy Preview link generated on the PR.
-6. **Merge**: Only merge to `main` after the preview is verified and any CI checks pass.
-
-**GitNow Setup:**
+## Essential Commands
 
 ```bash
-# Install GitNow (Fish shell)
-fisher install joseluisq/gitnow
+# Install dependencies
+pnpm install
 
-# Create feature branch
-git feature issue-123-add-login
-# Creates: feature/issue-123-add-login
+# Development (DON'T run dev server - use Docker)
+pnpm run dev          # Only for Docker container
+
+# Testing
+pnpm run test         # Run tests
+pnpm run test:coverage
+
+# Code Quality
+pnpm run lint
+pnpm run format       # Prettier fix
+pnpm run format:check
+
+# Build
+pnpm run build
+```
+
+## Git Workflow (Mandatory)
+
+**PR-first. Never push to main.**
+
+```bash
+# Branch naming
+git feature issue-123-description   # → feature/issue-123-description
+# Alt: feat/, fix/, hotfix/, chore/, docs/, refactor/
+
+# PR requirements
+gh pr create --title "..." --body "Closes #ID"
 ```
 
 ### Issue Readiness Protocol
 
-**CRITICAL**: Before implementing any issue, verify it has the `ready_for_dev` label.
-
-**When Uli says "work on issue #[N]":**
-
-1. Check if issue #[N] has the `ready_for_dev` label
-2. If **NO**: Stop and report:
-   - Current issue status and labels
-   - Blocker: Issue not marked ready for development
-   - Suggested next steps (add label, clarify requirements, etc.)
-3. If **YES**: Follow **Agent Role Boundary** below
-
-**Why this matters:**
-
-- Prevents work on half-baked requirements
-- Ensures issues have proper context and acceptance criteria
-- CI gate will block PRs linked to non-ready issues
-
-**Label check command:**
+Before starting any issue:
 
 ```bash
-gh issue view [N] --json number,title,labels,state
+gh issue view [N] --json labels
 ```
 
-### Agent Role Boundary
+- **Must have**: `ready_for_dev` label
+- **If missing**: Stop. Report blocker. Suggest adding label.
 
-**Talena (🦉 CEO/DevOps)** — Handles:
+## Agent Roles
 
-- ✅ Infrastructure, automation, DevOps scripts
-- ✅ Workflow tooling (GitHub Actions, hooks)
-- ✅ Task management, labeling, triage
-- ✅ Code review, PR merges
-- ✅ Glue code, cron jobs, CLI tooling
-- ❌ Feature implementation (React components, business logic)
+| Agent                 | Handles                                                            | Doesn't Handle                                |
+| --------------------- | ------------------------------------------------------------------ | --------------------------------------------- |
+| **Talena** (DevOps)   | Infrastructure, CI/CD, GitHub Actions, workflow scripts, PR merges | Feature implementation, React components      |
+| **Arachne** (Feature) | React components, JSX, CSS, business logic, tests                  | Infrastructure, labeling, strategic decisions |
 
-**Arachne (🔧 Specialist)** — Handles:
+**Rule**: "How the app works" → Arachne. "How the team works" → Talena.
 
-- ✅ Feature implementation from `ready_for_dev` issues
-- ✅ React components, JSX, CSS
-- ✅ Business logic, API integration
-- ✅ Tests for implemented features
-- ❌ Infrastructure, labeling, strategic decisions
+## Key Patterns
 
-**Rule of thumb:**
+### Theme System
 
-- If it's "how the app works" → **Arachne**
-- If it's "how the team works" → **Talena**
-- When in doubt, ask Uli or delegate to Arachne
+- Themes defined in: `src/index.css`
+- Switching logic: `App.jsx:25-45`
+- Use `clsx` for conditional classes
 
-## Build Configuration
+### Project Data
 
-- **Vite** for fast development and optimized builds
-- **React SWC** for faster compilation
-- **Image optimization** via vite-plugin-imagemin
-- **ESLint** for code quality
-- **Prettier** for consistent formatting
-- **Husky** for Git hooks management
-- Never run `npm run dev` or any dev server command in this project.
+- Source: `src/components/Projects/Projects.jsx`
+- Sorting: `order` field (number)
+
+### Testing
+
+- Location: `test/` directory
+- Pattern: `*.test.{js,jsx}`
+- Coverage threshold: 80%
+
+## Quick References
+
+- Architecture: `docs/architecture.md`
+- Contentful setup: `docs/CONTENTFUL_SETUP.md`
+- Pre-commit hooks: `.husky/pre-commit`
+- Vitest config: `vitest.config.js:12-14` (coverage reporters)
+
+## Constraints
+
+- Node: v25.2.1 (see `.nvmrc`)
+- No dev server in host environment (Docker only)
+- Pre-commit hooks enforce lint/format
+- Branch naming enforced via hooks
