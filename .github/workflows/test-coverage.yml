@@ -20,6 +20,9 @@ jobs:
         run: npm install
 
       - name: Run tests with coverage
+        env:
+          VITE_CONTENTFUL_SPACE_ID: flqyygd484v1
+          VITE_CONTENTFUL_ACCESS_TOKEN: Jtk28ftXn-YR7CSKKnIy7RpvreppnYtdD7YttGhbzIQ
         run: npm run test:coverage
 
       - name: Check coverage threshold
