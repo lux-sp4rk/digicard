@@ -6,9 +6,19 @@ on:
 
 jobs:
   arachne-review:
-    uses: lux-sp4rk/dotfiles/gh-actions/workflows/arachne-review.yml@main
-    secrets:
-      ARCEE_API_KEY: ${{ secrets.ARCEE_API_KEY }}
-    with:
-      passes: 'logic,security,judge'
-      severity-threshold: 'warning'
+    name: Bug Hunter D33
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+
+    steps:
+      - name: Summon the Hunter
+        uses: lux-sp4rk/bug-hunter-d33@main
+        with:
+          arcee-api-key: ${{ secrets.ARCEE_API_KEY }}
+          model: 'arcee/trinity-mini'
+          passes: 'logic,security,judge'
+          severity-threshold: 'warning'
+          max-files: 20
