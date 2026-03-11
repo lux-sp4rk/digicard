@@ -56,6 +56,31 @@ This repository enforces a **PR-first workflow**. No direct pushes to `main`.
 5. **Preview & Test**: Verify changes via the Netlify Deploy Preview link generated on the PR.
 6. **Merge**: Only merge to `main` after the preview is verified and any CI checks pass.
 
+### Issue Readiness Protocol
+
+**CRITICAL**: Before implementing any issue, verify it has the `ready_for_dev` label.
+
+**When Uli says "work on issue #[N]":**
+
+1. Check if issue #[N] has the `ready_for_dev` label
+2. If **YES**: Proceed with implementation
+3. If **NO**: Stop and report:
+   - Current issue status and labels
+   - Blocker: Issue not marked ready for development
+   - Suggested next steps (add label, clarify requirements, etc.)
+
+**Why this matters:**
+
+- Prevents work on half-baked requirements
+- Ensures issues have proper context and acceptance criteria
+- CI gate will block PRs linked to non-ready issues
+
+**Label check command:**
+
+```bash
+gh issue view [N] --json number,title,labels,state
+```
+
 ## Build Configuration
 
 - **Vite** for fast development and optimized builds
