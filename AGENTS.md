@@ -63,15 +63,6 @@ gh issue view [N] --json labels
 - **Must have**: `ready_for_dev` label
 - **If missing**: Stop. Report blocker. Suggest adding label.
 
-## Agent Roles
-
-| Agent                 | Handles                                                            | Doesn't Handle                                |
-| --------------------- | ------------------------------------------------------------------ | --------------------------------------------- |
-| **Talena** (DevOps)   | Infrastructure, CI/CD, GitHub Actions, workflow scripts, PR merges | Feature implementation, React components      |
-| **Arachne** (Feature) | React components, JSX, CSS, business logic, tests                  | Infrastructure, labeling, strategic decisions |
-
-**Rule**: "How the app works" → Arachne. "How the team works" → Talena.
-
 ## Key Patterns
 
 ### Theme System
