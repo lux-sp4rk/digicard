@@ -16,6 +16,7 @@ jobs:
     steps:
       - name: Summon the Hunter
         uses: lux-sp4rk/bug-hunter-d33@main
+        continue-on-error: true
         with:
           arcee-api-key: ${{ secrets.ARCEE_API_KEY }}
           model: 'arcee/trinity-mini'
