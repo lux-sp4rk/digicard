@@ -3,6 +3,7 @@ import styles from './Profile.module.css';
 import { createThemeClassGetter } from './helpers/themeClassHelper';
 import { useProfileData } from '../hooks/useProfileData';
 import { BIO_TEXT } from '../constants/profileData';
+import LocationIndicator from './LocationIndicator';
 
 const Profile = ({ theme }) => {
   const { profile } = useProfileData();
@@ -67,6 +68,9 @@ const Profile = ({ theme }) => {
           {profile.name}
         </h1>
       )}
+
+      {/* Location Indicator - under the name */}
+      <LocationIndicator theme={theme} />
 
       {/* Bio section */}
       <p
