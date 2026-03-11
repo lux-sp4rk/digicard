@@ -1,4 +1,32 @@
 #!/bin/sh
-#
+
+# Branch naming enforcement
+# Enforces git feature workflow: feat/, feature/, fix/, hotfix/, chore/, docs/, refactor/
+valid_branch_pattern="^(main|master|develop|dev|feat(ure)?/|fix/|hotfix/|chore/|docs/|refactor/)"
+
+current_branch=$(git symbolic-ref --short HEAD)
+
+if ! echo "$current_branch" | grep -qE "$valid_branch_pattern"; then
+  echo "❌ ERROR: Invalid branch name '$current_branch'"
+  echo ""
+  echo "Branch names must follow the git feature workflow:"
+  echo "  git feature <description>     → feature/description"
+  echo "  git feat <description>        → feat/description"
+  echo "  git fix <description>         → fix/description"
+  echo "  git hotfix <description>      → hotfix/description"
+  echo ""
+  echo "Or use conventional prefixes:"
+  echo "  feat/issue-123-description"
+  echo "  fix/login-bug"
+  echo "  chore/update-deps"
+  echo "  docs/readme-update"
+  echo "  refactor/extract-component"
+  echo ""
+  echo "Install GitNow for easier branch creation:"
+  echo "  https://github.com/joseluisq/gitnow"
+  echo ""
+  exit 1
+fi
+
 # Run linting and formatting on staged files
 npx lint-staged

@@ -50,11 +50,25 @@ See [docs/architecture.md](docs/architecture.md) for a high-level, ever-green ov
 This repository enforces a **PR-first workflow**. No direct pushes to `main`.
 
 1. **Issue First**: Every change must start with a GitHub Issue.
-2. **Branching**: Create a feature branch named `feat/issue-[ID]-[brief-description]`.
+2. **Branching**: Create a feature branch using `git feature` (GitNow) or manual naming:
+   - Preferred: `git feature issue-[ID]-brief-description` → `feature/issue-[ID]-brief-description`
+   - Alternative prefixes: `feat/`, `fix/`, `hotfix/`, `chore/`, `docs/`, `refactor/`
+   - Pre-commit hook enforces valid branch names
 3. **Implementation**: Work on the branch. Ensure tests pass if applicable.
 4. **Pull Request**: Open a PR linking to the issue (e.g., "Closes #ID").
 5. **Preview & Test**: Verify changes via the Netlify Deploy Preview link generated on the PR.
 6. **Merge**: Only merge to `main` after the preview is verified and any CI checks pass.
+
+**GitNow Setup:**
+
+```bash
+# Install GitNow (Fish shell)
+fisher install joseluisq/gitnow
+
+# Create feature branch
+git feature issue-123-add-login
+# Creates: feature/issue-123-add-login
+```
 
 ### Issue Readiness Protocol
 
