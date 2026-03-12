@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import DynamicIcon from './DynamicIcon';
+import LocationIndicator from './LocationIndicator';
 
 const Web2Header = ({ theme }) => {
   const [active, setActive] = useState(false);
@@ -94,6 +95,9 @@ const Web2Header = ({ theme }) => {
         >
           <DynamicIcon iconName="FaYoutube" />
         </a>
+        <div className="flex items-center">
+          <LocationIndicator theme="web2" className="!mt-0" />
+        </div>
       </div>
     </div>
   );

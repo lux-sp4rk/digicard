@@ -9,8 +9,9 @@ import clsx from 'clsx';
  *
  * @param {Object} props
  * @param {string} props.theme - Current theme name
+ * @param {string} [props.className] - Additional CSS classes
  */
-const LocationIndicator = ({ theme }) => {
+const LocationIndicator = ({ theme, className }) => {
   // Get the display text based on theme
   const getLocationText = () => {
     if (theme === 'matrix') {
@@ -35,7 +36,7 @@ const LocationIndicator = ({ theme }) => {
       return 'font-mono text-xs tracking-widest uppercase';
     }
     if (theme === 'web2') {
-      return 'font-web2 text-sm';
+      return 'font-web2 text-sm text-white';
     }
     if (theme === 'flexoki') {
       return 'text-sm font-medium';
@@ -70,7 +71,8 @@ const LocationIndicator = ({ theme }) => {
       className={clsx(
         'mt-1 transition-all duration-300',
         getFontClasses(),
-        getColorClasses()
+        getColorClasses(),
+        className
       )}
       aria-label="Location: Austin, Texas"
     >
