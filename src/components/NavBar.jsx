@@ -101,9 +101,24 @@ const Web2Header = ({ theme }) => {
 
 const NavBar = ({ theme, activeTab, setActiveTab }) => {
   const tabs = [
-    { id: 'work', label: 'The Work', ariaLabel: 'Switch to The Work tab' },
-    { id: 'skills', label: 'Skills', ariaLabel: 'Switch to Skills tab' },
-    { id: 'services', label: 'Services', ariaLabel: 'Switch to Services tab' },
+    {
+      id: 'work',
+      label: 'The Work',
+      ariaLabel: 'Switch to The Work tab',
+      iconName: 'FaBriefcase',
+    },
+    {
+      id: 'services',
+      label: 'Services',
+      ariaLabel: 'Switch to Services tab',
+      iconName: 'FaUsers',
+    },
+    {
+      id: 'skills',
+      label: 'Skills',
+      ariaLabel: 'Switch to Skills tab',
+      iconName: 'FaRobot',
+    },
   ];
 
   return (
@@ -129,6 +144,7 @@ const NavBar = ({ theme, activeTab, setActiveTab }) => {
             role="tab"
             className={clsx(
               'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
+              'flex items-center justify-center gap-2',
               activeTab === tab.id
                 ? [
                     'border-b-2',
@@ -144,7 +160,8 @@ const NavBar = ({ theme, activeTab, setActiveTab }) => {
                 : 'opacity-50 hover:opacity-100'
             )}
           >
-            {tab.label}
+            <DynamicIcon iconName={tab.iconName} className="text-lg" />
+            <span>{tab.label}</span>
           </button>
         ))}
       </div>

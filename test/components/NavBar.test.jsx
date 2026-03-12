@@ -43,11 +43,14 @@ describe('NavBar', () => {
   });
 
   describe('Tab Switcher', () => {
-    it('renders all three tabs', () => {
+    it('renders all three tabs with their icons', () => {
       render(<NavBar {...defaultProps} />);
       expect(screen.getByText('The Work')).toBeInTheDocument();
+      expect(screen.getByTestId('icon-FaBriefcase')).toBeInTheDocument();
       expect(screen.getByText('Skills')).toBeInTheDocument();
+      expect(screen.getByTestId('icon-FaRobot')).toBeInTheDocument();
       expect(screen.getByText('Services')).toBeInTheDocument();
+      expect(screen.getByTestId('icon-FaUsers')).toBeInTheDocument();
     });
 
     it('calls setActiveTab when a tab is clicked', () => {
@@ -72,13 +75,13 @@ describe('NavBar', () => {
 
     it('applies correct theme classes for active tab (catppuccin)', () => {
       render(<NavBar {...defaultProps} theme="catppuccin" activeTab="work" />);
-      const workTab = screen.getByText('The Work');
+      const workTab = screen.getByRole('tab', { name: /work/i });
       expect(workTab).toHaveClass('text-catppuccin-blue');
     });
 
     it('applies correct theme classes for active tab (matrix)', () => {
       render(<NavBar {...defaultProps} theme="matrix" activeTab="work" />);
-      const workTab = screen.getByText('The Work');
+      const workTab = screen.getByRole('tab', { name: /work/i });
       expect(workTab).toHaveClass('text-matrix-glow');
     });
   });
