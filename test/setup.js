@@ -1,6 +1,10 @@
 import '@testing-library/jest-dom';
 import { beforeAll, vi } from 'vitest';
 
+// Set default environment variables for tests
+vi.stubEnv('VITE_CONTENTFUL_SPACE_ID', 'test-space-id');
+vi.stubEnv('VITE_CONTENTFUL_ACCESS_TOKEN', 'test-access-token');
+
 // Mock IntersectionObserver
 beforeAll(() => {
   global.IntersectionObserver = vi.fn().mockImplementation(() => ({

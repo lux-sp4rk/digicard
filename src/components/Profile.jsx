@@ -70,7 +70,7 @@ const Profile = ({ theme }) => {
       )}
 
       {/* Location Indicator - under the name */}
-      <LocationIndicator theme={theme} />
+      {theme !== 'web2' && <LocationIndicator theme={theme} />}
 
       {/* Bio section */}
       <p
