@@ -1,0 +1,44 @@
+# .helix/languages.toml
+
+# React/JSX configuration
+[[language]]
+name = "jsx"
+auto-format = true
+formatter = { command = "pnpm", args = ["prettier", "--parser", "babel", "--stdin-filepath", "file.jsx"] }
+language-servers = [ "typescript-language-server", "tailwind-ls", "eslint" ]
+
+# React/TSX configuration (for future TS adoption)
+[[language]]
+name = "tsx"
+auto-format = true
+formatter = { command = "pnpm", args = ["prettier", "--parser", "typescript", "--stdin-filepath", "file.tsx"] }
+language-servers = [ "typescript-language-server", "tailwind-ls", "eslint" ]
+
+# CSS/CSS Modules configuration
+[[language]]
+name = "css"
+auto-format = true
+formatter = { command = "pnpm", args = ["prettier", "--parser", "css", "--stdin-filepath", "file.css"] }
+language-servers = [ "vscode-css-language-server", "tailwind-ls" ]
+
+# Tailwind CSS Language Server
+[language-server.tailwind-ls]
+command = "tailwindcss-language-server"
+args = ["--stdio"]
+
+# TypeScript Language Server
+[language-server.typescript-language-server]
+command = "typescript-language-server"
+args = ["--stdio"]
+config = { tsserver = { path = "tsserver" } }
+
+# ESLint Language Server (requires vscode-langservers-extracted)
+[language-server.eslint]
+command = "vscode-eslint-language-server"
+args = ["--stdio"]
+config = { validate = "on", packageManager = "pnpm" }
+
+# CSS Language Server (requires vscode-langservers-extracted)
+[language-server.vscode-css-language-server]
+command = "vscode-css-language-server"
+args = ["--stdio"]

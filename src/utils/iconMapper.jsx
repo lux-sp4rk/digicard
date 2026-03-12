@@ -20,6 +20,8 @@ import {
   FaCode,
   FaProjectDiagram,
   FaCloudUploadAlt,
+  FaBriefcase,
+  FaUsers,
 } from 'react-icons/fa';
 
 import { FaThreads, FaMugHot, FaX } from 'react-icons/fa6';
@@ -41,6 +43,8 @@ const iconMap = {
   FaTerminal,
   FaRssSquare,
   FaCoffee,
+  FaBriefcase,
+  FaUsers,
 
   // FontAwesome 6
   FaThreads,

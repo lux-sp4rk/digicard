@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Web2NavBar } from '../../src/components/NavBar';
+import NavBar from '../../src/components/NavBar';
 import { describe, it, expect, vi } from 'vitest';
 
 // Mock DynamicIcon
@@ -9,53 +9,80 @@ vi.mock('../../src/components/DynamicIcon', () => ({
   ),
 }));
 
-describe('Web2NavBar', () => {
-  it('renders brand name', () => {
-    render(<Web2NavBar theme="web2" />);
-    expect(screen.getByText('Luh Sprwhk')).toBeInTheDocument();
+describe('NavBar', () => {
+  const defaultProps = {
+    theme: 'catppuccin',
+    activeTab: 'work',
+    setActiveTab: vi.fn(),
+  };
+
+  describe('Web2 specific features', () => {
+    it('renders brand name for web2 theme', () => {
+      render(<NavBar {...defaultProps} theme="web2" />);
+      expect(screen.getByText('Luh Sprwhk')).toBeInTheDocument();
+    });
+
+    it('renders all social links for web2 theme', () => {
+      render(<NavBar {...defaultProps} theme="web2" />);
+      expect(screen.getByTestId('icon-FaRssSquare')).toBeInTheDocument();
+      expect(screen.getByTestId('icon-FaGithub')).toBeInTheDocument();
+    });
+
+    it('shows tooltip on hover for web2 theme', () => {
+      render(<NavBar {...defaultProps} theme="web2" />);
+      const brand = screen.getByText('Luh Sprwhk');
+      fireEvent.mouseEnter(brand);
+      const tooltip = screen.getByText(/frontend hides much/i);
+      expect(tooltip).toBeInTheDocument();
+    });
+
+    it('does not show web2 header for non-web2 themes', () => {
+      render(<NavBar {...defaultProps} theme="catppuccin" />);
+      expect(screen.queryByText('Luh Sprwhk')).not.toBeInTheDocument();
+    });
   });
 
-  it('renders all social links', () => {
-    render(<Web2NavBar theme="web2" />);
-    expect(screen.getByTestId('icon-FaRssSquare')).toBeInTheDocument();
-    expect(screen.getByTestId('icon-FaGithub')).toBeInTheDocument();
-    expect(screen.getByTestId('icon-FaTwitter')).toBeInTheDocument();
-    expect(screen.getByTestId('icon-FaYoutube')).toBeInTheDocument();
-  });
+  describe('Tab Switcher', () => {
+    it('renders all three tabs with their icons', () => {
+      render(<NavBar {...defaultProps} />);
+      expect(screen.getByText('The Work')).toBeInTheDocument();
+      expect(screen.getByTestId('icon-FaBriefcase')).toBeInTheDocument();
+      expect(screen.getByText('Skills')).toBeInTheDocument();
+      expect(screen.getByTestId('icon-FaRobot')).toBeInTheDocument();
+      expect(screen.getByText('Services')).toBeInTheDocument();
+      expect(screen.getByTestId('icon-FaUsers')).toBeInTheDocument();
+    });
 
-  it('has correct social link URLs', () => {
-    render(<Web2NavBar theme="web2" />);
-    const links = screen.getAllByRole('link');
-    expect(links[0]).toHaveAttribute('href', 'https://luhsprwhk.beehiiv.com');
-    expect(links[1]).toHaveAttribute('href', 'https://github.com/luhsprwhk');
-    expect(links[2]).toHaveAttribute('href', 'https://twitter.com/luhsprwhk');
-    expect(links[3]).toHaveAttribute('href', 'https://youtube.com/@luhsprwhk');
-  });
+    it('calls setActiveTab when a tab is clicked', () => {
+      const setActiveTab = vi.fn();
+      render(<NavBar {...defaultProps} setActiveTab={setActiveTab} />);
 
-  it('shows tooltip on hover for web2 theme', () => {
-    render(<Web2NavBar theme="web2" />);
-    const brand = screen.getByText('Luh Sprwhk');
-    fireEvent.mouseEnter(brand);
-    const tooltip = screen.getByText(/frontend hides much/i);
-    expect(tooltip).toBeInTheDocument();
-  });
+      fireEvent.click(screen.getByText('Skills'));
+      expect(setActiveTab).toHaveBeenCalledWith('skills');
 
-  it('does not show tooltip for non-web2 themes', () => {
-    render(<Web2NavBar theme="dark" />);
-    const brand = screen.getByText('Luh Sprwhk');
-    fireEvent.mouseEnter(brand);
-    expect(screen.queryByText(/frontend hides much/i)).not.toBeInTheDocument();
-  });
+      fireEvent.click(screen.getByText('Services'));
+      expect(setActiveTab).toHaveBeenCalledWith('services');
+    });
 
-  it('has web2 theme styling classes', () => {
-    const { container } = render(<Web2NavBar theme="web2" />);
-    const nav = container.querySelector('nav');
-    expect(nav).toHaveClass('bg-web2-primaryDark');
-  });
+    it('marks the active tab as aria-selected', () => {
+      render(<NavBar {...defaultProps} activeTab="skills" />);
+      const skillsTab = screen.getByRole('tab', { name: /skills/i });
+      const workTab = screen.getByRole('tab', { name: /work/i });
 
-  it('brand has pulse animation for web2 theme when not active', () => {
-    render(<Web2NavBar theme="web2" />);
-    const brand = screen.getByText('Luh Sprwhk');
-    expect(brand).toHaveClass('animate-pulse');
+      expect(skillsTab).toHaveAttribute('aria-selected', 'true');
+      expect(workTab).toHaveAttribute('aria-selected', 'false');
+    });
+
+    it('applies correct theme classes for active tab (catppuccin)', () => {
+      render(<NavBar {...defaultProps} theme="catppuccin" activeTab="work" />);
+      const workTab = screen.getByRole('tab', { name: /work/i });
+      expect(workTab).toHaveClass('text-catppuccin-blue');
+    });
+
+    it('applies correct theme classes for active tab (matrix)', () => {
+      render(<NavBar {...defaultProps} theme="matrix" activeTab="work" />);
+      const workTab = screen.getByRole('tab', { name: /work/i });
+      expect(workTab).toHaveClass('text-matrix-glow');
+    });
   });
 });
