@@ -9,7 +9,7 @@ import LatestPost from './components/LatestPost';
 import YouTube from './components/YouTube';
 import Footer from './components/Footer';
 import MountainFooter from './components/MountainFooter';
-import { Web2NavBar } from './components/NavBar';
+import NavBar from './components/NavBar';
 import ErrorBoundary from './components/ErrorBoundary';
 import consoleEasterEgg from './utils/consoleEasterEgg';
 import { getInitialTheme } from './utils/themeInitializer';
@@ -74,91 +74,11 @@ function App() {
               'flexoki:bg-flexoki-base flexoki:text-flexoki-text flexoki:border-flexoki-surface flexoki:border'
             )}
           >
-            {theme === 'web2' && <Web2NavBar theme={theme} />}
-
-            {/* Tab Switcher */}
-            <div
-              className={clsx(
-                'flex border-b',
-                theme === 'catppuccin' && 'border-catppuccin-surface',
-                theme === 'flexoki' && 'border-flexoki-surface',
-                theme === 'matrix' && 'border-matrix-glow',
-                theme === 'web2' && 'border-web2-divider'
-              )}
-            >
-              <button
-                onClick={() => setActiveTab('work')}
-                aria-label="Switch to The Work tab"
-                aria-selected={activeTab === 'work'}
-                role="tab"
-                className={clsx(
-                  'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
-                  activeTab === 'work'
-                    ? [
-                        'border-b-2',
-                        theme === 'catppuccin' &&
-                          'border-catppuccin-blue text-catppuccin-blue',
-                        theme === 'flexoki' &&
-                          'border-flexoki-cyan text-flexoki-cyan',
-                        theme === 'matrix' &&
-                          'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
-                        theme === 'web2' &&
-                          'border-web2-primary text-web2-primary bg-web2-highlight',
-                      ]
-                    : 'opacity-50 hover:opacity-100'
-                )}
-              >
-                The Work
-              </button>
-              <button
-                onClick={() => setActiveTab('skills')}
-                aria-label="Switch to Skills tab"
-                aria-selected={activeTab === 'skills'}
-                role="tab"
-                className={clsx(
-                  'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
-                  activeTab === 'skills'
-                    ? [
-                        'border-b-2',
-                        theme === 'catppuccin' &&
-                          'border-catppuccin-blue text-catppuccin-blue',
-                        theme === 'flexoki' &&
-                          'border-flexoki-cyan text-flexoki-cyan',
-                        theme === 'matrix' &&
-                          'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
-                        theme === 'web2' &&
-                          'border-web2-primary text-web2-primary bg-web2-highlight',
-                      ]
-                    : 'opacity-50 hover:opacity-100'
-                )}
-              >
-                Skills
-              </button>
-              <button
-                onClick={() => setActiveTab('services')}
-                aria-label="Switch to Services tab"
-                aria-selected={activeTab === 'services'}
-                role="tab"
-                className={clsx(
-                  'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
-                  activeTab === 'services'
-                    ? [
-                        'border-b-2',
-                        theme === 'catppuccin' &&
-                          'border-catppuccin-blue text-catppuccin-blue',
-                        theme === 'flexoki' &&
-                          'border-flexoki-cyan text-flexoki-cyan',
-                        theme === 'matrix' &&
-                          'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
-                        theme === 'web2' &&
-                          'border-web2-primary text-web2-primary bg-web2-highlight',
-                      ]
-                    : 'opacity-50 hover:opacity-100'
-                )}
-              >
-                Services
-              </button>
-            </div>
+            <NavBar
+              theme={theme}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
 
             <ErrorBoundary theme={theme}>
               <Profile theme={theme} />

@@ -92,9 +92,30 @@ vi.mock('../src/components/SocialLinks', () => ({
 }));
 
 vi.mock('../src/components/NavBar', () => ({
-  Web2NavBar: ({ theme }) => (
-    <div data-testid="web2-navbar" data-theme={theme}>
-      Web2 NavBar
+  default: ({ theme, activeTab, setActiveTab }) => (
+    <div data-testid="navbar" data-theme={theme} data-active-tab={activeTab}>
+      <button
+        role="tab"
+        aria-selected={activeTab === 'work'}
+        onClick={() => setActiveTab('work')}
+      >
+        The Work
+      </button>
+      <button
+        role="tab"
+        aria-selected={activeTab === 'skills'}
+        onClick={() => setActiveTab('skills')}
+      >
+        Skills
+      </button>
+      <button
+        role="tab"
+        aria-selected={activeTab === 'services'}
+        onClick={() => setActiveTab('services')}
+      >
+        Services
+      </button>
+      {theme === 'web2' && <div data-testid="web2-navbar">Web2 Part</div>}
     </div>
   ),
 }));

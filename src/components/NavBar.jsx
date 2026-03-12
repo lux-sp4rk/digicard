@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import DynamicIcon from './DynamicIcon';
 
-const Web2NavBar = ({ theme }) => {
+const Web2Header = ({ theme }) => {
   const [active, setActive] = useState(false);
   return (
-    <nav
+    <div
       className={clsx(
         'flex justify-between items-center overflow-visible',
         'bg-web2-primaryDark web2:border-web2-border web2:shadow-web2-border web2:drop-shadow-web2-border web2:p-4'
@@ -95,9 +95,62 @@ const Web2NavBar = ({ theme }) => {
           <DynamicIcon iconName="FaYoutube" />
         </a>
       </div>
+    </div>
+  );
+};
+
+const NavBar = ({ theme, activeTab, setActiveTab }) => {
+  const tabs = [
+    { id: 'work', label: 'The Work', ariaLabel: 'Switch to The Work tab' },
+    { id: 'skills', label: 'Skills', ariaLabel: 'Switch to Skills tab' },
+    { id: 'services', label: 'Services', ariaLabel: 'Switch to Services tab' },
+  ];
+
+  return (
+    <nav className="flex flex-col">
+      {theme === 'web2' && <Web2Header theme={theme} />}
+
+      <div
+        className={clsx(
+          'flex border-b',
+          theme === 'catppuccin' && 'border-catppuccin-surface',
+          theme === 'flexoki' && 'border-flexoki-surface',
+          theme === 'matrix' && 'border-matrix-glow',
+          theme === 'web2' && 'border-web2-divider'
+        )}
+        role="tablist"
+      >
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            aria-label={tab.ariaLabel}
+            aria-selected={activeTab === tab.id}
+            role="tab"
+            className={clsx(
+              'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
+              activeTab === tab.id
+                ? [
+                    'border-b-2',
+                    theme === 'catppuccin' &&
+                      'border-catppuccin-blue text-catppuccin-blue',
+                    theme === 'flexoki' &&
+                      'border-flexoki-cyan text-flexoki-cyan',
+                    theme === 'matrix' &&
+                      'border-matrix-glow text-matrix-glow bg-matrix-glow/10',
+                    theme === 'web2' &&
+                      'border-web2-primary text-web2-primary bg-web2-highlight',
+                  ]
+                : 'opacity-50 hover:opacity-100'
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
     </nav>
   );
 };
 
-export { Web2NavBar };
-export default Web2NavBar;
+export { Web2Header as Web2NavBar };
+export default NavBar;

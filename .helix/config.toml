@@ -1,0 +1,19 @@
+# .helix/config.toml
+
+# Global editor options
+[editor]
+line-number = "relative"
+cursor-shape = { insert = "bar", normal = "block", select = "underline" }
+indent-guides = { render = true, character = "┊" }
+auto-format = true
+bufferline = "multiple"
+color-modes = true
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+newline = "none"
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
