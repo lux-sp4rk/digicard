@@ -21,4 +21,4 @@ jobs:
           arcee-api-key: ${{ secrets.ARCEE_API_KEY }}
           model: 'arcee/trinity-mini'
           passes: 'test,coverage,delta'
-          coverage-threshold: 70
+          coverage-threshold: 80

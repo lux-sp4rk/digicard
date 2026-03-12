@@ -1,11 +1,11 @@
-name: Arachne Code Review
+name: Bug Hunter D33
 
 on:
   pull_request:
     types: [opened, synchronize]
 
 jobs:
-  arachne-review:
+  bug-hunter-d33:
     name: Bug Hunter D33
     runs-on: ubuntu-latest
     permissions:
