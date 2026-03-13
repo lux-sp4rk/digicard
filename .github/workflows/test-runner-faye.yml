@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Summon Faye
         uses: lux-sp4rk/test-runner-faye@main
-        continue-on-error: true
+        continue-on-error: false
         with:
           arcee-api-key: ${{ secrets.ARCEE_API_KEY }}
           passes: 'test,coverage,delta'
