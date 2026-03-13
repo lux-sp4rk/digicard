@@ -17,7 +17,11 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --run --coverage",
     "test:coverage:watch": "vitest --watch --coverage",
+    "test:safe": "node scripts/test-with-cleanup.js --run",
+    "test:coverage:safe": "node scripts/test-with-cleanup.js --run --coverage",
+    "test:ui:safe": "node scripts/test-with-cleanup.js --ui",
     "setup": "node scripts/setup.js",
+    "test:cleanup": "pkill -f vitest || true",
     "dev:seed-data": "node scripts/seed-dev-data.js"
   },
   "lint-staged": {

@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
-import { beforeAll, vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import { beforeAll, afterEach, vi } from 'vitest';
 
 // Set default environment variables for tests
 vi.stubEnv('VITE_CONTENTFUL_SPACE_ID', 'test-space-id');
@@ -27,4 +28,9 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
+});
+
+// Cleanup DOM after each test to prevent state leakage between tests
+afterEach(() => {
+  cleanup();
 });

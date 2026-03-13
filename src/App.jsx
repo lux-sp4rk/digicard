@@ -5,8 +5,7 @@ import Profile from './components/Profile';
 import Projects from './components/Projects/Projects';
 import Services from './components/Services';
 import Skills from './components/Skills';
-import LatestPost from './components/LatestPost';
-import YouTube from './components/YouTube';
+import FeaturedContent from './components/FeaturedContent';
 import Footer from './components/Footer';
 import MountainFooter from './components/MountainFooter';
 import NavBar from './components/NavBar';
@@ -92,12 +91,9 @@ function App() {
                     <SocialLinks />
                   </ErrorBoundary>
                 )}
-                {/* Featured Content goes here */}
+                {/* Featured Content - dynamically ordered by recency */}
                 <ErrorBoundary theme={theme}>
-                  <YouTube theme={theme} featured={true} />
-                </ErrorBoundary>
-                <ErrorBoundary theme={theme}>
-                  <LatestPost theme={theme} featured={false} />
+                  <FeaturedContent theme={theme} />
                 </ErrorBoundary>
                 <ErrorBoundary theme={theme}>
                   <Projects theme={theme} />

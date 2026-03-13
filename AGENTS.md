@@ -95,3 +95,22 @@ gh issue view [N] --json labels
 - No dev server in host environment (Docker only)
 - Pre-commit hooks enforce lint/format
 - Branch naming enforced via hooks
+
+## Subagent Testing Guidelines
+
+⚠️ **When running tests as a subagent**, use safe commands to prevent orphaned Vitest processes:
+
+```bash
+# Safe commands (use these)
+pnpm run test:safe           # Single-run tests with guaranteed cleanup
+pnpm run test:coverage:safe  # Coverage with guaranteed cleanup
+pnpm run test:cleanup        # Emergency: kill all vitest processes
+
+# Dangerous - never use in subagents
+pnpm run test:watch          # Creates persistent processes
+pnpm run test:coverage:watch # Same issue
+```
+
+**Why:** Subagents use isolated bash sessions where Vitest workers don't receive termination signals, leaving orphaned processes consuming 100%+ CPU. The `test:safe` commands use `scripts/test-with-cleanup.js` which guarantees cleanup via signal handlers and force-kill fallbacks.
+
+See also: `test-driven-development` skill for full testing guidelines.
