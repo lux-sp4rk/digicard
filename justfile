@@ -7,19 +7,19 @@ default:
 
 # Install dependencies
 install:
-    npm install
+    pnpm install
 
-# Run dev server
+# Run dev server (Docker-preferred, see AGENTS.md)
 dev:
-    npm run dev
+    pnpm run dev
 
 # Build for production
 build:
-    npm run build
+    pnpm run build
 
 # Run linting
 lint:
-    npm run lint
+    pnpm run lint
 
 # Type check
 types:
@@ -27,19 +27,21 @@ types:
 
 # Clean build artifacts
 clean:
-    rm -rf .next/
+    rm -rf dist/
+    rm -rf coverage/
     rm -rf node_modules/.cache/
 
 # Full check (lint + types + build)
 check: lint types build
 
-# Deploy (customize for your setup)
-deploy: build
-    echo "Deploy would happen here"
-
 # Show git status
 status:
     git status -sb
+
+# Identify branches older than 14 days
+cleanup-stale-branches:
+    @echo "Branches older than 14 days:"
+    @git for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short)' | awk -v d="$$(date -d '14 days ago' +%Y-%m-%d)" '$$1 < d'
 
 # Quick commit
 commit msg:

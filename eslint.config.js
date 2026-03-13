@@ -58,6 +58,23 @@ export default [
     },
   },
   {
+    files: ['*.config.js', '*.config.ts'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.node,
+      },
+      parserOptions: {
+        ecmaVersion: 'latest',
+        ecmaFeatures: { jsx: true },
+        sourceType: 'module',
+      },
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+    },
+  },
+  {
     files: [
       'test/**/*.js',
       'test/**/*.jsx',
