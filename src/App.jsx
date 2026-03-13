@@ -6,6 +6,7 @@ import Projects from './components/Projects/Projects';
 import Services from './components/Services';
 import Skills from './components/Skills';
 import FeaturedContent from './components/FeaturedContent';
+import SoundCloudWidget from './components/SoundCloudWidget';
 import Footer from './components/Footer';
 import MountainFooter from './components/MountainFooter';
 import NavBar from './components/NavBar';
@@ -97,6 +98,9 @@ function App() {
                 </ErrorBoundary>
                 <ErrorBoundary theme={theme}>
                   <Projects theme={theme} />
+                </ErrorBoundary>
+                <ErrorBoundary theme={theme}>
+                  <SoundCloudWidget theme={theme} />
                 </ErrorBoundary>
               </>
             )}
