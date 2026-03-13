@@ -59,18 +59,10 @@ vi.mock('../src/components/Skills', () => ({
   ),
 }));
 
-vi.mock('../src/components/LatestPost', () => ({
-  default: ({ theme, featured }) => (
-    <div data-testid="latest-post" data-theme={theme} data-featured={featured}>
-      Latest Post
-    </div>
-  ),
-}));
-
-vi.mock('../src/components/YouTube', () => ({
-  default: ({ theme, featured }) => (
-    <div data-testid="youtube" data-theme={theme} data-featured={featured}>
-      YouTube
+vi.mock('../src/components/FeaturedContent', () => ({
+  default: ({ theme }) => (
+    <div data-testid="featured-content" data-theme={theme}>
+      Featured Content
     </div>
   ),
 }));
@@ -226,7 +218,7 @@ describe('App', () => {
   it('switches between tabs', () => {
     render(<App />);
     expect(screen.getByTestId('projects')).toBeInTheDocument();
-    expect(screen.getByTestId('youtube')).toBeInTheDocument();
+    expect(screen.getByTestId('featured-content')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('tab', { name: /skills/i }));
     expect(screen.getByTestId('skills')).toBeInTheDocument();
     expect(screen.queryByTestId('projects')).not.toBeInTheDocument();
