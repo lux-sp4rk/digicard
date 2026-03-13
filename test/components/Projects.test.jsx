@@ -4,7 +4,9 @@ import '@testing-library/jest-dom';
 import Projects from '../../src/components/Projects/Projects';
 import * as useContentfulHook from '../../src/hooks/useContentful';
 
-vi.mock('../../src/hooks/useContentful');
+vi.mock('../../src/hooks/useContentful', () => ({
+  useContentful: vi.fn(),
+}));
 
 describe('Projects', () => {
   beforeEach(() => {

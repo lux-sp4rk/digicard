@@ -5,7 +5,9 @@ import SocialLinks from '../../src/components/SocialLinks';
 import * as useContentfulHook from '../../src/hooks/useContentful';
 
 // Mock the useContentful hook
-vi.mock('../../src/hooks/useContentful');
+vi.mock('../../src/hooks/useContentful', () => ({
+  useContentful: vi.fn(),
+}));
 
 // Mock the DynamicIcon component
 vi.mock('../../src/components/DynamicIcon', () => ({

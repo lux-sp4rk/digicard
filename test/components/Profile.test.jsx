@@ -4,7 +4,9 @@ import Profile from '../../src/components/Profile';
 import * as useContentfulHook from '../../src/hooks/useContentful';
 
 // Mock the useContentful hook
-vi.mock('../../src/hooks/useContentful');
+vi.mock('../../src/hooks/useContentful', () => ({
+  useContentful: vi.fn(),
+}));
 
 describe('Profile', () => {
   beforeEach(() => {

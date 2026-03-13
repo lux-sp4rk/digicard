@@ -4,7 +4,9 @@ import * as useContentfulHook from '../../src/hooks/useContentful';
 import * as youtubeUtils from '../../src/utils/youtube';
 
 // Mock the useContentful hook
-vi.mock('../../src/hooks/useContentful');
+vi.mock('../../src/hooks/useContentful', () => ({
+  useContentful: vi.fn(),
+}));
 
 // Mock the youtube utility
 vi.mock('../../src/utils/youtube');

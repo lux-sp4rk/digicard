@@ -4,8 +4,12 @@ import * as useContentfulHook from '../../src/hooks/useContentful';
 import * as useSubstackHook from '../../src/hooks/useSubstack';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-vi.mock('../../src/hooks/useContentful');
-vi.mock('../../src/hooks/useSubstack');
+vi.mock('../../src/hooks/useContentful', () => ({
+  useContentful: vi.fn(),
+}));
+vi.mock('../../src/hooks/useSubstack', () => ({
+  useSubstack: vi.fn(),
+}));
 
 vi.mock('../../src/dev-data/featuredPost.json', () => ({
   default: {

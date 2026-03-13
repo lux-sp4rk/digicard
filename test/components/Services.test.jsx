@@ -12,7 +12,9 @@ import * as useContentfulHook from '../../src/hooks/useContentful';
 
 // ─── Mocks ───────────────────────────────────────────────────────────────────
 
-vi.mock('../../src/hooks/useContentful');
+vi.mock('../../src/hooks/useContentful', () => ({
+  useContentful: vi.fn(),
+}));
 
 vi.mock('../../src/components/DynamicIcon', () => ({
   default: ({ iconName, size }) => (
