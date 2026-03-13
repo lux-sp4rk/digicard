@@ -1,14 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import LatestPost from '../../src/components/LatestPost';
-import * as useContentfulHook from '../../src/hooks/useContentful';
-import * as useSubstackHook from '../../src/hooks/useSubstack';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+const useContentfulMock = vi.hoisted(() => vi.fn());
+const useSubstackMock = vi.hoisted(() => vi.fn());
+
 vi.mock('../../src/hooks/useContentful', () => ({
-  useContentful: vi.fn(),
+  useContentful: (...args) => useContentfulMock(...args),
 }));
 vi.mock('../../src/hooks/useSubstack', () => ({
-  useSubstack: vi.fn(),
+  useSubstack: () => useSubstackMock(),
 }));
 
 vi.mock('../../src/dev-data/featuredPost.json', () => ({
@@ -44,34 +45,34 @@ describe('LatestPost', () => {
   beforeEach(() => vi.clearAllMocks());
 
   it('shows loading when settings is loading', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: true,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({ post: null, loading: false });
+    useSubstackMock.mockReturnValue({ post: null, loading: false });
     render(<LatestPost theme="dark" />);
     expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 
   it('shows loading when post is loading', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: { blogArchiveUrl: 'blog.example.com' },
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({ post: null, loading: true });
+    useSubstackMock.mockReturnValue({ post: null, loading: true });
     render(<LatestPost theme="dark" />);
     expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 
   it('renders post from useSubstack in non-web2 theme', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: { blogArchiveUrl: null },
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: mockPost,
       loading: false,
     });
@@ -86,12 +87,12 @@ describe('LatestPost', () => {
   });
 
   it('uses web_url when link is not available', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: { ...mockPost, link: null },
       loading: false,
     });
@@ -103,12 +104,12 @@ describe('LatestPost', () => {
   });
 
   it('uses preview_text when description is not available', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: { ...mockPost, description: null },
       loading: false,
     });
@@ -117,12 +118,12 @@ describe('LatestPost', () => {
   });
 
   it('renders web2 layout for web2 theme', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: { blogArchiveUrl: 'blog.example.com' },
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: mockPost,
       loading: false,
     });
@@ -132,12 +133,12 @@ describe('LatestPost', () => {
   });
 
   it('shows blog archive link when configured', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: { blogArchiveUrl: 'blog.example.com' },
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: mockPost,
       loading: false,
     });
@@ -148,12 +149,12 @@ describe('LatestPost', () => {
 
   it('returns null when no post in production mode', () => {
     vi.stubEnv('DEV', false);
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({ post: null, loading: false });
+    useSubstackMock.mockReturnValue({ post: null, loading: false });
     const { container } = render(<LatestPost theme="dark" />);
     expect(container.firstChild).toBeNull();
     vi.unstubAllEnvs();
@@ -161,12 +162,12 @@ describe('LatestPost', () => {
 
   it('uses fallback data in DEV mode when no post', () => {
     vi.stubEnv('DEV', true);
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({ post: null, loading: false });
+    useSubstackMock.mockReturnValue({ post: null, loading: false });
     render(<LatestPost theme="dark" />);
     expect(screen.getByText('Fallback Post')).toBeInTheDocument();
     vi.unstubAllEnvs();
@@ -174,24 +175,24 @@ describe('LatestPost', () => {
 
   it('returns null for web2 theme when no post in production mode', () => {
     vi.stubEnv('DEV', false);
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: { blogArchiveUrl: 'blog.example.com' },
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({ post: null, loading: false });
+    useSubstackMock.mockReturnValue({ post: null, loading: false });
     const { container } = render(<LatestPost theme="web2" />);
     expect(container.firstChild).toBeNull();
     vi.unstubAllEnvs();
   });
 
   it('uses image when thumbnail_url is not available', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: {
         ...mockPost,
         thumbnail_url: null,
@@ -207,12 +208,12 @@ describe('LatestPost', () => {
   });
 
   it('uses image fallback in web2 theme when thumbnail_url is not available', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: { blogArchiveUrl: 'blog.example.com' },
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: {
         ...mockPost,
         thumbnail_url: null,
@@ -228,12 +229,12 @@ describe('LatestPost', () => {
   });
 
   it('uses web_url when link is not available in web2 theme', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: { blogArchiveUrl: 'blog.example.com' },
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: { ...mockPost, link: null },
       loading: false,
     });
@@ -244,12 +245,12 @@ describe('LatestPost', () => {
   });
 
   it('uses preview_text when description is not available in web2 theme', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: { blogArchiveUrl: 'blog.example.com' },
       loading: false,
       error: null,
     });
-    useSubstackHook.useSubstack.mockReturnValue({
+    useSubstackMock.mockReturnValue({
       post: { ...mockPost, description: null },
       loading: false,
     });

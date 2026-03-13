@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import SoundCloudWidget from '../../src/components/SoundCloudWidget';
-import * as useContentfulHook from '../../src/hooks/useContentful';
 
-// Mock the useContentful hook
+const useContentfulMock = vi.hoisted(() => vi.fn());
+
 vi.mock('../../src/hooks/useContentful', () => ({
-  useContentful: vi.fn(),
+  useContentful: (...args) => useContentfulMock(...args),
 }));
 
 // Mock fetch and AbortController globally
@@ -33,7 +33,7 @@ describe('SoundCloudWidget', () => {
 
   it('renders SoundCloud widget when data is loaded', () => {
     // Mock the hook to return loaded data
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: mockTrack,
       loading: false,
       error: null,
@@ -47,7 +47,7 @@ describe('SoundCloudWidget', () => {
 
   it('renders loading state when data is loading', () => {
     // Mock the hook to return loading state
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: true,
       error: null,
@@ -69,7 +69,7 @@ describe('SoundCloudWidget', () => {
     mockFetch.mockReturnValue(fetchPromise);
 
     // Mock the hook to return an error state to trigger fallback
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: false,
       error: new Error('Contentful failed'),
@@ -101,7 +101,7 @@ describe('SoundCloudWidget', () => {
     abortError.name = 'AbortError';
     mockFetch.mockRejectedValue(abortError);
 
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: false,
       error: new Error('Contentful failed'),

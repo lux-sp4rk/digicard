@@ -1,15 +1,25 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import YouTube from '../../src/components/YouTube';
-import * as useContentfulHook from '../../src/hooks/useContentful';
-import * as youtubeUtils from '../../src/utils/youtube';
+
+// ─── Hoisted Mock Setup ──────────────────────────────────────────────────────
+// Use vi.hoisted() to ensure mock functions are hoisted alongside vi.mock()
+// This fixes issues with pool: 'forks' in CI environments
+
+const { mockUseContentful, mockGetLatestYouTubeVideo } = vi.hoisted(() => ({
+  mockUseContentful: vi.fn(),
+  mockGetLatestYouTubeVideo: vi.fn(),
+}));
 
 // Mock the useContentful hook
 vi.mock('../../src/hooks/useContentful', () => ({
-  useContentful: vi.fn(),
+  useContentful: (...args) => mockUseContentful(...args),
 }));
 
-// Mock the youtube utility
-vi.mock('../../src/utils/youtube');
+// Mock the youtube utility with explicit factory
+vi.mock('../../src/utils/youtube', () => ({
+  getLatestYouTubeVideo: (...args) => mockGetLatestYouTubeVideo(...args),
+}));
 
 // Mock the fallback video data
 vi.mock('../../src/dev-data/youtubeVideo.json', () => ({
@@ -27,11 +37,13 @@ vi.mock('../../src/dev-data/youtubeVideo.json', () => ({
 
 // Mock DynamicIcon component
 vi.mock('../../src/components/DynamicIcon', () => ({
-  default: ({ iconName, className }) => (
-    <span data-testid={`icon-${iconName}`} className={className}>
-      {iconName}
-    </span>
-  ),
+  default: function DynamicIconMock({ iconName, className }) {
+    return (
+      <span data-testid={`icon-${iconName}`} className={className}>
+        {iconName}
+      </span>
+    );
+  },
 }));
 
 describe('YouTube', () => {
@@ -60,17 +72,17 @@ describe('YouTube', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Default: Contentful returns video, API not called
-    useContentfulHook.useContentful.mockReturnValue({
+    mockUseContentful.mockReturnValue({
       data: mockContentfulVideo,
       loading: false,
       error: null,
     });
-    youtubeUtils.getLatestYouTubeVideo.mockResolvedValue(mockApiVideo);
+    mockGetLatestYouTubeVideo.mockResolvedValue(mockApiVideo);
   });
 
   describe('Loading states', () => {
     it('renders fallback video when Contentful is loading (fallback available)', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: null,
         loading: true,
         error: null,
@@ -87,16 +99,14 @@ describe('YouTube', () => {
     });
 
     it('renders fallback video while falling back to YouTube API', async () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: null,
         loading: false,
         error: null,
       });
 
       // Make API call hang
-      youtubeUtils.getLatestYouTubeVideo.mockImplementation(
-        () => new Promise(() => {})
-      );
+      mockGetLatestYouTubeVideo.mockImplementation(() => new Promise(() => {}));
 
       render(<YouTube theme="dark" />);
 
@@ -128,7 +138,7 @@ describe('YouTube', () => {
     it('does not call YouTube API when Contentful video is active', () => {
       render(<YouTube theme="dark" />);
 
-      expect(youtubeUtils.getLatestYouTubeVideo).not.toHaveBeenCalled();
+      expect(mockGetLatestYouTubeVideo).not.toHaveBeenCalled();
     });
 
     it('uses custom thumbnail from Contentful when provided', () => {
@@ -144,7 +154,7 @@ describe('YouTube', () => {
 
   describe('YouTube API fallback', () => {
     it('falls back to YouTube API when Contentful returns null', async () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: null,
         loading: false,
         error: null,
@@ -153,12 +163,12 @@ describe('YouTube', () => {
       render(<YouTube theme="dark" />);
 
       await waitFor(() => {
-        expect(youtubeUtils.getLatestYouTubeVideo).toHaveBeenCalledTimes(1);
+        expect(mockGetLatestYouTubeVideo).toHaveBeenCalledTimes(1);
       });
     });
 
     it('falls back to YouTube API when Contentful video is inactive', async () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: { ...mockContentfulVideo, active: false },
         loading: false,
         error: null,
@@ -167,12 +177,12 @@ describe('YouTube', () => {
       render(<YouTube theme="dark" />);
 
       await waitFor(() => {
-        expect(youtubeUtils.getLatestYouTubeVideo).toHaveBeenCalledTimes(1);
+        expect(mockGetLatestYouTubeVideo).toHaveBeenCalledTimes(1);
       });
     });
 
     it('falls back to YouTube API when Contentful errors', async () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: null,
         loading: false,
         error: new Error('Contentful API error'),
@@ -181,12 +191,12 @@ describe('YouTube', () => {
       render(<YouTube theme="dark" />);
 
       await waitFor(() => {
-        expect(youtubeUtils.getLatestYouTubeVideo).toHaveBeenCalledTimes(1);
+        expect(mockGetLatestYouTubeVideo).toHaveBeenCalledTimes(1);
       });
     });
 
     it('only calls YouTube API once even with multiple renders', async () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: null,
         loading: false,
         error: null,
@@ -195,25 +205,25 @@ describe('YouTube', () => {
       const { rerender } = render(<YouTube theme="dark" />);
 
       await waitFor(() => {
-        expect(youtubeUtils.getLatestYouTubeVideo).toHaveBeenCalledTimes(1);
+        expect(mockGetLatestYouTubeVideo).toHaveBeenCalledTimes(1);
       });
 
       // Rerender the component
       rerender(<YouTube theme="matrix" />);
 
       // Should still only have been called once
-      expect(youtubeUtils.getLatestYouTubeVideo).toHaveBeenCalledTimes(1);
+      expect(mockGetLatestYouTubeVideo).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('No video available', () => {
     it('renders fallback video when no video from either source', async () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: null,
         loading: false,
         error: null,
       });
-      youtubeUtils.getLatestYouTubeVideo.mockResolvedValue(null);
+      mockGetLatestYouTubeVideo.mockResolvedValue(null);
 
       render(<YouTube theme="dark" />);
 
@@ -228,12 +238,12 @@ describe('YouTube', () => {
     });
 
     it('renders fallback video when API video is inactive', async () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: null,
         loading: false,
         error: null,
       });
-      youtubeUtils.getLatestYouTubeVideo.mockResolvedValue({
+      mockGetLatestYouTubeVideo.mockResolvedValue({
         ...mockApiVideo,
         active: false,
       });
@@ -253,12 +263,12 @@ describe('YouTube', () => {
     it('returns null when all videos (including fallback) are inactive', () => {
       // Mock the fallback to be inactive by directly importing and modifying
       // Since the fallback is imported at module level, we need to test with actual inactive data
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: { ...mockContentfulVideo, active: false },
         loading: false,
         error: null,
       });
-      youtubeUtils.getLatestYouTubeVideo.mockResolvedValue({
+      mockGetLatestYouTubeVideo.mockResolvedValue({
         ...mockApiVideo,
         active: false,
       });
@@ -294,7 +304,7 @@ describe('YouTube', () => {
     });
 
     it('extracts video ID from youtu.be short URL', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: {
           ...mockContentfulVideo,
           url: 'https://youtu.be/shortid123',
@@ -313,7 +323,7 @@ describe('YouTube', () => {
     });
 
     it('extracts video ID from YouTube Shorts URL', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: {
           ...mockContentfulVideo,
           url: 'https://www.youtube.com/shorts/shortvideo123',
@@ -332,7 +342,7 @@ describe('YouTube', () => {
     });
 
     it('extracts video ID from embed URL', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: {
           ...mockContentfulVideo,
           url: 'https://www.youtube.com/embed/embedid456',
@@ -353,7 +363,7 @@ describe('YouTube', () => {
 
   describe('YouTube Shorts handling', () => {
     it('applies correct aspect ratio for YouTube Shorts', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: {
           ...mockContentfulVideo,
           url: 'https://www.youtube.com/shorts/shortvideo123',
@@ -380,7 +390,7 @@ describe('YouTube', () => {
 
   describe('Video metadata display', () => {
     it('generates thumbnail URL when not provided', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      mockUseContentful.mockReturnValue({
         data: { ...mockContentfulVideo, thumbnail: '' },
         loading: false,
         error: null,

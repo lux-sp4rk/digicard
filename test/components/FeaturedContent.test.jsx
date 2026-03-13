@@ -2,9 +2,12 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock hooks before importing component
-const mockUseContentful = vi.fn();
-const mockUseSubstack = vi.fn();
-const mockGetLatestYouTubeVideo = vi.fn();
+const { mockUseContentful, mockUseSubstack, mockGetLatestYouTubeVideo } =
+  vi.hoisted(() => ({
+    mockUseContentful: vi.fn(),
+    mockUseSubstack: vi.fn(),
+    mockGetLatestYouTubeVideo: vi.fn(),
+  }));
 
 vi.mock('../../src/hooks/useContentful', () => ({
   useContentful: (...args) => mockUseContentful(...args),

@@ -1,17 +1,17 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Profile from '../../src/components/Profile';
-import * as useContentfulHook from '../../src/hooks/useContentful';
 
-// Mock the useContentful hook
+const useContentfulMock = vi.hoisted(() => vi.fn());
+
 vi.mock('../../src/hooks/useContentful', () => ({
-  useContentful: vi.fn(),
+  useContentful: (...args) => useContentfulMock(...args),
 }));
 
 describe('Profile', () => {
   beforeEach(() => {
     // Default mock: Contentful returns null (falls back to constant)
-    useContentfulHook.useContentful.mockReturnValue({
+    useContentfulMock.mockReturnValue({
       data: null,
       loading: false,
       error: null,

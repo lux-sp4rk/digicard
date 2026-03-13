@@ -1,11 +1,16 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Projects from '../../src/components/Projects/Projects';
-import * as useContentfulHook from '../../src/hooks/useContentful';
+
+// ─── Hoisted Mock Setup ──────────────────────────────────────────────────────
+const { mockUseContentful } = vi.hoisted(() => ({
+  mockUseContentful: vi.fn(),
+}));
 
 vi.mock('../../src/hooks/useContentful', () => ({
-  useContentful: vi.fn(),
+  useContentful: (...args) => mockUseContentful(...args),
 }));
 
 describe('Projects', () => {
@@ -14,7 +19,7 @@ describe('Projects', () => {
   });
 
   it('renders loading state when data is loading', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    mockUseContentful.mockReturnValue({
       data: null,
       loading: true,
       error: null,
@@ -28,7 +33,7 @@ describe('Projects', () => {
 
   it('renders classic layout for web2 theme (includes inactive projects)', () => {
     // No CMS data -> falls back to static list
-    useContentfulHook.useContentful.mockReturnValue({
+    mockUseContentful.mockReturnValue({
       data: null,
       loading: false,
       error: null,
@@ -46,7 +51,7 @@ describe('Projects', () => {
   });
 
   it('renders modern layout for non-classic themes and filters inactive projects', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    mockUseContentful.mockReturnValue({
       data: null,
       loading: false,
       error: null,
@@ -98,7 +103,7 @@ describe('Projects', () => {
       },
     ];
 
-    useContentfulHook.useContentful.mockReturnValue({
+    mockUseContentful.mockReturnValue({
       data: cmsProjects,
       loading: false,
       error: null,
@@ -117,7 +122,7 @@ describe('Projects', () => {
   it('logs a warning and falls back to static data when CMS returns error', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    useContentfulHook.useContentful.mockReturnValue({
+    mockUseContentful.mockReturnValue({
       data: null,
       loading: false,
       error: new Error('Boom'),
@@ -134,7 +139,7 @@ describe('Projects', () => {
   });
 
   it('creates ripple element when clicking on a project link', () => {
-    useContentfulHook.useContentful.mockReturnValue({
+    mockUseContentful.mockReturnValue({
       data: null,
       loading: false,
       error: null,

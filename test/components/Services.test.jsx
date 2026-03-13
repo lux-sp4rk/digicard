@@ -8,12 +8,13 @@ import {
   getCtaBorderClasses,
   getCtaButtonClasses,
 } from '../../src/components/helpers/themeClassHelper';
-import * as useContentfulHook from '../../src/hooks/useContentful';
 
 // ─── Mocks ───────────────────────────────────────────────────────────────────
 
+const useContentfulMock = vi.hoisted(() => vi.fn());
+
 vi.mock('../../src/hooks/useContentful', () => ({
-  useContentful: vi.fn(),
+  useContentful: (...args) => useContentfulMock(...args),
 }));
 
 vi.mock('../../src/components/DynamicIcon', () => ({
@@ -41,21 +42,21 @@ vi.mock('@contentful/rich-text-react-renderer', () => ({
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const mockLoading = () =>
-  useContentfulHook.useContentful.mockReturnValue({
+  useContentfulMock.mockReturnValue({
     data: null,
     loading: true,
     error: null,
   });
 
 const mockError = err =>
-  useContentfulHook.useContentful.mockReturnValue({
+  useContentfulMock.mockReturnValue({
     data: null,
     loading: false,
     error: err,
   });
 
 const mockData = data =>
-  useContentfulHook.useContentful.mockReturnValue({
+  useContentfulMock.mockReturnValue({
     data,
     loading: false,
     error: null,
