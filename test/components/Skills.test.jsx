@@ -3,11 +3,14 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Skills from '../../src/components/Skills';
 import { getCardClasses } from '../../src/components/helpers/themeClassHelper';
-import * as useContentfulHook from '../../src/hooks/useContentful';
 
 // ─── Mocks ───────────────────────────────────────────────────────────────────
 
-vi.mock('../../src/hooks/useContentful');
+const useContentfulMock = vi.hoisted(() => vi.fn());
+
+vi.mock('../../src/hooks/useContentful', () => ({
+  useContentful: (...args) => useContentfulMock(...args),
+}));
 
 vi.mock('../../src/components/DynamicIcon', () => ({
   default: ({ iconName, size }) => (
@@ -33,14 +36,14 @@ vi.mock('@contentful/rich-text-react-renderer', () => ({
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const mockLoading = () =>
-  useContentfulHook.useContentful.mockReturnValue({
+  useContentfulMock.mockReturnValue({
     data: null,
     loading: true,
     error: null,
   });
 
 const mockData = data =>
-  useContentfulHook.useContentful.mockReturnValue({
+  useContentfulMock.mockReturnValue({
     data,
     loading: false,
     error: null,

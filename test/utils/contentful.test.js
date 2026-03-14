@@ -1,9 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ─── Mock setup ──────────────────────────────────────────────────────────────
-// Must be declared before any import of the module under test so Vitest hoists it.
+// Use vi.hoisted() to ensure mock variables are hoisted alongside vi.mock()
+// This fixes issues with pool: 'forks' in CI where vi.mock() is hoisted but
+// regular variable declarations are not.
 
-const mockGetEntries = vi.fn();
+const { mockGetEntries } = vi.hoisted(() => ({
+  mockGetEntries: vi.fn(),
+}));
 
 vi.mock('contentful', () => ({
   createClient: vi.fn(() => ({

@@ -32,7 +32,7 @@ export default defineConfig({
     },
     maxWorkers: isSubagentEnvironment() ? 1 : 2,
     minWorkers: 1,
-    isolate: !isSubagentEnvironment(), // Disable isolation in subagent for faster cleanup
+    isolate: true, // Always enable test isolation to prevent mock pollution between tests
 
     coverage: {
       provider: 'v8',

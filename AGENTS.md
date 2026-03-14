@@ -67,31 +67,30 @@ gh issue view [N] --json labels
 
 ### Theme System
 
-- Themes defined in: `src/index.css`
-- Switching logic: `App.jsx:25-45`
+- Themes defined in: [src/index.css](src/index.css)
+- Switching logic: [App.jsx:25-45](src/App.jsx:25-45)
 - Use `clsx` for conditional classes
 
 ### Project Data
 
-- Source: `src/components/Projects/Projects.jsx`
+- Source: [src/components/Projects/Projects.jsx](src/components/Projects/Projects.jsx)
 - Sorting: `order` field (number)
 
 ### Testing
 
 - Location: `test/` directory
 - Pattern: `*.test.{js,jsx}`
-- Coverage threshold: 80%
+- Coverage threshold: 80% ([vitest.config.js:15](vitest.config.js:15))
 
 ## Quick References
 
-- Architecture: `docs/architecture.md`
-- Contentful setup: `docs/CONTENTFUL_SETUP.md`
-- Pre-commit hooks: `.husky/pre-commit`
-- Vitest config: `vitest.config.js:12-14` (coverage reporters)
+- Architecture: [docs/architecture.md](docs/architecture.md)
+- Contentful setup: [docs/CONTENTFUL_SETUP.md](docs/CONTENTFUL_SETUP.md)
+- Pre-commit hooks: [.husky/pre-commit](.husky/pre-commit)
 
 ## Constraints
 
-- Node: v25.2.1 (see `.nvmrc`)
+- Node: v25.2.1 (see [.nvmrc](.nvmrc))
 - No dev server in host environment (Docker only)
 - Pre-commit hooks enforce lint/format
 - Branch naming enforced via hooks
@@ -102,7 +101,7 @@ gh issue view [N] --json labels
 
 ```bash
 # Safe commands (use these)
-pnpm run test:safe           # Single-run tests with guaranteed cleanup
+pnpm run test:safe           # Single-run with guaranteed cleanup
 pnpm run test:coverage:safe  # Coverage with guaranteed cleanup
 pnpm run test:cleanup        # Emergency: kill all vitest processes
 
@@ -110,7 +109,5 @@ pnpm run test:cleanup        # Emergency: kill all vitest processes
 pnpm run test:watch          # Creates persistent processes
 pnpm run test:coverage:watch # Same issue
 ```
-
-**Why:** Subagents use isolated bash sessions where Vitest workers don't receive termination signals, leaving orphaned processes consuming 100%+ CPU. The `test:safe` commands use `scripts/test-with-cleanup.js` which guarantees cleanup via signal handlers and force-kill fallbacks.
 
 See also: `test-driven-development` skill for full testing guidelines.

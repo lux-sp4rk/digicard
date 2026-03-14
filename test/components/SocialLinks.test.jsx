@@ -2,10 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import SocialLinks from '../../src/components/SocialLinks';
-import * as useContentfulHook from '../../src/hooks/useContentful';
 
-// Mock the useContentful hook
-vi.mock('../../src/hooks/useContentful');
+const useContentfulMock = vi.hoisted(() => vi.fn());
+
+vi.mock('../../src/hooks/useContentful', () => ({
+  useContentful: (...args) => useContentfulMock(...args),
+}));
 
 // Mock the DynamicIcon component
 vi.mock('../../src/components/DynamicIcon', () => ({
@@ -81,7 +83,7 @@ describe('SocialLinks', () => {
 
   describe('loading and error states', () => {
     it('renders loading state', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: null,
         loading: true,
         error: null,
@@ -94,7 +96,7 @@ describe('SocialLinks', () => {
 
     it('renders error state', () => {
       const errorMessage = 'Failed to fetch social links';
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: null,
         loading: false,
         error: errorMessage,
@@ -108,7 +110,7 @@ describe('SocialLinks', () => {
     });
 
     it('renders nothing when no social links data', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: null,
         loading: false,
         error: null,
@@ -120,7 +122,7 @@ describe('SocialLinks', () => {
     });
 
     it('renders nothing when empty social links array', () => {
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: [],
         loading: false,
         error: null,
@@ -134,7 +136,7 @@ describe('SocialLinks', () => {
 
   describe('default theme rendering', () => {
     beforeEach(() => {
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: mockSocialLinks,
         loading: false,
         error: null,
@@ -165,7 +167,7 @@ describe('SocialLinks', () => {
         { ...mockSocialLinks[2], order: 2 }, // LinkedIn, order 2
       ];
 
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: unorderedLinks,
         loading: false,
         error: null,
@@ -251,7 +253,7 @@ describe('SocialLinks', () => {
 
   describe('CSS Zen theme rendering', () => {
     beforeEach(() => {
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: mockSocialLinks,
         loading: false,
         error: null,
@@ -305,7 +307,7 @@ describe('SocialLinks', () => {
         },
       ];
 
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: linksWithC,
         loading: false,
         error: null,
@@ -388,7 +390,7 @@ describe('SocialLinks', () => {
         },
       ];
 
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: csszenLinks,
         loading: false,
         error: null,
@@ -407,7 +409,7 @@ describe('SocialLinks', () => {
 
   describe('accessibility', () => {
     beforeEach(() => {
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: mockSocialLinks,
         loading: false,
         error: null,
@@ -480,7 +482,7 @@ describe('SocialLinks', () => {
         },
       ];
 
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: incompleteLinks,
         loading: false,
         error: null,
@@ -504,7 +506,7 @@ describe('SocialLinks', () => {
         },
       ];
 
-      useContentfulHook.useContentful.mockReturnValue({
+      useContentfulMock.mockReturnValue({
         data: unorderedLinks,
         loading: false,
         error: null,
