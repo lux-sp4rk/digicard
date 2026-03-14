@@ -84,56 +84,6 @@ const SoundCloudWidget = ({ theme }) => {
             src={embedUrl}
             className="w-full rounded-t-lg"
           ></iframe>
-          <div className="p-6">
-            <h3
-              className={clsx(
-                'text-xl font-semibold mb-3',
-                'text-github-text dark:text-dracula-purple',
-                'matrix:text-matrix-highlight',
-                'web2:text-web2-text'
-              )}
-            >
-              {track.title}
-            </h3>
-            <p
-              className={clsx(
-                'text-sm mb-4',
-                'text-github-mutedText dark:text-dracula-foreground',
-                'matrix:text-matrix-green',
-                'web2:text-web2-mutedText'
-              )}
-            >
-              {track.description}
-            </p>
-            <div className="flex items-center justify-between">
-              <span
-                className={clsx(
-                  'text-xs',
-                  'text-github-mutedText dark:text-dracula-comment',
-                  'matrix:text-matrix-green',
-                  'web2:text-web2-mutedText'
-                )}
-              >
-                {track.publishDate &&
-                  new Date(track.publishDate).toLocaleDateString()}
-              </span>
-              <a
-                href={track.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={clsx(
-                  'inline-flex items-center gap-2 px-3 py-1 rounded text-xs font-medium transition-colors',
-                  'text-github-mutedText hover:text-github-text',
-                  'matrix:text-matrix-green matrix:hover:text-matrix-highlight',
-                  'web2:text-web2-mutedText web2:hover:text-web2-text',
-                  'dark:text-dracula-foreground dark:hover:text-dracula-pink'
-                )}
-              >
-                <DynamicIcon iconName="FaExternalLinkAlt" />
-                Listen on SoundCloud
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </section>

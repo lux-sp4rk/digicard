@@ -42,7 +42,6 @@ describe('SoundCloudWidget', () => {
     render(<SoundCloudWidget />);
     // Use querySelector to find iframe since it's not accessible by role
     expect(document.querySelector('iframe')).toBeInTheDocument();
-    expect(screen.getByText('Test Track')).toBeInTheDocument();
   });
 
   it('renders loading state when data is loading', () => {
