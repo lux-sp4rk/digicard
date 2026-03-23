@@ -319,3 +319,29 @@ export const getBio = async () => {
     return null;
   }
 };
+
+export const getInstagramPost = async () => {
+  try {
+    const response = await client.getEntries({
+      content_type: 'instagramPost',
+      limit: 1,
+    });
+    if (response.items.length > 0) {
+      const item = response.items[0];
+      return {
+        id: item.sys.id,
+        title: item.fields.title,
+        caption: item.fields.caption,
+        imageUrl:
+          item.fields.imageUrl || item.fields.image?.fields?.file?.url || '',
+        permalink: item.fields.permalink || item.fields.url,
+        publishDate: item.fields.publishDate,
+        active: item.fields.active !== false,
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching Instagram post:', error);
+    return null;
+  }
+};
