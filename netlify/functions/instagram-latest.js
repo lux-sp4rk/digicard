@@ -46,7 +46,20 @@ export const handler = async event => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`RapidAPI error: ${response.status} - ${errorText}`);
+      console.error(`RapidAPI error ${response.status}:`, errorText);
+      return {
+        statusCode: response.status,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Methods': 'GET',
+        },
+        body: JSON.stringify({
+          error: `RapidAPI error: ${response.status}`,
+          details: errorText,
+        }),
+      };
     }
 
     const data = await response.json();
@@ -101,9 +114,13 @@ export const handler = async event => {
       statusCode: 500,
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'GET',
       },
       body: JSON.stringify({
         error: 'Failed to fetch latest post from Instagram',
+        details: error.message,
       }),
     };
   }

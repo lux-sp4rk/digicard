@@ -341,7 +341,7 @@ export const getInstagramPost = async () => {
     }
     return null;
   } catch (error) {
-    console.error('Error fetching Instagram post:', error);
+    // Content type may not exist yet — return null to trigger API fallback
     return null;
   }
 };
