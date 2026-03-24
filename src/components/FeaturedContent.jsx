@@ -114,26 +114,38 @@ const FeaturedContent = ({ theme }) => {
 
   // Determine final YouTube video data
   const youTubeVideo = useMemo(() => {
+    // Don't use fallback while still loading
+    if (cmsLoading || apiLoading) {
+      return cmsVideo || apiVideo || null;
+    }
     const video =
       cmsVideo && cmsVideo.active !== false
         ? cmsVideo
         : apiVideo || fallbackVideoData;
     return video;
-  }, [cmsVideo, apiVideo]);
+  }, [cmsVideo, apiVideo, cmsLoading, apiLoading]);
 
   // Determine final Substack post data
   const substackData = useMemo(() => {
+    // Don't use fallback while still loading
+    if (substackLoading) {
+      return substackPost || null;
+    }
     return substackPost || (import.meta.env.DEV ? fallbackPostData : null);
-  }, [substackPost]);
+  }, [substackPost, substackLoading]);
 
   // Determine final Instagram post data
   const instagramPost = useMemo(() => {
+    // Don't use fallback while still loading
+    if (instagramCmsLoading || instagramApiLoading) {
+      return cmsInstagram || apiInstagram || null;
+    }
     const post =
       cmsInstagram && cmsInstagram.active !== false
         ? cmsInstagram
         : apiInstagram || fallbackInstagramData;
     return post;
-  }, [cmsInstagram, apiInstagram]);
+  }, [cmsInstagram, apiInstagram, instagramCmsLoading, instagramApiLoading]);
 
   // Create content items array with normalized dates
   const contentItems = useMemo(() => {
