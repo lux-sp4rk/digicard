@@ -21,6 +21,12 @@ vi.mock('../../src/utils/youtube', () => ({
   getLatestYouTubeVideo: (...args) => mockGetLatestYouTubeVideo(...args),
 }));
 
+// Mock instagram utility
+vi.mock('../../src/utils/instagram', () => ({
+  getLatestInstagramPost: vi.fn().mockResolvedValue(null),
+  truncateCaption: vi.fn(text => text),
+}));
+
 // Mock fallback data - return null so tests don't see fallback
 vi.mock('../../src/dev-data/youtubeVideo.json', () => ({
   default: null,

@@ -30,7 +30,24 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+// Mock localStorage globally
+const localStorageMock = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+};
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+  writable: true,
+});
+Object.defineProperty(global, 'localStorage', {
+  value: localStorageMock,
+  writable: true,
+});
+
 // Cleanup DOM after each test to prevent state leakage between tests
 afterEach(() => {
   cleanup();
+  vi.clearAllMocks();
 });
