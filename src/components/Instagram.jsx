@@ -1,47 +1,34 @@
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import DynamicIcon from './DynamicIcon';
-import { useContentful } from '../hooks/useContentful';
-import { getInstagramPost } from '../utils/contentful';
 import { getLatestInstagramPost, truncateCaption } from '../utils/instagram';
 import Loading from './Loading';
 import fallbackPostData from '../dev-data/instagramPost.json';
 
 const Instagram = ({ theme }) => {
-  const {
-    data: cmsPost,
-    loading: cmsLoading,
-    error: cmsError,
-  } = useContentful(getInstagramPost);
-  const [apiPost, setApiPost] = useState(null);
-  const [apiLoading, setApiLoading] = useState(false);
-  const [apiAttempted, setApiAttempted] = useState(false);
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Determine if we need to fetch from Instagram API
-  // Fetch if: Contentful failed, returned null, or post is inactive
-  const needsApiFallback =
-    !cmsLoading && (cmsError || !cmsPost || cmsPost.active === false);
-
-  // Fetch from Instagram API when Contentful doesn't have an active featured post
   useEffect(() => {
-    if (needsApiFallback && !apiAttempted) {
-      setApiLoading(true);
-      setApiAttempted(true);
-      getLatestInstagramPost()
-        .then(post => {
-          setApiPost(post);
-        })
-        .finally(() => {
-          setApiLoading(false);
-        });
-    }
-  }, [needsApiFallback, apiAttempted]);
-
-  // Use Contentful post if available and active, otherwise use API post, or fallback to dev data
-  const post =
-    cmsPost && cmsPost.active !== false ? cmsPost : apiPost || fallbackPostData;
-
-  const loading = (cmsLoading || apiLoading) && !post;
+    let cancelled = false;
+    setLoading(true);
+    getLatestInstagramPost()
+      .then(result => {
+        if (!cancelled) {
+          setPost(result || fallbackPostData);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setPost(fallbackPostData);
+          setLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (loading) return <Loading />;
   if (!post || post.active === false) return null;
