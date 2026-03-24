@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useContentful } from '../hooks/useContentful';
 import { useSubstack } from '../hooks/useSubstack';
-import { getYouTubeVideo, getInstagramPost } from '../utils/contentful';
+import { getYouTubeVideo } from '../utils/contentful';
 import { getLatestYouTubeVideo } from '../utils/youtube';
 import { getLatestInstagramPost } from '../utils/instagram';
 import Loading from './Loading';
@@ -56,19 +56,12 @@ const FeaturedContent = ({ theme }) => {
   // Get Substack data
   const { post: substackPost, loading: substackLoading } = useSubstack();
 
-  // Get Instagram data from Contentful
-  const {
-    data: cmsInstagram,
-    loading: instagramCmsLoading,
-    error: instagramCmsError,
-  } = useContentful(getInstagramPost);
-
   // State for API fallbacks
   const [apiVideo, setApiVideo] = useState(null);
   const [apiLoading, setApiLoading] = useState(false);
   const [apiAttempted, setApiAttempted] = useState(false);
 
-  // State for Instagram API fallback
+  // State for Instagram API (fetched directly, no Contentful)
   const [apiInstagram, setApiInstagram] = useState(null);
   const [instagramApiLoading, setInstagramApiLoading] = useState(false);
   const [instagramApiAttempted, setInstagramApiAttempted] = useState(false);
@@ -78,9 +71,7 @@ const FeaturedContent = ({ theme }) => {
     !cmsLoading && (cmsError || !cmsVideo || cmsVideo.active === false);
 
   // Determine if we need to fetch from Instagram API
-  const needsInstagramApiFallback =
-    !instagramCmsLoading &&
-    (instagramCmsError || !cmsInstagram || cmsInstagram.active === false);
+  const needsInstagramApiFallback = !instagramApiAttempted;
 
   // Fetch from YouTube API when Contentful doesn't have an active featured video
   useEffect(() => {
@@ -97,9 +88,9 @@ const FeaturedContent = ({ theme }) => {
     }
   }, [needsApiFallback, apiAttempted]);
 
-  // Fetch from Instagram API when Contentful doesn't have an active featured post
+  // Fetch from Instagram API directly (no Contentful layer)
   useEffect(() => {
-    if (needsInstagramApiFallback && !instagramApiAttempted) {
+    if (needsInstagramApiFallback) {
       setInstagramApiLoading(true);
       setInstagramApiAttempted(true);
       getLatestInstagramPost()
@@ -110,7 +101,7 @@ const FeaturedContent = ({ theme }) => {
           setInstagramApiLoading(false);
         });
     }
-  }, [needsInstagramApiFallback, instagramApiAttempted]);
+  }, [needsInstagramApiFallback]);
 
   // Determine final YouTube video data
   const youTubeVideo = useMemo(() => {
@@ -137,15 +128,11 @@ const FeaturedContent = ({ theme }) => {
   // Determine final Instagram post data
   const instagramPost = useMemo(() => {
     // Don't use fallback while still loading
-    if (instagramCmsLoading || instagramApiLoading) {
-      return cmsInstagram || apiInstagram || null;
+    if (instagramApiLoading) {
+      return apiInstagram || null;
     }
-    const post =
-      cmsInstagram && cmsInstagram.active !== false
-        ? cmsInstagram
-        : apiInstagram || fallbackInstagramData;
-    return post;
-  }, [cmsInstagram, apiInstagram, instagramCmsLoading, instagramApiLoading]);
+    return apiInstagram || fallbackInstagramData;
+  }, [apiInstagram, instagramApiLoading]);
 
   // Create content items array with normalized dates
   const contentItems = useMemo(() => {
@@ -198,11 +185,7 @@ const FeaturedContent = ({ theme }) => {
 
   // Determine loading state
   const isLoading =
-    (cmsLoading ||
-      apiLoading ||
-      substackLoading ||
-      instagramCmsLoading ||
-      instagramApiLoading) &&
+    (cmsLoading || apiLoading || substackLoading || instagramApiLoading) &&
     contentItems.length === 0;
 
   if (isLoading) {
