@@ -91,12 +91,11 @@ export const handler = async event => {
         latestPost?.caption ||
         latestPost?.text ||
         '',
-      imageUrl:
-        latestPost?.thumbnail_url ||
-        latestPost?.image_versions2?.candidates?.[0]?.url ||
-        latestPost?.media_url ||
-        latestPost?.display_url ||
-        '',
+      imageUrl: latestPost.thumbnail_url
+        ? latestPost.thumbnail_url
+        : latestPost.image_versions2?.candidates?.[0]?.url
+          ? latestPost.image_versions2.candidates[0].url
+          : latestPost.media_url || latestPost.display_url || '',
       permalink:
         latestPost?.permalink ||
         latestPost?.url ||

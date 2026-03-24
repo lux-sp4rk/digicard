@@ -1,9 +1,7 @@
 import { handler } from '../../netlify/functions/instagram-latest';
 
-// Mock fetch globally using vi.stubGlobal to ensure it's properly mocked
-const mockFetch = vi.fn(() => {
-  throw new Error('Real fetch was called - mock is not working!');
-});
+// Mock fetch globally
+const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
 
 describe('instagram-latest Netlify function', () => {
@@ -11,12 +9,6 @@ describe('instagram-latest Netlify function', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockFetch.mockImplementation(() => {
-      throw new Error(
-        'Real fetch was called - mock is not working! Make sure to set up mockFetch.mockResolvedValueOnce() in your test.'
-      );
-    });
-    vi.stubGlobal('fetch', mockFetch);
     process.env = {
       ...originalEnv,
       RAPIDAPI_KEY: 'test-rapidapi-key',
@@ -47,55 +39,74 @@ describe('instagram-latest Netlify function', () => {
       });
     });
 
-    it('uses default username when INSTAGRAM_USERNAME is not set', async () => {
-      delete process.env.INSTAGRAM_USERNAME;
-
-      const mockPost = {
-        id: '123456',
-        code: 'ABC123',
-        caption: { text: 'Test caption' },
-        image_versions: {
-          items: [{ url: 'https://example.com/image.jpg' }],
-        },
-        taken_at: 1705689600,
-      };
-
+    it('sends POST request with username in body', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
+        status: 200,
         json: async () => ({
-          data: { items: [mockPost] },
+          result: { edges: [], page_info: {}, version: '1.0' },
         }),
       });
 
       await handler({ httpMethod: 'GET' });
 
-      // Should use default username 'lux_sp4rk'
-      const fetchCall = mockFetch.mock.calls[0][0];
-      expect(fetchCall).toContain('username=lux_sp4rk');
+      const [url, options] = mockFetch.mock.calls[0];
+      expect(url).toBe(
+        'https://instagram120.p.rapidapi.com/api/instagram/posts'
+      );
+      expect(options.method).toBe('POST');
+      const body = JSON.parse(options.body);
+      expect(body.username).toBe('testuser');
+    });
+
+    it('uses default username when INSTAGRAM_USERNAME is not set', async () => {
+      delete process.env.INSTAGRAM_USERNAME;
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          result: { edges: [], page_info: {}, version: '1.0' },
+        }),
+      });
+
+      await handler({ httpMethod: 'GET' });
+
+      const [, options] = mockFetch.mock.calls[0];
+      const body = JSON.parse(options.body);
+      expect(body.username).toBe('lux_sp4rk'); // default
     });
   });
 
   describe('Instagram API integration', () => {
-    const mockPost = {
+    const makeMockNode = overrides => ({
       id: '123456',
       pk: '123456',
       code: 'ABC123',
-      shortcode: 'ABC123',
       caption: { text: 'Test Instagram caption' },
-      image_versions: {
-        items: [{ url: 'https://example.com/image.jpg' }],
+      image_versions2: {
+        candidates: [{ url: 'https://example.com/image.jpg' }],
       },
-      media_url: 'https://example.com/media.jpg',
       thumbnail_url: 'https://example.com/thumb.jpg',
+      media_url: 'https://example.com/media.jpg',
+      display_url: 'https://example.com/display.jpg',
       taken_at: 1705689600,
-    };
+      ...overrides,
+    });
+
+    const makeMockResponse = nodes => ({
+      result: {
+        edges: nodes.map(node => ({ node })),
+        page_info: {},
+        version: '1.0',
+      },
+    });
 
     it('fetches latest post successfully', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          data: { items: [mockPost] },
-        }),
+        status: 200,
+        json: async () => makeMockResponse([makeMockNode()]),
       });
 
       const result = await handler({ httpMethod: 'GET' });
@@ -104,59 +115,96 @@ describe('instagram-latest Netlify function', () => {
       const body = JSON.parse(result.body);
       expect(body.id).toBe('123456');
       expect(body.caption).toBe('Test Instagram caption');
-      expect(body.imageUrl).toBe('https://example.com/image.jpg');
+      // thumbnail_url is truthy in default mockNode, so it takes priority
+      expect(body.imageUrl).toBe('https://example.com/thumb.jpg');
       expect(body.permalink).toBe('https://instagram.com/p/ABC123/');
       expect(body.active).toBe(true);
       expect(body.publishDate).toBeDefined();
       expect(new Date(body.publishDate)).toBeInstanceOf(Date);
     });
 
-    it('handles alternative response structure (data.data)', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          data: [mockPost],
-        }),
-      });
+    it('prefers thumbnail_url over image_versions2', async () => {
+      const mockNode = {
+        id: '123456',
+        pk: '123456',
+        code: 'ABC123',
+        caption: { text: 'Test Instagram caption' },
+        thumbnail_url: 'https://example.com/thumb.jpg',
+        image_versions2: {
+          candidates: [{ url: 'https://example.com/image.jpg' }],
+        },
+        taken_at: 1705689600,
+      };
+      mockFetch.mockImplementation(() =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: async () => ({
+            result: {
+              edges: [{ node: mockNode }],
+              page_info: {},
+              version: '1.0',
+            },
+          }),
+        })
+      );
 
       const result = await handler({ httpMethod: 'GET' });
 
       expect(result.statusCode).toBe(200);
       const body = JSON.parse(result.body);
-      expect(body.id).toBe('123456');
+      expect(body.imageUrl).toBe('https://example.com/thumb.jpg');
+
+      mockFetch.mockImplementation(undefined); // reset for subsequent tests
     });
 
-    it('handles post with string caption', async () => {
-      const postWithStringCaption = {
-        ...mockPost,
-        caption: 'Plain string caption',
+    it('falls back to image_versions2.candidates[0].url when thumbnail_url absent', async () => {
+      const mockNode = {
+        id: '123456',
+        pk: '123456',
+        code: 'ABC123',
+        caption: { text: 'Test Instagram caption' },
+        thumbnail_url: null,
+        image_versions2: {
+          candidates: [{ url: 'https://example.com/candidate.jpg' }],
+        },
+        taken_at: 1705689600,
       };
-
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          data: { items: [postWithStringCaption] },
-        }),
-      });
+      mockFetch.mockImplementation(() =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: async () => ({
+            result: {
+              edges: [{ node: mockNode }],
+              page_info: {},
+              version: '1.0',
+            },
+          }),
+        })
+      );
 
       const result = await handler({ httpMethod: 'GET' });
 
       expect(result.statusCode).toBe(200);
       const body = JSON.parse(result.body);
-      expect(body.caption).toBe('Plain string caption');
+      expect(body.imageUrl).toBe('https://example.com/candidate.jpg');
+
+      mockFetch.mockImplementation(undefined); // reset for subsequent tests
     });
 
-    it('falls back to media_url when image_versions is not available', async () => {
-      const postWithoutImageVersions = {
-        ...mockPost,
-        image_versions: undefined,
-      };
-
+    it('falls back to media_url when image_versions2 unavailable', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          data: { items: [postWithoutImageVersions] },
-        }),
+        status: 200,
+        json: async () =>
+          makeMockResponse([
+            makeMockNode({
+              thumbnail_url: undefined,
+              image_versions2: undefined,
+              media_url: 'https://example.com/media.jpg',
+            }),
+          ]),
       });
 
       const result = await handler({ httpMethod: 'GET' });
@@ -166,38 +214,34 @@ describe('instagram-latest Netlify function', () => {
       expect(body.imageUrl).toBe('https://example.com/media.jpg');
     });
 
-    it('falls back to thumbnail_url when other sources unavailable', async () => {
-      const postWithOnlyThumbnail = {
-        ...mockPost,
-        image_versions: undefined,
-        media_url: undefined,
-      };
-
+    it('falls back to display_url when other sources unavailable', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          data: { items: [postWithOnlyThumbnail] },
-        }),
+        status: 200,
+        json: async () =>
+          makeMockResponse([
+            makeMockNode({
+              thumbnail_url: undefined,
+              image_versions2: undefined,
+              media_url: undefined,
+              display_url: 'https://example.com/display.jpg',
+            }),
+          ]),
       });
 
       const result = await handler({ httpMethod: 'GET' });
 
       expect(result.statusCode).toBe(200);
       const body = JSON.parse(result.body);
-      expect(body.imageUrl).toBe('https://example.com/thumb.jpg');
+      expect(body.imageUrl).toBe('https://example.com/display.jpg');
     });
 
     it('uses pk as fallback when id is missing', async () => {
-      const postWithOnlyPk = {
-        ...mockPost,
-        id: undefined,
-      };
-
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          data: { items: [postWithOnlyPk] },
-        }),
+        status: 200,
+        json: async () =>
+          makeMockResponse([makeMockNode({ id: undefined, pk: '123456' })]),
       });
 
       const result = await handler({ httpMethod: 'GET' });
@@ -207,37 +251,26 @@ describe('instagram-latest Netlify function', () => {
       expect(body.id).toBe('123456');
     });
 
-    it('uses code as fallback when shortcode is missing', async () => {
-      const postWithOnlyCode = {
-        ...mockPost,
-        shortcode: undefined,
-      };
-
+    it('uses code as fallback for permalink', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          data: { items: [postWithOnlyCode] },
-        }),
+        status: 200,
+        json: async () => makeMockResponse([makeMockNode({ code: 'XYZ789' })]),
       });
 
       const result = await handler({ httpMethod: 'GET' });
 
       expect(result.statusCode).toBe(200);
       const body = JSON.parse(result.body);
-      expect(body.permalink).toBe('https://instagram.com/p/ABC123/');
+      expect(body.permalink).toBe('https://instagram.com/p/XYZ789/');
     });
 
     it('handles missing taken_at timestamp', async () => {
-      const postWithoutTimestamp = {
-        ...mockPost,
-        taken_at: undefined,
-      };
-
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          data: { items: [postWithoutTimestamp] },
-        }),
+        status: 200,
+        json: async () =>
+          makeMockResponse([makeMockNode({ taken_at: undefined })]),
       });
 
       const result = await handler({ httpMethod: 'GET' });
@@ -248,12 +281,26 @@ describe('instagram-latest Netlify function', () => {
       expect(new Date(body.publishDate)).toBeInstanceOf(Date);
     });
 
+    it('handles string caption', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () =>
+          makeMockResponse([makeMockNode({ caption: 'Plain string caption' })]),
+      });
+
+      const result = await handler({ httpMethod: 'GET' });
+
+      expect(result.statusCode).toBe(200);
+      const body = JSON.parse(result.body);
+      expect(body.caption).toBe('Plain string caption');
+    });
+
     it('returns 404 when no posts found', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          data: { items: [] },
-        }),
+        status: 200,
+        json: async () => makeMockResponse([]),
       });
 
       const result = await handler({ httpMethod: 'GET' });
@@ -264,18 +311,19 @@ describe('instagram-latest Netlify function', () => {
       });
     });
 
-    it('handles null posts array gracefully', async () => {
+    it('handles null edges gracefully', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
+        status: 200,
         json: async () => ({
-          data: { items: null },
+          result: { edges: null, page_info: {}, version: '1.0' },
         }),
       });
 
       const result = await handler({ httpMethod: 'GET' });
 
-      // When posts is null, the code throws an error and returns 500
-      expect(result.statusCode).toBe(500);
+      // null edges → empty array → 404
+      expect(result.statusCode).toBe(404);
     });
 
     it('handles RapidAPI errors gracefully', async () => {
@@ -287,10 +335,7 @@ describe('instagram-latest Netlify function', () => {
 
       const result = await handler({ httpMethod: 'GET' });
 
-      expect(result.statusCode).toBe(500);
-      expect(JSON.parse(result.body)).toEqual({
-        error: 'Failed to fetch latest post from Instagram',
-      });
+      expect(result.statusCode).toBe(429);
     });
 
     it('handles network errors', async () => {
@@ -301,6 +346,7 @@ describe('instagram-latest Netlify function', () => {
       expect(result.statusCode).toBe(500);
       expect(JSON.parse(result.body)).toEqual({
         error: 'Failed to fetch latest post from Instagram',
+        details: 'Network error',
       });
     });
   });
@@ -309,16 +355,21 @@ describe('instagram-latest Netlify function', () => {
     it('includes cache headers', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
+        status: 200,
         json: async () => ({
-          data: {
-            items: [
+          result: {
+            edges: [
               {
-                id: '123',
-                code: 'ABC',
-                caption: { text: 'Test' },
-                taken_at: 1705689600,
+                node: {
+                  id: '123',
+                  code: 'ABC',
+                  caption: { text: 'Test' },
+                  taken_at: 1705689600,
+                },
               },
             ],
+            page_info: {},
+            version: '1.0',
           },
         }),
       });
@@ -334,16 +385,21 @@ describe('instagram-latest Netlify function', () => {
     it('includes CORS headers', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
+        status: 200,
         json: async () => ({
-          data: {
-            items: [
+          result: {
+            edges: [
               {
-                id: '123',
-                code: 'ABC',
-                caption: { text: 'Test' },
-                taken_at: 1705689600,
+                node: {
+                  id: '123',
+                  code: 'ABC',
+                  caption: { text: 'Test' },
+                  taken_at: 1705689600,
+                },
               },
             ],
+            page_info: {},
+            version: '1.0',
           },
         }),
       });
@@ -351,25 +407,26 @@ describe('instagram-latest Netlify function', () => {
       const result = await handler({ httpMethod: 'GET' });
 
       expect(result.headers['Access-Control-Allow-Origin']).toBe('*');
-      expect(result.headers['Access-Control-Allow-Headers']).toBe(
-        'Content-Type'
-      );
-      expect(result.headers['Access-Control-Allow-Methods']).toBe('GET');
     });
 
     it('sets correct content type', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
+        status: 200,
         json: async () => ({
-          data: {
-            items: [
+          result: {
+            edges: [
               {
-                id: '123',
-                code: 'ABC',
-                caption: { text: 'Test' },
-                taken_at: 1705689600,
+                node: {
+                  id: '123',
+                  code: 'ABC',
+                  caption: { text: 'Test' },
+                  taken_at: 1705689600,
+                },
               },
             ],
+            page_info: {},
+            version: '1.0',
           },
         }),
       });

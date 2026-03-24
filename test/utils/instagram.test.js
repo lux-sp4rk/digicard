@@ -12,9 +12,7 @@ globalThis.fetch = mockFetch;
 const createLocalStorageMock = () => {
   let store = {};
   return {
-    getItem: vi.fn(key => {
-      return store[key] || null;
-    }),
+    getItem: vi.fn(key => store[key] || null),
     setItem: vi.fn((key, value) => {
       store[key] = value.toString();
     }),
@@ -32,7 +30,6 @@ const createLocalStorageMock = () => {
 
 const localStorageMock = createLocalStorageMock();
 
-// Set up localStorage mock for both window and global
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
   writable: true,
@@ -59,6 +56,8 @@ describe('getLatestInstagramPost', () => {
   it('fetches post from Netlify function successfully', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      status: 200,
+      headers: { get: () => 'application/json' },
       json: async () => mockPost,
     });
 
@@ -73,7 +72,7 @@ describe('getLatestInstagramPost', () => {
   it('returns cached data when available and valid', async () => {
     const cacheEntry = {
       data: mockPost,
-      timestamp: Date.now() - 1000 * 60 * 60, // 1 hour ago
+      timestamp: Date.now() - 1000 * 60 * 60,
     };
     localStorageMock.setItem(
       'instagram_latest_post',
@@ -89,7 +88,7 @@ describe('getLatestInstagramPost', () => {
   it('fetches from API when cache is expired', async () => {
     const expiredCacheEntry = {
       data: mockPost,
-      timestamp: Date.now() - 25 * 60 * 60 * 1000, // 25 hours ago
+      timestamp: Date.now() - 25 * 60 * 60 * 1000,
     };
     localStorageMock.setItem(
       'instagram_latest_post',
@@ -99,6 +98,8 @@ describe('getLatestInstagramPost', () => {
     const newPost = { ...mockPost, id: 'new456' };
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      status: 200,
+      headers: { get: () => 'application/json' },
       json: async () => newPost,
     });
 
@@ -111,6 +112,8 @@ describe('getLatestInstagramPost', () => {
   it('fetches from API when cache is missing', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      status: 200,
+      headers: { get: () => 'application/json' },
       json: async () => mockPost,
     });
 
@@ -132,6 +135,7 @@ describe('getLatestInstagramPost', () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
       status: 500,
+      headers: { get: () => 'application/json' },
     });
 
     const result = await getLatestInstagramPost();
@@ -158,6 +162,8 @@ describe('getLatestInstagramPost', () => {
 
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      status: 200,
+      headers: { get: () => 'application/json' },
       json: async () => mockPost,
     });
 
@@ -170,6 +176,8 @@ describe('getLatestInstagramPost', () => {
   it('caches successful responses', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      status: 200,
+      headers: { get: () => 'application/json' },
       json: async () => mockPost,
     });
 
@@ -185,6 +193,7 @@ describe('getLatestInstagramPost', () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
       status: 500,
+      headers: { get: () => 'application/json' },
     });
 
     await getLatestInstagramPost();
@@ -200,6 +209,8 @@ describe('getLatestInstagramPost', () => {
 
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      status: 200,
+      headers: { get: () => 'application/json' },
       json: async () => mockPost,
     });
 
@@ -217,7 +228,7 @@ describe('getLatestInstagramPost', () => {
   it('removes expired cache entry', async () => {
     const expiredCacheEntry = {
       data: mockPost,
-      timestamp: Date.now() - 25 * 60 * 60 * 1000, // 25 hours ago
+      timestamp: Date.now() - 25 * 60 * 60 * 1000,
     };
     localStorageMock.setItem(
       'instagram_latest_post',
@@ -226,6 +237,8 @@ describe('getLatestInstagramPost', () => {
 
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      status: 200,
+      headers: { get: () => 'application/json' },
       json: async () => mockPost,
     });
 
@@ -239,36 +252,31 @@ describe('getLatestInstagramPost', () => {
 
 describe('truncateCaption', () => {
   it('returns caption unchanged when under max length', () => {
-    const caption = 'Short caption';
-    const result = truncateCaption(caption, 50);
-    expect(result).toBe(caption);
+    expect(truncateCaption('Short caption', 50)).toBe('Short caption');
   });
 
   it('truncates caption when over max length', () => {
-    const caption = 'This is a very long caption that needs to be truncated';
-    const result = truncateCaption(caption, 20);
+    const result = truncateCaption(
+      'This is a very long caption that needs to be truncated',
+      20
+    );
     expect(result).toBe('This is a very long...');
-    expect(result.length).toBeLessThanOrEqual(23); // 20 + 3 for ellipsis
   });
 
   it('handles null caption', () => {
-    const result = truncateCaption(null);
-    expect(result).toBeNull();
+    expect(truncateCaption(null)).toBeNull();
   });
 
   it('handles undefined caption', () => {
-    const result = truncateCaption(undefined);
-    expect(result).toBeUndefined();
+    expect(truncateCaption(undefined)).toBeUndefined();
   });
 
   it('handles empty string', () => {
-    const result = truncateCaption('');
-    expect(result).toBe('');
+    expect(truncateCaption('')).toBe('');
   });
 
   it('uses default max length of 120', () => {
-    const longCaption = 'a'.repeat(150);
-    const result = truncateCaption(longCaption);
+    const result = truncateCaption('a'.repeat(150));
     expect(result).toBe('a'.repeat(120).trim() + '...');
   });
 });
