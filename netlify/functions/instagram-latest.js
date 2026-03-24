@@ -63,20 +63,12 @@ export const handler = async event => {
     }
 
     const data = await response.json();
+    console.log('Instagram API raw response:', JSON.stringify(data));
 
-    // Log the raw response shape for debugging
-    console.log('Instagram API response:', JSON.stringify(data, null, 2));
-
-    // Extract posts — flexible to different response shapes
-    const posts =
-      data.data?.items ||
-      data.data ||
-      data.items ||
-      data.results ||
-      data.posts ||
-      Array.isArray(data)
-        ? data
-        : [];
+    // Extract posts from result.edges[].node structure
+    const result = data.result || data;
+    const edges = result.edges || result.items || [];
+    const posts = edges.map(e => e.node || e);
 
     if (!posts || posts.length === 0) {
       return {
@@ -100,9 +92,9 @@ export const handler = async event => {
         latestPost?.text ||
         '',
       imageUrl:
+        latestPost?.thumbnail_url ||
+        latestPost?.image_versions2?.candidates?.[0]?.url ||
         latestPost?.media_url ||
-        latestPost?.image?.[0]?.url ||
-        latestPost?.thumbnail ||
         latestPost?.display_url ||
         '',
       permalink:
