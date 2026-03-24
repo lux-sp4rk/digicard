@@ -1,4 +1,4 @@
-const RAPIDAPI_BASE = 'https://instagram-scraper-api2.p.rapidapi.com';
+const RAPIDAPI_BASE = 'https://instagram120.p.rapidapi.com';
 const CACHE_MAX_AGE = 86400; // 24 hours in seconds
 
 /**
@@ -33,16 +33,16 @@ export const handler = async event => {
   }
 
   try {
-    // Fetch user feed from RapidAPI
-    const response = await fetch(
-      `${RAPIDAPI_BASE}/user-feed?username=${encodeURIComponent(INSTAGRAM_USERNAME)}`,
-      {
-        headers: {
-          'x-rapidapi-key': RAPIDAPI_KEY,
-          'x-rapidapi-host': 'instagram-scraper-api2.p.rapidapi.com',
-        },
-      }
-    );
+    // Fetch user posts from RapidAPI
+    const response = await fetch(`${RAPIDAPI_BASE}/api/instagram/posts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-rapidapi-key': RAPIDAPI_KEY,
+        'x-rapidapi-host': 'instagram120.p.rapidapi.com',
+      },
+      body: JSON.stringify({ username: INSTAGRAM_USERNAME, maxId: '' }),
+    });
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -64,9 +64,19 @@ export const handler = async event => {
 
     const data = await response.json();
 
-    // Extract the latest post from the response
-    // Note: Response structure depends on the specific RapidAPI endpoint used
-    const posts = data.data?.items || data.data || [];
+    // Log the raw response shape for debugging
+    console.log('Instagram API response:', JSON.stringify(data, null, 2));
+
+    // Extract posts — flexible to different response shapes
+    const posts =
+      data.data?.items ||
+      data.data ||
+      data.items ||
+      data.results ||
+      data.posts ||
+      Array.isArray(data)
+        ? data
+        : [];
 
     if (!posts || posts.length === 0) {
       return {
@@ -79,21 +89,31 @@ export const handler = async event => {
       };
     }
 
-    const latestPost = posts[0];
+    const latestPost = Array.isArray(posts) ? posts[0] : posts;
 
     // Normalize the response to match Contentful schema
     const post = {
-      id: latestPost.id || latestPost.pk || 'unknown',
-      caption: latestPost.caption?.text || latestPost.caption || '',
-      imageUrl:
-        latestPost.image_versions?.items?.[0]?.url ||
-        latestPost.media_url ||
-        latestPost.thumbnail_url ||
+      id: latestPost?.id || latestPost?.pk || latestPost?.code || 'unknown',
+      caption:
+        latestPost?.caption?.text ||
+        latestPost?.caption ||
+        latestPost?.text ||
         '',
-      permalink: `https://instagram.com/p/${latestPost.code || latestPost.shortcode}/`,
-      publishDate: latestPost.taken_at
-        ? new Date(latestPost.taken_at * 1000).toISOString()
-        : new Date().toISOString(),
+      imageUrl:
+        latestPost?.media_url ||
+        latestPost?.image?.[0]?.url ||
+        latestPost?.thumbnail ||
+        latestPost?.display_url ||
+        '',
+      permalink:
+        latestPost?.permalink ||
+        latestPost?.url ||
+        (latestPost?.code ? `https://instagram.com/p/${latestPost.code}/` : ''),
+      publishDate: latestPost?.timestamp
+        ? new Date(latestPost.timestamp * 1000).toISOString()
+        : latestPost?.taken_at
+          ? new Date(latestPost.taken_at * 1000).toISOString()
+          : new Date().toISOString(),
       active: true,
     };
 
