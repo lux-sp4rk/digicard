@@ -21,6 +21,12 @@ vi.mock('../../src/utils/youtube', () => ({
   getLatestYouTubeVideo: (...args) => mockGetLatestYouTubeVideo(...args),
 }));
 
+// Mock instagram utility
+vi.mock('../../src/utils/instagram', () => ({
+  getLatestInstagramPost: vi.fn().mockResolvedValue(null),
+  truncateCaption: vi.fn(text => text),
+}));
+
 // Mock fallback data - return null so tests don't see fallback
 vi.mock('../../src/dev-data/youtubeVideo.json', () => ({
   default: null,
@@ -301,7 +307,7 @@ describe('FeaturedContent', () => {
   });
 
   describe('Loading states', () => {
-    it('shows loading when both sources are loading', async () => {
+    it('shows loading when all three sources are loading', async () => {
       mockUseContentful.mockReturnValue({
         data: null,
         loading: true,
@@ -311,6 +317,12 @@ describe('FeaturedContent', () => {
         post: null,
         loading: true,
       });
+      // Keep Instagram API from resolving so it stays in loading state
+      const { getLatestInstagramPost } =
+        await import('../../src/utils/instagram');
+      vi.mocked(getLatestInstagramPost).mockImplementation(
+        () => new Promise(() => {})
+      );
 
       await act(async () => {
         render(<FeaturedContent theme="dark" />);
@@ -360,6 +372,12 @@ describe('FeaturedContent', () => {
       });
       // API returns null
       mockGetLatestYouTubeVideo.mockResolvedValue(null);
+      // Instagram API returns null (inactive so fallback doesn't create a card)
+      const { getLatestInstagramPost } =
+        await import('../../src/utils/instagram');
+      vi.mocked(getLatestInstagramPost).mockResolvedValueOnce({
+        active: false,
+      });
 
       await renderAndWait();
 

@@ -319,3 +319,6 @@ export const getBio = async () => {
     return null;
   }
 };
+
+// Instagram posts are fetched directly from the API via getLatestInstagramPost.
+// No Contentful content type needed.

@@ -3,11 +3,14 @@ import { useContentful } from '../hooks/useContentful';
 import { useSubstack } from '../hooks/useSubstack';
 import { getYouTubeVideo } from '../utils/contentful';
 import { getLatestYouTubeVideo } from '../utils/youtube';
+import { getLatestInstagramPost } from '../utils/instagram';
 import Loading from './Loading';
 import YouTubeCard from './YouTubeCard';
 import SubstackCard from './SubstackCard';
+import InstagramCard from './InstagramCard';
 import fallbackVideoData from '../dev-data/youtubeVideo.json';
 import fallbackPostData from '../dev-data/featuredPost.json';
+import fallbackInstagramData from '../dev-data/instagramPost.json';
 
 /**
  * Normalizes various date formats to a comparable Date object
@@ -53,14 +56,22 @@ const FeaturedContent = ({ theme }) => {
   // Get Substack data
   const { post: substackPost, loading: substackLoading } = useSubstack();
 
-  // State for YouTube API fallback
+  // State for API fallbacks
   const [apiVideo, setApiVideo] = useState(null);
   const [apiLoading, setApiLoading] = useState(false);
   const [apiAttempted, setApiAttempted] = useState(false);
 
+  // State for Instagram API (fetched directly, no Contentful)
+  const [apiInstagram, setApiInstagram] = useState(null);
+  const [instagramApiLoading, setInstagramApiLoading] = useState(false);
+  const [instagramApiAttempted, setInstagramApiAttempted] = useState(false);
+
   // Determine if we need to fetch from YouTube API
   const needsApiFallback =
     !cmsLoading && (cmsError || !cmsVideo || cmsVideo.active === false);
+
+  // Determine if we need to fetch from Instagram API
+  const needsInstagramApiFallback = !instagramApiAttempted;
 
   // Fetch from YouTube API when Contentful doesn't have an active featured video
   useEffect(() => {
@@ -77,19 +88,51 @@ const FeaturedContent = ({ theme }) => {
     }
   }, [needsApiFallback, apiAttempted]);
 
+  // Fetch from Instagram API directly (no Contentful layer)
+  useEffect(() => {
+    if (needsInstagramApiFallback) {
+      setInstagramApiLoading(true);
+      setInstagramApiAttempted(true);
+      getLatestInstagramPost()
+        .then(post => {
+          setApiInstagram(post);
+        })
+        .finally(() => {
+          setInstagramApiLoading(false);
+        });
+    }
+  }, [needsInstagramApiFallback]);
+
   // Determine final YouTube video data
   const youTubeVideo = useMemo(() => {
+    // Don't use fallback while still loading
+    if (cmsLoading || apiLoading) {
+      return cmsVideo || apiVideo || null;
+    }
     const video =
       cmsVideo && cmsVideo.active !== false
         ? cmsVideo
         : apiVideo || fallbackVideoData;
     return video;
-  }, [cmsVideo, apiVideo]);
+  }, [cmsVideo, apiVideo, cmsLoading, apiLoading]);
 
   // Determine final Substack post data
   const substackData = useMemo(() => {
+    // Don't use fallback while still loading
+    if (substackLoading) {
+      return substackPost || null;
+    }
     return substackPost || (import.meta.env.DEV ? fallbackPostData : null);
-  }, [substackPost]);
+  }, [substackPost, substackLoading]);
+
+  // Determine final Instagram post data
+  const instagramPost = useMemo(() => {
+    // Don't use fallback while still loading
+    if (instagramApiLoading) {
+      return apiInstagram || null;
+    }
+    return apiInstagram || fallbackInstagramData;
+  }, [apiInstagram, instagramApiLoading]);
 
   // Create content items array with normalized dates
   const contentItems = useMemo(() => {
@@ -123,13 +166,27 @@ const FeaturedContent = ({ theme }) => {
       }
     }
 
+    // Add Instagram item if available
+    if (instagramPost && instagramPost.active !== false) {
+      const publishDate = normalizeDate(instagramPost.publishDate);
+      if (publishDate) {
+        items.push({
+          type: 'instagram',
+          data: instagramPost,
+          publishDate,
+          id: instagramPost.id || 'instagram-fallback',
+        });
+      }
+    }
+
     // Sort by publish date, newest first
     return items.sort((a, b) => b.publishDate - a.publishDate);
-  }, [youTubeVideo, substackData]);
+  }, [youTubeVideo, substackData, instagramPost]);
 
   // Determine loading state
   const isLoading =
-    (cmsLoading || apiLoading || substackLoading) && contentItems.length === 0;
+    (cmsLoading || apiLoading || substackLoading || instagramApiLoading) &&
+    contentItems.length === 0;
 
   if (isLoading) {
     return <Loading />;
@@ -148,6 +205,9 @@ const FeaturedContent = ({ theme }) => {
         }
         if (item.type === 'substack') {
           return <SubstackCard key={item.id} post={item.data} theme={theme} />;
+        }
+        if (item.type === 'instagram') {
+          return <InstagramCard key={item.id} post={item.data} theme={theme} />;
         }
         return null;
       })}
