@@ -69,9 +69,9 @@ describe('instagram-latest Netlify function', () => {
 
       await handler({ httpMethod: 'GET' });
 
-      // Should use default username 'ulisp4rk'
+      // Should use default username 'lux_sp4rk'
       const fetchCall = mockFetch.mock.calls[0][0];
-      expect(fetchCall).toContain('username=ulisp4rk');
+      expect(fetchCall).toContain('username=lux_sp4rk');
     });
   });
 
