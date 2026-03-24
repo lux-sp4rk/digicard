@@ -114,7 +114,7 @@ const Instagram = ({ theme }) => {
               href={
                 post.permalink ||
                 post.url ||
-                `https://instagram.com/${import.meta.env.VITE_INSTAGRAM_USERNAME || 'ulisp4rk'}`
+                `https://instagram.com/${import.meta.env.VITE_INSTAGRAM_USERNAME || 'lux_sp4rk'}`
               }
               target="_blank"
               rel="noopener noreferrer"

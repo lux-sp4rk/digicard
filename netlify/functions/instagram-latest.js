@@ -18,7 +18,7 @@ export const handler = async event => {
   }
 
   const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
-  const INSTAGRAM_USERNAME = process.env.INSTAGRAM_USERNAME || 'ulisp4rk';
+  const INSTAGRAM_USERNAME = process.env.INSTAGRAM_USERNAME || 'lux_sp4rk';
 
   if (!RAPIDAPI_KEY) {
     return {
