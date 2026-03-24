@@ -68,9 +68,16 @@ export const getLatestInstagramPost = async () => {
 
   try {
     const response = await fetch('/.netlify/functions/instagram-latest');
+    const contentType = response.headers.get('content-type') || '';
 
-    if (!response.ok) {
-      throw new Error(`Instagram function error: ${response.status}`);
+    if (!response.ok || !contentType.includes('application/json')) {
+      const text = await response.text();
+      console.error(
+        `Instagram function error: ${response.status} — Content-Type: ${contentType} — Body: ${text.slice(0, 200)}`
+      );
+      throw new Error(
+        `Instagram function error: ${response.status}${contentType.includes('text/html') ? ' (HTML response — function may not be deployed)' : ''}`
+      );
     }
 
     const post = await response.json();
