@@ -5,9 +5,7 @@ import SectionHeading from './SectionHeading';
 import DynamicIcon from './DynamicIcon';
 import { useContentful } from '../hooks/useContentful';
 import {
-  getCardClasses,
   getIconClasses,
-  getCtaBorderClasses,
   getCtaButtonClasses,
 } from './helpers/themeClassHelper';
 
@@ -31,7 +29,7 @@ const renderMarkdown = (text, theme = 'catppuccin') => {
 
     // Links: [text](url) -> styled as buttons
     const btnClasses = clsx(
-      'inline-block px-4 py-1.5 rounded-full text-sm font-bold transition-all hover:scale-105 my-2 no-underline shadow-sm',
+      'inline-block px-4 py-1.5 rounded-full text-sm font-bold my-2 no-underline',
       getCtaButtonClasses(theme)
     );
     processed = processed.replace(
@@ -86,11 +84,15 @@ const renderMarkdown = (text, theme = 'catppuccin') => {
 const ContentDescription = ({ description, className, theme }) => {
   if (!description) return null;
 
+  const textColorClass =
+    'text-black/90 dark:text-white/90 matrix:text-matrix-text catppuccin:text-catppuccin-text flexoki:text-flexoki-text';
+
   if (typeof description === 'object' && description.nodeType) {
     return (
       <div
         className={clsx(
-          'opacity-90 prose prose-sm max-w-none dark:prose-invert catppuccin:prose-invert',
+          'text-sm leading-relaxed max-w-none space-y-3',
+          textColorClass,
           className
         )}
       >
@@ -103,7 +105,8 @@ const ContentDescription = ({ description, className, theme }) => {
   return (
     <div
       className={clsx(
-        'opacity-90 prose prose-sm max-w-none dark:prose-invert catppuccin:prose-invert',
+        'text-sm leading-relaxed max-w-none space-y-3',
+        textColorClass,
         className
       )}
       dangerouslySetInnerHTML={{ __html: renderMarkdown(description, theme) }}
@@ -144,7 +147,7 @@ const ContentList = ({
   }
 
   return (
-    <section className={clsx('p-5 animate-fade-in')}>
+    <section className="p-5">
       <SectionHeading>{sectionTitle}</SectionHeading>
 
       {loading && (
@@ -154,44 +157,70 @@ const ContentList = ({
       )}
 
       {!loading && (
-        <div className="grid gap-6 grid-cols-1">
+        <div className="space-y-1">
           {sortedItems.map((item, index) => (
             <div
               key={item.id || `${sectionTitle.toLowerCase()}-${index}`}
               className={clsx(
-                'p-6 rounded-lg border transition-all duration-300',
-                'hover:scale-[1.01]',
-                getCardClasses(theme)
+                'group relative py-6 px-2',
+                index !== sortedItems.length - 1 && 'border-b',
+                theme === 'matrix'
+                  ? 'border-matrix-glow/20'
+                  : 'border-gray-200 dark:border-gray-700',
+                index % 2 === 1 && 'md:pl-12'
               )}
             >
-              <div className="flex items-center gap-3 mb-3">
-                {item.icon && (
-                  <DynamicIcon
-                    iconName={item.icon}
-                    size={24}
-                    className={getIconClasses(theme)}
-                  />
+              {/* Subtle accent line - always visible */}
+              <div
+                className={clsx(
+                  'absolute left-0 top-6 bottom-6 w-px',
+                  theme === 'matrix'
+                    ? 'bg-matrix-glow/30'
+                    : 'bg-gray-300 dark:bg-gray-600'
                 )}
-                <div>
-                  <h3 className="text-xl font-bold leading-tight">
+              />
+
+              <div className="flex items-start gap-4 md:gap-6">
+                {item.icon && (
+                  <div
+                    className={clsx(
+                      'flex-shrink-0 mt-1 opacity-70',
+                      theme === 'matrix' && 'text-matrix-highlight'
+                    )}
+                  >
+                    <DynamicIcon
+                      iconName={item.icon}
+                      size={24}
+                      className={getIconClasses(theme)}
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <h3
+                    className={clsx(
+                      'text-xl md:text-2xl font-heading font-bold leading-tight mb-2 tracking-tight'
+                    )}
+                  >
                     {item.title}
                   </h3>
                   {item.subtitle && (
                     <p
                       className={clsx(
-                        'text-sm font-medium opacity-80',
+                        'text-sm font-medium tracking-wide uppercase opacity-50 mb-3',
                         theme === 'matrix' && 'text-matrix-rain'
                       )}
                     >
                       {item.subtitle}
                     </p>
                   )}
+                  <div className="leading-relaxed">
+                    <ContentDescription
+                      description={item.description}
+                      theme={theme}
+                    />
+                  </div>
                 </div>
               </div>
-              <ContentDescription
-                description={item.description}
-                theme={theme}
-              />
             </div>
           ))}
         </div>
@@ -200,15 +229,26 @@ const ContentList = ({
       {ctaButtonText && ctaHref && (
         <div
           className={clsx(
-            'mt-8 p-6 rounded-xl text-center border-2 border-dashed',
-            getCtaBorderClasses(theme)
+            'mt-8 p-6 text-center',
+            theme === 'matrix'
+              ? 'border border-matrix-glow/30'
+              : 'border-t border-gray-200 dark:border-gray-700'
           )}
         >
-          {ctaHeading && <p className="text-lg font-bold mb-2">{ctaHeading}</p>}
+          {ctaHeading && (
+            <p
+              className={clsx(
+                'text-base mb-4 opacity-80',
+                theme === 'matrix' && 'text-matrix-highlight'
+              )}
+            >
+              {ctaHeading}
+            </p>
+          )}
           <a
             href={ctaHref}
             className={clsx(
-              'inline-block px-6 py-2 rounded-full font-bold transition-transform hover:scale-105',
+              'inline-block px-6 py-2.5 rounded font-medium text-sm tracking-wide uppercase transition-colors',
               getCtaButtonClasses(theme)
             )}
           >

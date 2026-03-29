@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Footer, SuperFooter } from '../../src/components/Footer';
@@ -37,27 +37,26 @@ describe('Footer', () => {
     vi.useRealTimers();
   });
 
-  it('shows terminal icon with blinking cursor for non-matrix themes', async () => {
+  it('shows terminal icon for non-matrix themes', () => {
     render(<Footer theme="dark" />);
 
-    const terminalIcon = screen.getByTestId('dynamic-icon');
+    // Footer now has social icons + terminal icon, so use getAllByTestId
+    const icons = screen.getAllByTestId('dynamic-icon');
+    const terminalIcon = icons.find(
+      icon => icon.getAttribute('data-icon') === 'FaTerminal'
+    );
     expect(terminalIcon).toBeInTheDocument();
-    expect(terminalIcon).toHaveAttribute('data-icon', 'FaTerminal');
-
-    // Check that the cursor blink effect is working by advancing time
-    await act(async () => {
-      vi.advanceTimersByTime(800);
-    });
-
-    // Just verify the icon is still there and has the terminal icon
-    expect(terminalIcon).toBeInTheDocument();
-    expect(terminalIcon).toHaveAttribute('data-icon', 'FaTerminal');
   });
 
   it('does not show terminal icon for matrix theme', () => {
     render(<Footer theme="matrix" />);
 
-    expect(screen.queryByTestId('dynamic-icon')).not.toBeInTheDocument();
+    // Footer has social icons but no terminal icon for matrix theme
+    const icons = screen.getAllByTestId('dynamic-icon');
+    const terminalIcon = icons.find(
+      icon => icon.getAttribute('data-icon') === 'FaTerminal'
+    );
+    expect(terminalIcon).toBeUndefined();
   });
 
   it('shows tooltip on terminal icon hover', () => {
@@ -66,14 +65,24 @@ describe('Footer', () => {
     expect(screen.getByText('console.log("Open sesame")')).toBeInTheDocument();
   });
 
-  it('applies correct theme classes to terminal icon', () => {
+  it('applies correct classes to terminal icon', () => {
     const { rerender } = render(<Footer theme="dark" />);
 
-    const terminalIcon = screen.getByTestId('dynamic-icon');
-    expect(terminalIcon.className).toContain('glow-dark');
+    const icons = screen.getAllByTestId('dynamic-icon');
+    const terminalIcon = icons.find(
+      icon => icon.getAttribute('data-icon') === 'FaTerminal'
+    );
+    expect(terminalIcon).toBeInTheDocument();
+    expect(terminalIcon.className).toContain('inline-block');
+    expect(terminalIcon.className).toContain('cursor-pointer');
 
     rerender(<Footer theme="light" />);
-    expect(terminalIcon.className).toContain('glow-light');
+    const updatedIcons = screen.getAllByTestId('dynamic-icon');
+    const updatedTerminalIcon = updatedIcons.find(
+      icon => icon.getAttribute('data-icon') === 'FaTerminal'
+    );
+    expect(updatedTerminalIcon.className).toContain('inline-block');
+    expect(updatedTerminalIcon.className).toContain('cursor-pointer');
   });
 });
 

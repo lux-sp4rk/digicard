@@ -79,14 +79,11 @@ vi.mock('../src/components/MountainFooter', () => ({
   default: () => <div data-testid="mountain-footer">Mountain Footer</div>,
 }));
 
-vi.mock('../src/components/SocialLinks', () => ({
-  default: () => <div data-testid="social-links">Social Links</div>,
-}));
-
 vi.mock('../src/components/NavBar', () => ({
   default: ({ theme, activeTab, setActiveTab }) => (
     <div data-testid="navbar" data-theme={theme} data-active-tab={activeTab}>
       <button
+        type="button"
         role="tab"
         aria-selected={activeTab === 'work'}
         onClick={() => setActiveTab('work')}
@@ -94,6 +91,7 @@ vi.mock('../src/components/NavBar', () => ({
         The Work
       </button>
       <button
+        type="button"
         role="tab"
         aria-selected={activeTab === 'skills'}
         onClick={() => setActiveTab('skills')}
@@ -101,6 +99,7 @@ vi.mock('../src/components/NavBar', () => ({
         Skills
       </button>
       <button
+        type="button"
         role="tab"
         aria-selected={activeTab === 'services'}
         onClick={() => setActiveTab('services')}
@@ -208,17 +207,14 @@ describe('App', () => {
     expect(screen.getByTestId('mountain-footer')).toBeInTheDocument();
   });
 
-  it('hides SocialLinks inline for web2 theme', () => {
-    render(<App />);
-    expect(screen.getByTestId('social-links')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Set Web2'));
-    expect(screen.queryByTestId('social-links')).not.toBeInTheDocument();
-  });
-
   it('switches between tabs', () => {
     render(<App />);
+    // Default tab is now 'services'
+    expect(screen.getByTestId('services')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /the work/i }));
     expect(screen.getByTestId('projects')).toBeInTheDocument();
     expect(screen.getByTestId('featured-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('services')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('tab', { name: /skills/i }));
     expect(screen.getByTestId('skills')).toBeInTheDocument();
     expect(screen.queryByTestId('projects')).not.toBeInTheDocument();
@@ -229,12 +225,13 @@ describe('App', () => {
 
   it('marks active tab correctly', () => {
     render(<App />);
+    // Default tab is now 'services'
+    const servicesTab = screen.getByRole('tab', { name: /services/i });
+    expect(servicesTab).toHaveAttribute('aria-selected', 'true');
     const workTab = screen.getByRole('tab', { name: /the work/i });
+    fireEvent.click(workTab);
     expect(workTab).toHaveAttribute('aria-selected', 'true');
-    const skillsTab = screen.getByRole('tab', { name: /skills/i });
-    fireEvent.click(skillsTab);
-    expect(skillsTab).toHaveAttribute('aria-selected', 'true');
-    expect(workTab).toHaveAttribute('aria-selected', 'false');
+    expect(servicesTab).toHaveAttribute('aria-selected', 'false');
   });
 
   it('wraps components in ErrorBoundary', () => {

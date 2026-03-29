@@ -75,7 +75,7 @@ const Profile = ({ theme }) => {
       {/* Bio section */}
       <p
         className={clsx(
-          'text-lg font-mono min-h-[2em] w-full',
+          'text-lg min-h-[2em] w-full leading-relaxed tracking-wide',
           'web2:text-4xl web2:text-web2-secondary web2:font-web2Heading',
           'matrix:text-matrix-glow',
           'flexoki:text-flexoki-text',

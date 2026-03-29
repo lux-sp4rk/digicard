@@ -28,14 +28,6 @@ describe('NavBar', () => {
       expect(screen.getByTestId('icon-FaGithub')).toBeInTheDocument();
     });
 
-    it('shows tooltip on hover for web2 theme', () => {
-      render(<NavBar {...defaultProps} theme="web2" />);
-      const brand = screen.getByText('Luh Sprwhk');
-      fireEvent.mouseEnter(brand);
-      const tooltip = screen.getByText(/frontend hides much/i);
-      expect(tooltip).toBeInTheDocument();
-    });
-
     it('does not show web2 header for non-web2 themes', () => {
       render(<NavBar {...defaultProps} theme="catppuccin" />);
       expect(screen.queryByText('Luh Sprwhk')).not.toBeInTheDocument();

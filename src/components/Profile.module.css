@@ -44,28 +44,23 @@
 
 .profileImageXmas {
   border-color: var(--xmas-gold);
-  box-shadow: 0 0 10px var(--xmas-glow);
 }
 
 .profilePhoto {
   object-fit: cover;
-  transition: transform 500ms;
 }
 
-.profilePhoto:hover {
-  transform: scale(1.1);
-}
-
-/* Base profile name styling - intentionally applied to all themes */
+/* Base profile name styling - Space Grotesk for clinical precision */
 .profileName {
   font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 2.25rem;
+  font-weight: 700;
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-  text-decoration-style: dotted;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 5px;
+  text-decoration-style: solid;
 }
 
 /* Theme-specific name styles */
@@ -81,7 +76,6 @@
 
 .profileNameMatrix {
   color: var(--matrix-highlight);
-  filter: drop-shadow(0 0 5px var(--matrix-glow));
   text-decoration-color: var(--matrix-glow);
 }
 
@@ -98,7 +92,6 @@
 .profileNameXmas {
   color: var(--xmas-background);
   text-decoration-color: var(--xmas-red);
-  filter: drop-shadow(0 0 8px var(--xmas-glow));
 }
 
 .profileNameCatppuccin {

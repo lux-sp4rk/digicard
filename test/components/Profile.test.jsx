@@ -29,8 +29,8 @@ describe('Profile', () => {
     // Check for profile name
     expect(screen.getByText('Lux Sp4rwhk')).toBeInTheDocument();
 
-    // Check that bio is rendered (find by structure - it's a paragraph with font-mono class)
-    const bio = container.querySelector('p.font-mono');
+    // Check that bio is rendered (find by structure - it's the bio paragraph)
+    const bio = container.querySelector('p');
     expect(bio).toBeInTheDocument();
     expect(bio.tagName).toBe('P');
     // Verify bio has some content (not empty)
@@ -47,21 +47,21 @@ describe('Profile', () => {
   it('renders bio for all themes', () => {
     // Test with a non-web2 theme
     const { container, rerender } = render(<Profile theme="dark" />);
-    const bioDark = container.querySelector('p.font-mono');
+    const bioDark = container.querySelector('p');
     expect(bioDark).toBeInTheDocument();
     expect(bioDark.tagName).toBe('P');
     expect(bioDark.textContent.length).toBeGreaterThan(0);
 
     // Test with web2 theme
     rerender(<Profile theme="web2" />);
-    const bioWeb2 = container.querySelector('p.font-mono');
+    const bioWeb2 = container.querySelector('p');
     expect(bioWeb2).toBeInTheDocument();
     expect(bioWeb2.tagName).toBe('P');
     expect(bioWeb2.textContent.length).toBeGreaterThan(0);
 
     // Test with matrix theme
     rerender(<Profile theme="matrix" />);
-    const bioMatrix = container.querySelector('p.font-mono');
+    const bioMatrix = container.querySelector('p');
     expect(bioMatrix).toBeInTheDocument();
     expect(bioMatrix.tagName).toBe('P');
     expect(bioMatrix.textContent.length).toBeGreaterThan(0);
@@ -70,13 +70,12 @@ describe('Profile', () => {
   it('renders bio content correctly', () => {
     const { container } = render(<Profile theme="dark" />);
 
-    const bio = container.querySelector('p.font-mono');
+    const bio = container.querySelector('p');
     // Verify bio exists and has content
     expect(bio).toBeInTheDocument();
     expect(bio.textContent.length).toBeGreaterThan(0);
     // Verify bio has expected base styling classes
     expect(bio).toHaveClass('text-lg');
-    expect(bio).toHaveClass('font-mono');
     expect(bio).toHaveClass('min-h-[2em]');
     expect(bio).toHaveClass('w-full');
   });

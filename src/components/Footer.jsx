@@ -1,36 +1,54 @@
-import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import DynamicIcon from './DynamicIcon';
 import { useProfileData } from '../hooks/useProfileData';
 
+const socialLinks = [
+  { name: 'Blog', url: 'https://luhsprwhk.beehiiv.com', icon: 'FaRssSquare' },
+  { name: 'GitHub', url: 'https://github.com/luhsprwhk', icon: 'FaGithub' },
+  { name: 'Twitter', url: 'https://twitter.com/luhsprwhk', icon: 'FaTwitter' },
+  { name: 'YouTube', url: 'https://youtube.com/@luhsprwhk', icon: 'FaYoutube' },
+];
+
 const Footer = ({ theme }) => {
-  const [cursorVisible, setCursorVisible] = useState(false);
-
-  // Blinking cursor effect for the easter egg hint
-  useEffect(() => {
-    const cursorInterval = setInterval(() => {
-      setCursorVisible(prev => !prev);
-    }, 800);
-
-    return () => clearInterval(cursorInterval);
-  }, []);
-
   return (
-    <footer className="text-center pb-5 px-4 text-sm text-gray-500 dark:text-gray-400 relative">
+    <footer
+      className={clsx(
+        'text-center pb-5 px-4 text-sm relative',
+        'text-github-text dark:text-dracula-foreground',
+        'matrix:text-matrix-text',
+        'catppuccin:text-catppuccin-text',
+        'flexoki:text-flexoki-text'
+      )}
+    >
+      {/* Social Links */}
+      <div className="flex justify-center gap-4 mb-4">
+        {socialLinks.map(link => (
+          <a
+            key={link.name}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.name}
+            className={clsx(
+              'opacity-60 hover:opacity-100 transition-opacity',
+              theme === 'matrix' && 'text-matrix-highlight'
+            )}
+          >
+            <DynamicIcon iconName={link.icon} size={18} />
+          </a>
+        ))}
+      </div>
+
       <div className="footer-details mt-2">
         {theme !== 'matrix' && (
-          <span className="group relative inline-block">
+          <span className="group relative inline-block opacity-40 hover:opacity-80 transition-opacity">
             <DynamicIcon
               iconName="FaTerminal"
-              className={`inline-block 
-    ${theme === 'dark' ? 'glow-dark' : 'glow-light'} 
-    ${cursorVisible ? 'opacity-100' : 'opacity-0'} 
-    transition-all duration-300 
-    hover:text-primary hover:scale-110 hover:rotate-3 cursor-pointer`}
+              className="inline-block cursor-pointer"
+              size={14}
             />
-            <div className="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded p-2 -mt-2 -translate-y-full -translate-x-1/2 left-1/2 whitespace-nowrap">
+            <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded p-2 -mt-2 -translate-y-full -translate-x-1/2 left-1/2 whitespace-nowrap">
               console.log("Open sesame")
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
             </div>
           </span>
         )}
@@ -139,7 +157,7 @@ const SuperFooter = () => {
                 href={badge.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center gap-1 px-2 py-1 rounded border ${badge.color} shadow-sm hover:scale-110 transition-transform`}
+                className={`flex items-center gap-1 px-2 py-1 rounded border ${badge.color}`}
                 title={badge.name}
               >
                 <img src={badge.logo} alt={badge.name} className="w-5 h-5" />

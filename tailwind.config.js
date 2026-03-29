@@ -100,8 +100,9 @@ export default {
         },
       },
       fontFamily: {
-        heading: ['"Raleway"', 'sans-serif'],
-        body: ['"Roboto"', 'sans-serif'],
+        heading: ['"Space Grotesk"', 'sans-serif'],
+        body: ['"Inter"', 'sans-serif'],
+        display: ['"Cormorant Garamond"', 'serif'],
         web2: [
           '"Lucida Grande"',
           '"Segoe UI"',
