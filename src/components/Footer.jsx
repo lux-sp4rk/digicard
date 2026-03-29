@@ -11,7 +11,15 @@ const socialLinks = [
 
 const Footer = ({ theme }) => {
   return (
-    <footer className="text-center pb-5 px-4 text-sm text-gray-500 dark:text-gray-400 relative">
+    <footer
+      className={clsx(
+        'text-center pb-5 px-4 text-sm relative',
+        'text-github-text dark:text-dracula-foreground',
+        'matrix:text-matrix-text',
+        'catppuccin:text-catppuccin-text',
+        'flexoki:text-flexoki-text'
+      )}
+    >
       {/* Social Links */}
       <div className="flex justify-center gap-4 mb-4">
         {socialLinks.map(link => (

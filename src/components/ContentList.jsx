@@ -84,11 +84,15 @@ const renderMarkdown = (text, theme = 'catppuccin') => {
 const ContentDescription = ({ description, className, theme }) => {
   if (!description) return null;
 
+  const textColorClass =
+    'text-black/90 dark:text-white/90 matrix:text-matrix-text catppuccin:text-catppuccin-text flexoki:text-flexoki-text';
+
   if (typeof description === 'object' && description.nodeType) {
     return (
       <div
         className={clsx(
-          'opacity-90 prose prose-sm max-w-none dark:prose-invert catppuccin:prose-invert',
+          'text-sm leading-relaxed max-w-none space-y-3',
+          textColorClass,
           className
         )}
       >
@@ -101,7 +105,8 @@ const ContentDescription = ({ description, className, theme }) => {
   return (
     <div
       className={clsx(
-        'opacity-90 prose prose-sm max-w-none dark:prose-invert catppuccin:prose-invert',
+        'text-sm leading-relaxed max-w-none space-y-3',
+        textColorClass,
         className
       )}
       dangerouslySetInnerHTML={{ __html: renderMarkdown(description, theme) }}
@@ -208,7 +213,7 @@ const ContentList = ({
                       {item.subtitle}
                     </p>
                   )}
-                  <div className="opacity-70 leading-relaxed">
+                  <div className="leading-relaxed">
                     <ContentDescription
                       description={item.description}
                       theme={theme}
