@@ -1,10 +1,8 @@
 import clsx from 'clsx';
-import { useState } from 'react';
 import DynamicIcon from './DynamicIcon';
 import LocationIndicator from './LocationIndicator';
 
-const Web2Header = ({ theme }) => {
-  const [active, setActive] = useState(false);
+const Web2Header = () => {
   return (
     <div
       className={clsx(
@@ -20,34 +18,11 @@ const Web2Header = ({ theme }) => {
         <span
           className={clsx(
             'relative',
-            'web2:text-web2-accent web2:font-web2Heading transition-all duration-400',
-            'hover:web2:text-web2-accent hover:underline hover:drop-shadow-md cursor-pointer group',
-            theme === 'web2' && !active && 'animate-pulse'
+            'web2:text-web2-accent web2:font-web2Heading',
+            'hover:web2:text-web2-accent cursor-pointer group'
           )}
-          tabIndex={0}
-          onMouseEnter={() => setActive(true)}
-          onFocus={() => setActive(true)}
-          onMouseLeave={() => setActive(true)}
-          onBlur={() => setActive(true)}
         >
           Luh Sprwhk
-          {theme === 'web2' && (
-            <span
-              className={clsx(
-                'pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2',
-                'opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-400',
-                'bg-web2-primary text-dark z-40 text-xs rounded px-3 py-2 shadow-lg whitespace-nowrap'
-              )}
-            >
-              The frontend hides much, but the right tools reveal all.
-              <span
-                className={clsx(
-                  'absolute -left-2 top-1/2 -translate-y-1/2 w-0 h-0',
-                  'border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-web2-primary'
-                )}
-              />
-            </span>
-          )}
         </span>
       </div>
       <div className={clsx('flex gap-4 text-xl')}>
@@ -56,8 +31,8 @@ const Web2Header = ({ theme }) => {
           target="_blank"
           rel="noopener noreferrer"
           className={clsx(
-            'web2:text-web2-secondary transition-all duration-200',
-            'hover:web2:text-web2-accent hover:scale-125'
+            'web2:text-web2-secondary',
+            'hover:web2:text-web2-accent'
           )}
         >
           <DynamicIcon iconName="FaRssSquare" />
@@ -67,8 +42,8 @@ const Web2Header = ({ theme }) => {
           target="_blank"
           rel="noopener noreferrer"
           className={clsx(
-            'web2:text-web2-secondary transition-all duration-200',
-            'hover:web2:text-web2-accent hover:scale-125'
+            'web2:text-web2-secondary',
+            'hover:web2:text-web2-accent'
           )}
         >
           <DynamicIcon iconName="FaGithub" />
@@ -78,8 +53,8 @@ const Web2Header = ({ theme }) => {
           target="_blank"
           rel="noopener noreferrer"
           className={clsx(
-            'web2:text-web2-secondary transition-all duration-200',
-            'hover:web2:text-web2-accent hover:scale-125'
+            'web2:text-web2-secondary',
+            'hover:web2:text-web2-accent'
           )}
         >
           <DynamicIcon iconName="FaTwitter" />
@@ -89,8 +64,8 @@ const Web2Header = ({ theme }) => {
           target="_blank"
           rel="noopener noreferrer"
           className={clsx(
-            'web2:text-web2-secondary transition-all duration-200',
-            'hover:web2:text-web2-accent hover:scale-125'
+            'web2:text-web2-secondary',
+            'hover:web2:text-web2-accent'
           )}
         >
           <DynamicIcon iconName="FaYoutube" />
@@ -106,16 +81,16 @@ const Web2Header = ({ theme }) => {
 const NavBar = ({ theme, activeTab, setActiveTab }) => {
   const tabs = [
     {
-      id: 'work',
-      label: 'The Work',
-      ariaLabel: 'Switch to The Work tab',
-      iconName: 'FaBriefcase',
-    },
-    {
       id: 'services',
       label: 'Services',
       ariaLabel: 'Switch to Services tab',
       iconName: 'FaUsers',
+    },
+    {
+      id: 'work',
+      label: 'The Work',
+      ariaLabel: 'Switch to The Work tab',
+      iconName: 'FaBriefcase',
     },
     {
       id: 'skills',
@@ -127,7 +102,7 @@ const NavBar = ({ theme, activeTab, setActiveTab }) => {
 
   return (
     <nav className="flex flex-col">
-      {theme === 'web2' && <Web2Header theme={theme} />}
+      {theme === 'web2' && <Web2Header />}
 
       <div
         className={clsx(
@@ -142,13 +117,14 @@ const NavBar = ({ theme, activeTab, setActiveTab }) => {
         {tabs.map(tab => (
           <button
             key={tab.id}
+            type="button"
             onClick={() => setActiveTab(tab.id)}
             aria-label={tab.ariaLabel}
             aria-selected={activeTab === tab.id}
             role="tab"
             className={clsx(
-              'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-all',
-              'flex items-center justify-center gap-2',
+              'flex-1 py-5 text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300',
+              'flex items-center justify-center gap-3',
               activeTab === tab.id
                 ? [
                     'border-b-2',

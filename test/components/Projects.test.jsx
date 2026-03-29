@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Projects from '../../src/components/Projects/Projects';
 
@@ -59,8 +59,8 @@ describe('Projects', () => {
 
     render(<Projects theme="dark" />);
 
-    // Modern layout uses cards with "View Project" buttons
-    const buttons = screen.getAllByRole('link', { name: 'View Project' });
+    // Modern layout uses cards with "View Project" links (now includes arrow)
+    const buttons = screen.getAllByRole('link', { name: /View Project/ });
     // Should have at least one active project from fallback data
     expect(buttons.length).toBeGreaterThan(0);
 
@@ -132,29 +132,9 @@ describe('Projects', () => {
 
     expect(warnSpy).toHaveBeenCalled();
     // Should render fallback content - check for project structure rather than specific names
-    const buttons = screen.getAllByRole('link', { name: 'View Project' });
+    const buttons = screen.getAllByRole('link', { name: /View Project/ });
     expect(buttons.length).toBeGreaterThan(0);
 
     warnSpy.mockRestore();
-  });
-
-  it('creates ripple element when clicking on a project link', () => {
-    mockUseContentful.mockReturnValue({
-      data: null,
-      loading: false,
-      error: null,
-    });
-
-    render(<Projects theme="dark" />);
-
-    // Click the first "View Project" button
-    const link = screen.getAllByRole('link', { name: 'View Project' })[0];
-
-    // Provide click coordinates; JSDOM may have zero sizes, which is fine for this check
-    fireEvent.click(link, { clientX: 10, clientY: 10 });
-
-    // Expect a span.ripple inside the link
-    const ripple = link.querySelector('.ripple');
-    expect(ripple).toBeInTheDocument();
   });
 });

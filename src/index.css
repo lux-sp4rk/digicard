@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&family=Roboto:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
 @import './styles/colors.css';
 
 @tailwind base;
@@ -100,7 +100,7 @@
   }
 
   .section-heading {
-    @apply text-2xl font-heading mb-4
+    @apply text-3xl md:text-4xl font-heading mb-6 tracking-tight
            text-github-text
            dark:text-dracula-foreground
            web2:text-web2-primaryDark

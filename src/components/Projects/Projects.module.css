@@ -89,7 +89,6 @@
 .classicImageBase {
   border: 1px solid transparent;
   border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .classicImageWeb2 {
   border-color: var(--web2-border);
@@ -108,7 +107,6 @@
 }
 .classicImageXmas {
   border-color: var(--xmas-gold);
-  box-shadow: 0 0 8px var(--xmas-glow);
 }
 
 .classicLinkWeb2 {
@@ -180,7 +178,6 @@
 }
 .sectionMatrix {
   border-top-color: var(--matrix-glow);
-  box-shadow: 0 0 8px rgba(0, 255, 65, 0.35);
 }
 .sectionWeb2 {
   border-top-color: var(--web2-border);
@@ -190,34 +187,18 @@
 }
 .sectionXmas {
   border-top-color: var(--xmas-gold);
-  box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
-  background-color: var(--xmas-red);
 }
 
 /* Project Card */
 .cardBase {
-  border-radius: 0.5rem; /* rounded-lg */
+  border-radius: 0.5rem;
   overflow: hidden;
-  transition:
-    transform 300ms ease,
-    box-shadow 300ms ease,
-    background-color 300ms ease,
-    color 200ms ease;
-}
-.cardBase:hover {
-  transform: translateY(-0.25rem); /* hover:-translate-y-1 */
 }
 .cardGithub {
   background: var(--github-white);
 }
-.cardGithub:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
 .cardDracula {
   background: var(--dracula-current-line);
-}
-.cardDracula:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 .cardWeb2 {
   background: var(--web2-card-bg);
@@ -229,23 +210,15 @@
 .cardMatrix {
   background: var(--matrix-terminal);
   border: 1px solid var(--matrix-glow);
-  box-shadow: 0 0 12px rgba(0, 255, 65, 0.25);
 }
 .cardXmas {
   background: var(--xmas-card-bg);
   border: 2px solid var(--xmas-gold);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-}
-.cardXmas:hover {
-  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
 }
 
 /* Image visual effects */
 .imageBase {
-  transition: transform 500ms ease;
-}
-.imageBase:hover {
-  transform: scale(1.1);
+  /* Static image, no effects */
 }
 
 /* Object-fit variants for specific project images */
@@ -302,16 +275,8 @@
 .titleMatrix {
   color: var(--matrix-highlight);
 }
-.titleMatrix:hover {
-  color: var(--matrix-glow);
-  text-shadow: 0 0 5px var(--matrix-glow);
-}
 .titleXmas {
   color: var(--xmas-gold);
-}
-.titleXmas:hover {
-  color: var(--xmas-gold-light);
-  text-shadow: 0 0 6px var(--xmas-glow);
 }
 
 /* Description */
@@ -333,47 +298,23 @@
 .descMatrix {
   color: var(--matrix-highlight);
 }
-.descMatrix:hover {
-  color: var(--matrix-glow);
-  text-shadow: 0 0 5px var(--matrix-glow);
-}
 .descXmas {
   color: var(--xmas-text-secondary);
 }
-.descXmas:hover {
-  color: var(--xmas-text);
-}
 
 /* Link button */
-.linkBase {
-  transition:
-    color 200ms ease,
-    background 200ms ease,
-    box-shadow 200ms ease,
-    border-color 200ms ease;
-}
 .linkGithub {
   background: var(--github-blue);
   color: #fff;
-}
-.linkGithub:hover {
-  background: var(--github-light-blue);
 }
 .linkDracula {
   background: var(--dracula-purple);
   color: #fff;
 }
-.linkDracula:hover {
-  background: var(--dracula-pink);
-}
 .linkWeb2 {
   background: var(--web2-primary);
   color: #fff;
   border: 1px solid var(--web2-border);
-  box-shadow: 0 0 0 1px var(--web2-border);
-}
-.linkWeb2:hover {
-  background: var(--web2-success);
 }
 .linkCsszen {
   background: var(--csszen-cream);
@@ -384,36 +325,9 @@
   color: var(--matrix-highlight);
   background: var(--matrix-terminal);
   border: 1px solid var(--matrix-glow);
-  box-shadow: 0 0 12px rgba(0, 255, 65, 0.25);
-}
-.linkMatrix:hover {
-  color: var(--matrix-glow);
-  box-shadow: 0 0 16px rgba(0, 255, 65, 0.35);
 }
 .linkXmas {
   background: var(--xmas-red);
   color: var(--xmas-white);
   border: 2px solid var(--xmas-gold);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-}
-.linkXmas:hover {
-  background: var(--xmas-red-light);
-  box-shadow: 0 0 14px rgba(212, 175, 55, 0.5);
-}
-
-/* Keep ripple as a global class to satisfy tests and allow direct DOM query selection */
-:global(.ripple) {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple 600ms linear;
-  background: rgba(255, 255, 255, 0.6);
-  pointer-events: none;
-}
-
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
 }

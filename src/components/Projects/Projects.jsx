@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import sbBukowskisImg from '../../assets/sb-bukowskis.jpg';
 import rubberDuckTarotIMG from '../../assets/RDTBanner.png';
 import { useContentful } from '../../hooks/useContentful';
 import { getProjects } from '../../utils/contentful';
@@ -125,63 +124,93 @@ const ProjectCard = ({
   description,
   link,
   icon,
-  createRipple,
   theme,
-}) => (
-  <div
-    className={clsx(
-      'flex flex-col min-h-[22rem]', // layout only
-      styles.cardBase,
-      getThemeClass(theme, 'card')
-    )}
-  >
-    <div className="h-40 overflow-hidden">
-      <img
-        src={img}
-        alt={alt}
-        className={clsx(
-          'w-full h-full', // layout only
-          styles.imageBase,
-          img === sbBukowskisImg && styles.imgObjectCoverCenter,
-          img === rubberDuckTarotIMG && styles.imgObjectCoverCenter
-        )}
-      />
-    </div>
-    <div className="flex items-center gap-2 px-4 pt-4 pb-2">
-      {icon && (
-        <DynamicIcon
-          iconName={icon}
-          className={getThemeClass(theme, 'icon')}
-          size={20}
-        />
-      )}
-      <h3 className={clsx(styles.titleBase, getThemeClass(theme, 'title'))}>
-        {title}
-      </h3>
-    </div>
-    <div className="px-4 pb-4">
-      <ContentDescription
-        description={description}
-        className={clsx(styles.descBase, getThemeClass(theme, 'desc'))}
-        theme={theme}
-      />
-    </div>
-    <div className="flex-1" />
-    <a
-      href={link}
+  index,
+}) => {
+  const isEven = index % 2 === 0;
+
+  return (
+    <article
       className={clsx(
-        'block text-center py-2 relative overflow-hidden', // layout only
-        styles.linkBase,
-        getThemeClass(theme, 'link')
+        'grid gap-4 md:gap-8',
+        'md:grid-cols-2 items-center py-8',
+        !isEven && 'md:direction-rtl'
       )}
-      onClick={createRipple}
-      target="_blank"
-      rel="noopener noreferrer"
     >
-      View Project
-    </a>
-  </div>
-);
+      {/* Image frame */}
+      <div
+        className={clsx(
+          'relative overflow-hidden aspect-[16/10]',
+          isEven ? 'md:order-1' : 'md:order-2'
+        )}
+      >
+        <img
+          src={img}
+          alt={alt}
+          className={clsx('w-full h-full object-cover', styles.imageBase)}
+        />
+      </div>
+
+      {/* Content with asymmetric spacing */}
+      <div
+        className={clsx(
+          'flex flex-col',
+          isEven
+            ? 'md:order-2 md:pl-4'
+            : 'md:order-1 md:pr-4 md:text-right md:items-end'
+        )}
+      >
+        {/* Title with icon */}
+        <div
+          className={clsx(
+            'flex items-center gap-3 mb-3',
+            !isEven && 'md:flex-row-reverse'
+          )}
+        >
+          {icon && (
+            <DynamicIcon
+              iconName={icon}
+              className={clsx('opacity-60', getThemeClass(theme, 'icon'))}
+              size={20}
+            />
+          )}
+          <h3
+            className={clsx(
+              'text-xl md:text-2xl font-heading font-bold tracking-tight',
+              getThemeClass(theme, 'title')
+            )}
+          >
+            {title}
+          </h3>
+        </div>
+
+        {/* Description */}
+        <div className={clsx('mb-6 leading-relaxed opacity-70')}>
+          <ContentDescription
+            description={description}
+            className={clsx(styles.descBase, getThemeClass(theme, 'desc'))}
+            theme={theme}
+          />
+        </div>
+
+        {/* CTA as text link */}
+        <a
+          href={link}
+          className={clsx(
+            'inline-flex items-center gap-2 text-sm font-medium tracking-wide',
+            !isEven && 'md:flex-row-reverse',
+            getThemeClass(theme, 'link')
+          )}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>View Project</span>
+          <span>→</span>
+        </a>
+      </div>
+    </article>
+  );
+};
 
 // Fallback projects for when Contentful is not available
 const fallbackProjects = [
@@ -203,27 +232,6 @@ const Projects = ({ theme }) => {
   // Use CMS data if available, otherwise fall back to static data
   const projects =
     cmsProjects && cmsProjects.length > 0 ? cmsProjects : fallbackProjects;
-
-  // Create ripple effect on project links
-  const createRipple = event => {
-    const button = event.currentTarget;
-
-    const circle = document.createElement('span');
-    const diameter = Math.max(button.clientWidth, button.clientHeight);
-    const radius = diameter / 2;
-
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
-    circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
-    circle.classList.add('ripple');
-
-    const ripple = button.querySelector('.ripple');
-    if (ripple) {
-      ripple.remove();
-    }
-
-    button.appendChild(circle);
-  };
 
   if (loading) {
     return (
@@ -251,19 +259,19 @@ const Projects = ({ theme }) => {
   // sort projects by order
   const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
 
-  // Modern card layout for other themes
+  // Cinematic asymmetric layout for other themes
   return (
     <section
       className={clsx(
-        'p-5',
+        'px-4 md:px-8 py-8',
         styles.sectionBase,
         getThemeClass(theme, 'section')
       )}
     >
-      <div className={clsx('grid gap-6', 'grid-cols-1 md:grid-cols-2')}>
+      <div className="max-w-4xl mx-auto space-y-0">
         {sortedProjects
           .filter(projectItem => projectItem.active)
-          .map(projectItem => {
+          .map((projectItem, index) => {
             const imageSrc = projectItem.imgWide
               ? projectItem.imgWide
               : projectItem.imgNormal;
@@ -276,8 +284,8 @@ const Projects = ({ theme }) => {
                 description={projectItem.description}
                 link={projectItem.link}
                 icon={projectItem.icon}
-                createRipple={createRipple}
                 theme={theme}
+                index={index}
               />
             );
           })}
