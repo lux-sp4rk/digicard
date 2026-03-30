@@ -1,5 +1,19 @@
 import { createClient } from 'contentful';
 
+/**
+ * Normalizes a URL by ensuring it has a protocol.
+ * If the URL starts with //, it's already protocol-relative.
+ * If it starts with http:// or https://, it's already absolute.
+ * Otherwise, prepends https:// to make it absolute.
+ */
+const normalizeUrl = url => {
+  if (!url || typeof url !== 'string') return url;
+  if (url.match(/^https?:\/\//) || url.startsWith('//')) {
+    return url;
+  }
+  return `https://${url}`;
+};
+
 const client = createClient({
   space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
   accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
@@ -15,7 +29,7 @@ export const getProjects = async () => {
       id: item.sys.id,
       title: item.fields.title,
       description: item.fields.description,
-      link: item.fields.link,
+      link: normalizeUrl(item.fields.link),
       imgNormal: item.fields.image?.fields?.file?.url || '',
       imgWide: item.fields.imageWide?.fields?.file?.url || '',
       alt: item.fields.alt || item.fields.title,
@@ -35,7 +49,7 @@ export const getProjects = async () => {
           id: item.sys.id,
           title: item.fields.title,
           description: item.fields.description,
-          link: item.fields.link,
+          link: normalizeUrl(item.fields.link),
           imgNormal: item.fields.image?.fields?.file?.url || '',
           imgWide: item.fields.imageWide?.fields?.file?.url || '',
           alt: item.fields.alt || item.fields.title,
