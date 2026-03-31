@@ -1,0 +1,27 @@
+name: Mystic Ops
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  mystic-ops:
+    runs-on: ubuntu-latest
+    name: 🛡️ Mystic Ops
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Summon Mystic Ops
+        uses: lux-sp4rk/mystic-ops@main
+        with:
+          arcee-api-key: ${{ secrets.ARCEE_API_KEY }}
+
+          # ── Faye: Test + Coverage ──
+          faye-passes: "test,coverage,delta"
+          faye-coverage-threshold: 80
+
+          # ── D33: Code Review ──
+          d33-model: "trinity-mini"
+          d33-passes: "logic,security,judge"
+          d33-severity-threshold: "warning"
+          d33-max-files: 20
