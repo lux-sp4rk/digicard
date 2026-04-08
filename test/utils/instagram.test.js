@@ -136,6 +136,7 @@ describe('getLatestInstagramPost', () => {
       ok: false,
       status: 500,
       headers: { get: () => 'application/json' },
+      text: () => Promise.resolve('Internal Server Error'),
     });
 
     const result = await getLatestInstagramPost();
