@@ -14,8 +14,18 @@ jobs:
       checks: write
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout Faye action
+        uses: actions/checkout@v4
+        with:
+          repository: lux-sp4rk/test-runner-faye
+          path: .github/actions/test-runner-faye
+          token: ${{ secrets.PAT_TEST_RUNNER }}
+
       - name: Summon Faye
-        uses: lux-sp4rk/test-runner-faye@main
+        uses: ./.github/actions/test-runner-faye
         continue-on-error: false
         with:
           arcee-api-key: ${{ secrets.ARCEE_API_KEY }}
