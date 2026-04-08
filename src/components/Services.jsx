@@ -42,9 +42,9 @@ const Services = ({ theme = 'catppuccin' }) => {
       fetchFn={getServices}
       fallbackData={fallbackServices}
       sectionTitle="Services"
-      ctaHeading="Ready to architect your continuity?"
-      ctaButtonText="Book a Consultation"
-      ctaHref="https://tally.so/r/ODAodA"
+      ctaHeading="Let's build something."
+      ctaButtonText="Connect on LinkedIn"
+      ctaHref="https://linkedin.com/in/luhsprwhk"
       theme={theme}
     />
   );

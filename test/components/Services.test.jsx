@@ -371,7 +371,7 @@ describe('Services', () => {
   it('renders the CTA booking link', () => {
     mockData(null);
     render(<Services theme="catppuccin" />);
-    const link = screen.getByRole('link', { name: /Book a Consultation/i });
+    const link = screen.getByRole('link', { name: /Connect on LinkedIn/i });
     expect(link).toBeInTheDocument();
     expect(link.getAttribute('href')).toMatch(/^https?:\/\/|^mailto:/);
   });
