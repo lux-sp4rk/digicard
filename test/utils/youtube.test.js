@@ -251,10 +251,8 @@ describe('getLatestYouTubeVideo', () => {
       const result = await getLatestYouTubeVideo();
 
       expect(result).toEqual(mockVideo);
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Failed to cache YouTube video:',
-        expect.any(Error)
-      );
+      // cacheSet silently fails on quota exceeded — no warning logged
+      expect(consoleSpy).not.toHaveBeenCalled();
 
       consoleSpy.mockRestore();
     });
