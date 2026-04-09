@@ -35,12 +35,10 @@ describe('NavBar', () => {
   });
 
   describe('Tab Switcher', () => {
-    it('renders all three tabs with their icons', () => {
+    it('renders all two tabs with their icons', () => {
       render(<NavBar {...defaultProps} />);
       expect(screen.getByText('The Work')).toBeInTheDocument();
       expect(screen.getByTestId('icon-FaBriefcase')).toBeInTheDocument();
-      expect(screen.getByText('Skills')).toBeInTheDocument();
-      expect(screen.getByTestId('icon-FaRobot')).toBeInTheDocument();
       expect(screen.getByText('Services')).toBeInTheDocument();
       expect(screen.getByTestId('icon-FaUsers')).toBeInTheDocument();
     });
@@ -49,20 +47,8 @@ describe('NavBar', () => {
       const setActiveTab = vi.fn();
       render(<NavBar {...defaultProps} setActiveTab={setActiveTab} />);
 
-      fireEvent.click(screen.getByText('Skills'));
-      expect(setActiveTab).toHaveBeenCalledWith('skills');
-
       fireEvent.click(screen.getByText('Services'));
       expect(setActiveTab).toHaveBeenCalledWith('services');
-    });
-
-    it('marks the active tab as aria-selected', () => {
-      render(<NavBar {...defaultProps} activeTab="skills" />);
-      const skillsTab = screen.getByRole('tab', { name: /skills/i });
-      const workTab = screen.getByRole('tab', { name: /work/i });
-
-      expect(skillsTab).toHaveAttribute('aria-selected', 'true');
-      expect(workTab).toHaveAttribute('aria-selected', 'false');
     });
 
     it('applies correct theme classes for active tab (catppuccin)', () => {

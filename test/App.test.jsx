@@ -51,14 +51,6 @@ vi.mock('../src/components/Services', () => ({
   ),
 }));
 
-vi.mock('../src/components/Skills', () => ({
-  default: ({ theme }) => (
-    <div data-testid="skills" data-theme={theme}>
-      Skills
-    </div>
-  ),
-}));
-
 vi.mock('../src/components/FeaturedContent', () => ({
   default: ({ theme }) => (
     <div data-testid="featured-content" data-theme={theme}>
@@ -89,14 +81,6 @@ vi.mock('../src/components/NavBar', () => ({
         onClick={() => setActiveTab('work')}
       >
         The Work
-      </button>
-      <button
-        type="button"
-        role="tab"
-        aria-selected={activeTab === 'skills'}
-        onClick={() => setActiveTab('skills')}
-      >
-        Skills
       </button>
       <button
         type="button"
@@ -215,12 +199,8 @@ describe('App', () => {
     expect(screen.getByTestId('projects')).toBeInTheDocument();
     expect(screen.getByTestId('featured-content')).toBeInTheDocument();
     expect(screen.queryByTestId('services')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('tab', { name: /skills/i }));
-    expect(screen.getByTestId('skills')).toBeInTheDocument();
-    expect(screen.queryByTestId('projects')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('tab', { name: /services/i }));
     expect(screen.getByTestId('services')).toBeInTheDocument();
-    expect(screen.queryByTestId('skills')).not.toBeInTheDocument();
   });
 
   it('marks active tab correctly', () => {
