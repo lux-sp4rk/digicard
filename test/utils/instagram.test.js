@@ -136,6 +136,7 @@ describe('getLatestInstagramPost', () => {
       ok: false,
       status: 500,
       headers: { get: () => 'application/json' },
+      text: () => Promise.resolve('Internal Server Error'),
     });
 
     const result = await getLatestInstagramPost();
@@ -194,6 +195,7 @@ describe('getLatestInstagramPost', () => {
       ok: false,
       status: 500,
       headers: { get: () => 'application/json' },
+      text: () => Promise.resolve('Internal Server Error'),
     });
 
     await getLatestInstagramPost();
@@ -217,10 +219,8 @@ describe('getLatestInstagramPost', () => {
     const result = await getLatestInstagramPost();
 
     expect(result).toEqual(mockPost);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Failed to cache Instagram post:',
-      expect.any(Error)
-    );
+    // cacheSet silently fails on quota exceeded — no warning logged
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     consoleSpy.mockRestore();
   });

@@ -269,10 +269,8 @@ describe('getFeaturedPost', () => {
       const result = await getFeaturedPost();
 
       expect(result).toEqual(mockPost);
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Failed to cache Substack post:',
-        expect.any(Error)
-      );
+      // cacheSet silently fails on quota exceeded — no warning logged
+      expect(consoleSpy).not.toHaveBeenCalled();
 
       consoleSpy.mockRestore();
     });

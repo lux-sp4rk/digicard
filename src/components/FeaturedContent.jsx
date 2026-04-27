@@ -1,9 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
+import { useApiData } from '../hooks/useApiData';
 import { useContentful } from '../hooks/useContentful';
 import { useSubstack } from '../hooks/useSubstack';
 import { getYouTubeVideo } from '../utils/contentful';
 import { getLatestYouTubeVideo } from '../utils/youtube';
 import { getLatestInstagramPost } from '../utils/instagram';
+import { normalizeDate } from '../utils/dateUtils';
 import Loading from './Loading';
 import YouTubeCard from './YouTubeCard';
 import SubstackCard from './SubstackCard';
@@ -11,35 +13,6 @@ import InstagramCard from './InstagramCard';
 import fallbackVideoData from '../dev-data/youtubeVideo.json';
 import fallbackPostData from '../dev-data/featuredPost.json';
 import fallbackInstagramData from '../dev-data/instagramPost.json';
-
-/**
- * Normalizes various date formats to a comparable Date object
- * @param {string} dateStr - Date string in various formats
- * @returns {Date|null} Parsed Date or null if invalid
- */
-const normalizeDate = dateStr => {
-  if (!dateStr) return null;
-
-  // Try parsing as ISO 8601 first (YouTube format)
-  let date = new Date(dateStr);
-  if (!isNaN(date.getTime())) {
-    return date;
-  }
-
-  // Try parsing RSS format (Substack: "Mon, 06 Jan 2025 11:00:00 GMT")
-  // The Date constructor should handle this, but let's be explicit
-  const rssMatch = dateStr.match(
-    /^(\w{3}),\s+(\d{1,2})\s+(\w{3})\s+(\d{4})\s+(\d{2}:\d{2}:\d{2})\s*(\w+)?$/
-  );
-  if (rssMatch) {
-    date = new Date(dateStr);
-    if (!isNaN(date.getTime())) {
-      return date;
-    }
-  }
-
-  return null;
-};
 
 /**
  * FeaturedContent component
@@ -56,52 +29,24 @@ const FeaturedContent = ({ theme }) => {
   // Get Substack data
   const { post: substackPost, loading: substackLoading } = useSubstack();
 
-  // State for API fallbacks
-  const [apiVideo, setApiVideo] = useState(null);
-  const [apiLoading, setApiLoading] = useState(false);
-  const [apiAttempted, setApiAttempted] = useState(false);
-
-  // State for Instagram API (fetched directly, no Contentful)
-  const [apiInstagram, setApiInstagram] = useState(null);
-  const [instagramApiLoading, setInstagramApiLoading] = useState(false);
-  const [instagramApiAttempted, setInstagramApiAttempted] = useState(false);
-
   // Determine if we need to fetch from YouTube API
   const needsApiFallback =
     !cmsLoading && (cmsError || !cmsVideo || cmsVideo.active === false);
 
-  // Determine if we need to fetch from Instagram API
-  const needsInstagramApiFallback = !instagramApiAttempted;
+  // Determine if we need to fetch from Instagram API (always attempt — no Contentful layer)
+  const needsInstagramApiFallback = true;
 
-  // Fetch from YouTube API when Contentful doesn't have an active featured video
-  useEffect(() => {
-    if (needsApiFallback && !apiAttempted) {
-      setApiLoading(true);
-      setApiAttempted(true);
-      getLatestYouTubeVideo()
-        .then(video => {
-          setApiVideo(video);
-        })
-        .finally(() => {
-          setApiLoading(false);
-        });
-    }
-  }, [needsApiFallback, apiAttempted]);
+  // YouTube API fallback (used when Contentful has no active video)
+  const { data: apiVideo, loading: apiLoading } = useApiData(
+    getLatestYouTubeVideo,
+    needsApiFallback
+  );
 
-  // Fetch from Instagram API directly (no Contentful layer)
-  useEffect(() => {
-    if (needsInstagramApiFallback) {
-      setInstagramApiLoading(true);
-      setInstagramApiAttempted(true);
-      getLatestInstagramPost()
-        .then(post => {
-          setApiInstagram(post);
-        })
-        .finally(() => {
-          setInstagramApiLoading(false);
-        });
-    }
-  }, [needsInstagramApiFallback]);
+  // Instagram API fallback
+  const { data: apiInstagram, loading: instagramApiLoading } = useApiData(
+    getLatestInstagramPost,
+    needsInstagramApiFallback
+  );
 
   // Determine final YouTube video data
   const youTubeVideo = useMemo(() => {
@@ -110,11 +55,11 @@ const FeaturedContent = ({ theme }) => {
       return cmsVideo || apiVideo || null;
     }
     const video =
-      cmsVideo && cmsVideo.active !== false
-        ? cmsVideo
-        : apiVideo || fallbackVideoData;
+      !cmsLoading && (cmsError || !cmsVideo || cmsVideo.active === false)
+        ? apiVideo || fallbackVideoData
+        : cmsVideo || fallbackVideoData;
     return video;
-  }, [cmsVideo, apiVideo, cmsLoading, apiLoading]);
+  }, [cmsVideo, apiVideo, cmsLoading, apiLoading, cmsError]);
 
   // Determine final Substack post data
   const substackData = useMemo(() => {

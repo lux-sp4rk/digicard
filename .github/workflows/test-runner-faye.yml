@@ -14,8 +14,11 @@ jobs:
       checks: write
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Summon Faye
-        uses: lux-sp4rk/test-runner-faye@main
+        uses: lux-sp4rk/test-runner-faye@d397b2b1940d2983c839566a02a9fdfee83057f2
         continue-on-error: false
         with:
           arcee-api-key: ${{ secrets.ARCEE_API_KEY }}

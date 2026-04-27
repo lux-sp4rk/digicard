@@ -1,11 +1,11 @@
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 function MatrixHint({ children }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [hasTracked, setHasTracked] = useState(false);
   const tooltipRef = useRef(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (showTooltip && tooltipRef.current) {
       const tooltip = tooltipRef.current;
       const rect = tooltip.getBoundingClientRect();
