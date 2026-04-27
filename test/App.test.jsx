@@ -193,9 +193,7 @@ describe('App', () => {
 
   it('switches between tabs', () => {
     render(<App />);
-    // Default tab is now 'services'
-    expect(screen.getByTestId('services')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('tab', { name: /the work/i }));
+    // Default tab is now 'work'
     expect(screen.getByTestId('projects')).toBeInTheDocument();
     expect(screen.getByTestId('featured-content')).toBeInTheDocument();
     expect(screen.queryByTestId('services')).not.toBeInTheDocument();
@@ -205,13 +203,14 @@ describe('App', () => {
 
   it('marks active tab correctly', () => {
     render(<App />);
-    // Default tab is now 'services'
-    const servicesTab = screen.getByRole('tab', { name: /services/i });
-    expect(servicesTab).toHaveAttribute('aria-selected', 'true');
+    // Default tab is now 'work'
     const workTab = screen.getByRole('tab', { name: /the work/i });
-    fireEvent.click(workTab);
     expect(workTab).toHaveAttribute('aria-selected', 'true');
+    const servicesTab = screen.getByRole('tab', { name: /services/i });
     expect(servicesTab).toHaveAttribute('aria-selected', 'false');
+    fireEvent.click(servicesTab);
+    expect(workTab).toHaveAttribute('aria-selected', 'false');
+    expect(servicesTab).toHaveAttribute('aria-selected', 'true');
   });
 
   it('wraps components in ErrorBoundary', () => {
