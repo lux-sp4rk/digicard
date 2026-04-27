@@ -1,171 +1,40 @@
 # DigiCard
 
-Personal digital portfolio with dynamic theming and CMS integration.
+**Live:** [digicard.luxsp4rk.com](https://digicard.luxsp4rk.com)
+
+A personal portfolio that earns its name — dynamic theming, CMS-driven content, and integrations with the creator stack (Beehiiv, YouTube, Instagram). No page rebuilds to change the look.
+
+## What it is
+
+A React + Contentful single-page portfolio with five switchable themes, each a full visual overhaul — not just a color swap. The site content (projects, services, skills) is managed in Contentful and falls back to static data when the CMS is unavailable.
+
+**Themes:** GitHub · Dracula · Matrix · Web2 · CSS Zen Garden
 
 ## Features
 
-- Multiple dynamic themes (GitHub, Dracula, Matrix, Web2, CSS Zen Garden)
-- Console easter eggs
-- Contentful CMS integration with fallback to static data
-- Project showcase with customizable cards
-- Blog integration (Beehiiv)
-- YouTube widget
-- Responsive design
+- **Dynamic theming** — five themes, switchable in real time, each with its own visual personality
+- **Contentful CMS** — all content is editable without code; static fallback when API keys aren't present
+- **Creator integrations** — latest YouTube video, latest Instagram post, Beehiiv newsletter CTA
+- **Responsive** — works across desktop and mobile
+- **Console easter eggs** — because boring portfolios are forgettable
 
-## Tech Stack
+## Stack
 
-- React 18 + Vite
-- Tailwind CSS (layout) + CSS Modules (theming)
-- Contentful (headless CMS)
-- Netlify deployment + serverless functions
-- Vitest + React Testing Library
-- ESLint + Prettier + Husky
+React 18 · Vite · Tailwind CSS · CSS Modules · Contentful · Netlify
 
-## Quick Start
+## Themes
 
-### Prerequisites
-
-- Docker and Docker Compose (recommended)
-- OR Node.js v25.2.1 (see `.nvmrc`)
-
-### Installation
-
-```bash
-# Clone and setup
-git clone <repo-url>
-cd digicard
-cp .env.example .env
-# Edit .env with your API keys
-
-# Start with Docker (recommended)
-docker-compose up
-
-# OR run locally
-pnpm install
-pnpm run dev
-```
-
-Access at [http://localhost:5173](http://localhost:5173)
-
-## Environment Variables
-
-```bash
-# Contentful CMS
-VITE_CONTENTFUL_SPACE_ID=
-VITE_CONTENTFUL_ACCESS_TOKEN=
-
-# Analytics (optional)
-VITE_UMAMI_WEBSITE_ID=
-VITE_UMAMI_SCRIPT_URL=
-
-# Beehiiv (optional)
-BEEHIIV_API_KEY=
-BEEHIIV_PUBLICATION_ID=
-
-# YouTube (optional)
-YOUTUBE_API_KEY=
-YOUTUBE_CHANNEL_ID=
-```
-
-See [docs/CONTENTFUL_SETUP.md](docs/CONTENTFUL_SETUP.md) for Contentful setup.
-
-## Development
-
-### Docker Workflow
-
-```bash
-# Start
-docker-compose up
-
-# Rebuild
-docker-compose up --build
-
-# Stop
-docker-compose down
-
-# Logs
-docker-compose logs -f app
-```
-
-### Available Scripts
-
-```bash
-pnpm run dev              # Start dev server (runs in Docker)
-pnpm run build            # Build for production
-pnpm run preview          # Preview production build
-pnpm run lint             # Run ESLint
-pnpm run format           # Format with Prettier
-pnpm run format:check     # Check formatting
-pnpm run test             # Run tests
-pnpm run test:watch       # Tests in watch mode
-pnpm run test:coverage    # Coverage report
-pnpm run setup            # Initial setup
-pnpm run dev:seed-data    # Seed dev data
-```
-
-### Git Hooks
-
-Pre-commit hooks via Husky:
-- ESLint on staged JS/JSX
-- Prettier formatting
-- Test validation
-
-## Testing
-
-```bash
-pnpm run test              # Run all tests
-pnpm run test:watch        # Watch mode
-pnpm run test:ui           # UI mode
-pnpm run test:coverage     # With coverage
-```
-
-## Architecture
-
-- **Components**: `src/components/`
-- **Hooks**: `src/hooks/` (data fetching, state management)
-- **Utils**: `src/utils/` (helpers, services)
-- **Styling**: Tailwind for layout, CSS Modules for theming
-- **Themes**: Dynamic switching via CSS custom properties
-
-See [docs/architecture.md](docs/architecture.md) for details.
-
-## Content Management
-
-### Contentful
-
-Setup guide: [docs/CONTENTFUL_SETUP.md](docs/CONTENTFUL_SETUP.md)
-
-### Fallback Data
-
-App falls back to `src/dev-data/` when:
-- Contentful unavailable
-- No API keys
-- Network failures
-
-## Theme Development
-
-1. Add theme to `src/index.css`
-2. Update `App.jsx` theme logic
-3. Add component styles with CSS Modules
-4. Test all components
+| Theme              | Vibe                                |
+| ------------------ | ----------------------------------- |
+| **GitHub**         | Dark, minimal, dev-adjacent         |
+| **Dracula**        | Purple-heavy terminal aesthetic     |
+| **Matrix**         | Green-on-black, digital rain energy |
+| **Web2**           | Clean, bright, approachable         |
+| **CSS Zen Garden** | Artistic, unconventional layout     |
 
 ## Deployment
 
-### Netlify
-
-- Auto-deploy from `main` branch
-- Build: `pnpm run build`
-- Publish: `dist/`
-- Node: 25.2.1
-- Set env vars in Netlify UI
-
-### Other Platforms
-
-```bash
-pnpm run build
-# Upload dist/ directory
-# Configure env vars in platform UI
-```
+Auto-deploys from `main` to Netlify. Push to `main` → live.
 
 ## License
 
