@@ -81,7 +81,25 @@ export const handler = async event => {
       };
     }
 
-    const latestPost = Array.isArray(posts) ? posts[0] : posts;
+    // Filter out posts tagged "substack" in the caption
+    const nonSubstack = posts.filter(post => {
+      const caption =
+        post?.caption?.text || post?.caption || post?.text || '';
+      return !caption.toLowerCase().includes('substack');
+    });
+
+    if (nonSubstack.length === 0) {
+      return {
+        statusCode: 404,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({ error: 'No non-substack posts found' }),
+      };
+    }
+
+    const latestPost = nonSubstack[0];
 
     // Normalize the response to match Contentful schema
     const post = {
