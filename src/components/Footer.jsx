@@ -14,7 +14,7 @@ const Footer = ({ theme }) => {
     <footer
       className={clsx(
         'text-center pb-5 px-4 text-sm relative',
-        'text-github-text dark:text-dracula-foreground',
+        'text-catppuccin-text dark:text-catppuccin-text',
         'matrix:text-matrix-text',
         'catppuccin:text-catppuccin-text',
         'flexoki:text-flexoki-text'

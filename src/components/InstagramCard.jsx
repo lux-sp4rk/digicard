@@ -16,8 +16,7 @@ const InstagramCard = ({ post, theme }) => {
     <section
       className={clsx(
         'p-5',
-        theme !== 'web2' && 'border-t border-github-lightGray',
-        'dark:border-dracula-currentLine',
+        theme !== 'web2' && 'border-t border-catppuccin-surface',
         'matrix:border-matrix-glow',
         'matrix:shadow-lg',
         'xmas:border-xmas-gold',
@@ -29,7 +28,7 @@ const InstagramCard = ({ post, theme }) => {
         <div
           className={clsx(
             'rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1',
-            'bg-white dark:bg-dracula-currentLine',
+            'bg-white dark:bg-catppuccin-surface',
             'web2:bg-web2-cardBg',
             'matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:hover:shadow-matrix-glow',
             'xmas:bg-xmas-cardBg xmas:border-xmas-gold xmas:border-2 xmas:shadow-lg xmas:hover:shadow-xmas-glow',
@@ -66,7 +65,7 @@ const InstagramCard = ({ post, theme }) => {
             <p
               className={clsx(
                 'text-sm mb-3 line-clamp-2',
-                'text-github-dark dark:text-dracula-foreground',
+                'text-catppuccin-text dark:text-catppuccin-text',
                 'web2:text-web2-text',
                 'matrix:text-matrix-text',
                 'xmas:text-xmas-white'

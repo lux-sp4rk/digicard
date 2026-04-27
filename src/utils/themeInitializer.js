@@ -24,6 +24,9 @@ export function getInitialTheme({
 
   // Migrate deprecated themes
   if (
+    savedTheme === 'github' ||
+    savedTheme === 'dracula' ||
+    savedTheme === 'csszen' ||
     savedTheme === 'dark' ||
     savedTheme === 'light' ||
     savedTheme === 'rosepine'
