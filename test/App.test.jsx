@@ -43,6 +43,14 @@ vi.mock('../src/components/Projects/Projects', () => ({
   ),
 }));
 
+vi.mock('../src/components/Skills', () => ({
+  default: ({ theme }) => (
+    <div data-testid="skills" data-theme={theme}>
+      Skills
+    </div>
+  ),
+}));
+
 vi.mock('../src/components/Services', () => ({
   default: ({ theme }) => (
     <div data-testid="services" data-theme={theme}>
@@ -89,6 +97,14 @@ vi.mock('../src/components/NavBar', () => ({
         onClick={() => setActiveTab('services')}
       >
         Services
+      </button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected={activeTab === 'skills'}
+        onClick={() => setActiveTab('skills')}
+      >
+        Skills
       </button>
       {theme === 'web2' && <div data-testid="web2-navbar">Web2 Part</div>}
     </div>
@@ -193,23 +209,24 @@ describe('App', () => {
 
   it('switches between tabs', () => {
     render(<App />);
-    // Default tab is now 'work'
-    expect(screen.getByTestId('projects')).toBeInTheDocument();
+    // Default tab is now 'skills'
+    expect(screen.getByTestId('skills')).toBeInTheDocument();
+    expect(screen.queryByTestId('featured-content')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /the work/i }));
     expect(screen.getByTestId('featured-content')).toBeInTheDocument();
-    expect(screen.queryByTestId('services')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('tab', { name: /services/i }));
     expect(screen.getByTestId('services')).toBeInTheDocument();
   });
 
   it('marks active tab correctly', () => {
     render(<App />);
-    // Default tab is now 'work'
+    // Default tab is now 'skills'
+    const skillsTab = screen.getByRole('tab', { name: /skills/i });
+    expect(skillsTab).toHaveAttribute('aria-selected', 'true');
     const workTab = screen.getByRole('tab', { name: /the work/i });
-    expect(workTab).toHaveAttribute('aria-selected', 'true');
-    const servicesTab = screen.getByRole('tab', { name: /services/i });
-    expect(servicesTab).toHaveAttribute('aria-selected', 'false');
-    fireEvent.click(servicesTab);
     expect(workTab).toHaveAttribute('aria-selected', 'false');
+    const servicesTab = screen.getByRole('tab', { name: /services/i });
+    fireEvent.click(servicesTab);
     expect(servicesTab).toHaveAttribute('aria-selected', 'true');
   });
 
