@@ -23,6 +23,7 @@ import {
   FaCloudUploadAlt,
   FaBriefcase,
   FaUsers,
+  FaGhost,
 } from 'react-icons/fa';
 
 import { FaThreads, FaMugHot, FaX } from 'react-icons/fa6';
@@ -61,6 +62,7 @@ const iconMap = {
   FaCode,
   FaProjectDiagram,
   FaCloudUploadAlt,
+  FaGhost,
 };
 
 export const getIcon = iconName => {
