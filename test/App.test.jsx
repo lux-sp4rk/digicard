@@ -209,22 +209,23 @@ describe('App', () => {
 
   it('switches between tabs', () => {
     render(<App />);
-    // Default tab is now 'skills'
-    expect(screen.getByTestId('skills')).toBeInTheDocument();
-    expect(screen.queryByTestId('featured-content')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('tab', { name: /the work/i }));
+    // Default tab is 'work'
     expect(screen.getByTestId('featured-content')).toBeInTheDocument();
+    expect(screen.getByTestId('projects')).toBeInTheDocument();
+    expect(screen.queryByTestId('skills')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('tab', { name: /services/i }));
     expect(screen.getByTestId('services')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /skills/i }));
+    expect(screen.getByTestId('skills')).toBeInTheDocument();
   });
 
   it('marks active tab correctly', () => {
     render(<App />);
-    // Default tab is now 'skills'
-    const skillsTab = screen.getByRole('tab', { name: /skills/i });
-    expect(skillsTab).toHaveAttribute('aria-selected', 'true');
+    // Default tab is 'work'
     const workTab = screen.getByRole('tab', { name: /the work/i });
-    expect(workTab).toHaveAttribute('aria-selected', 'false');
+    expect(workTab).toHaveAttribute('aria-selected', 'true');
+    const skillsTab = screen.getByRole('tab', { name: /skills/i });
+    expect(skillsTab).toHaveAttribute('aria-selected', 'false');
     const servicesTab = screen.getByRole('tab', { name: /services/i });
     fireEvent.click(servicesTab);
     expect(servicesTab).toHaveAttribute('aria-selected', 'true');

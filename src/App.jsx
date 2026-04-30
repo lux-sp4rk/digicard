@@ -17,7 +17,7 @@ import Snowfall from './components/Snowfall';
 
 function App() {
   const [theme, setTheme] = useState(() => getInitialTheme());
-  const [activeTab, setActiveTab] = useState('skills'); // 'services', 'work', or 'skills'
+  const [activeTab, setActiveTab] = useState('work'); // 'services', 'work', or 'skills'
 
   // Apply theme to body
   useEffect(() => {
