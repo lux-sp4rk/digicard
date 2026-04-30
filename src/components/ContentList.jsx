@@ -103,16 +103,6 @@ const ContentList = ({
                 index % 2 === 1 && 'md:pl-12'
               )}
             >
-              {/* Subtle accent line - always visible */}
-              <div
-                className={clsx(
-                  'absolute left-0 top-6 bottom-6 w-px',
-                  theme === 'matrix'
-                    ? 'bg-matrix-glow/30'
-                    : 'bg-gray-300 dark:bg-gray-600'
-                )}
-              />
-
               <div className="flex items-start gap-4 md:gap-6">
                 {item.icon && (
                   <div
