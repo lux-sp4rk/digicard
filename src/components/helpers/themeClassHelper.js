@@ -7,15 +7,11 @@
  */
 export const getThemeClass = (styles, theme, baseClass) => {
   const themeMap = {
-    github: 'Github',
-    dark: 'Dracula',
+    catppuccin: 'Catppuccin',
+    flexoki: 'Flexoki',
     matrix: 'Matrix',
     web2: 'Web2',
     xmas: 'Xmas',
-    csszen: 'Csszen',
-    catppuccin: 'Catppuccin',
-    flexoki: 'Flexoki',
-    rosepine: 'Rosepine',
   };
 
   const themeSuffix = themeMap[theme] || 'Github';

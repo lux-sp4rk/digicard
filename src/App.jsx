@@ -23,12 +23,16 @@ function App() {
     // Remove all theme classes first
     document.documentElement.classList.remove(
       'dark',
+      'github',
       'matrix',
       'light',
       'web2',
       'xmas',
       'catppuccin',
-      'flexoki'
+      'flexoki',
+      'dracula',
+      'csszen',
+      'rosepine'
     );
     // Add the current theme class
     document.documentElement.classList.add(theme);
@@ -62,7 +66,7 @@ function App() {
           <Header theme={theme} setTheme={setTheme} />
           <main
             className={clsx(
-              'bg-white dark:bg-dracula-currentLine rounded-xl overflow-hidden mb-8 md:mb-12',
+              'bg-white dark:bg-catppuccin-surface rounded-xl overflow-hidden mb-8 md:mb-12',
               'matrix:bg-matrix-terminal matrix:border matrix:border-matrix-glow/30',
               'web2:bg-web2-background web2:border-web2-border',
               'xmas:border-xmas-gold/50 xmas:border',

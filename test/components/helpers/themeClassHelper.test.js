@@ -11,21 +11,25 @@ describe('themeClassHelper', () => {
     buttonDracula: 'Component__buttonDracula___4c5d6',
     buttonMatrix: 'Component__buttonMatrix___7e8f9',
     buttonWeb2: 'Component__buttonWeb2___0g1h2',
+    buttonCatppuccin: 'Component__buttonCatppuccin___abcd1',
+    buttonFlexoki: 'Component__buttonFlexoki___efgh2',
     cardGithub: 'Component__cardGithub___6k7l8',
     cardDracula: 'Component__cardDracula___9m0n1',
     cardMatrix: 'Component__cardMatrix___2o3p4',
     cardWeb2: 'Component__cardWeb2___5q6r7',
+    cardCatppuccin: 'Component__cardCatppuccin___ijkl3',
+    cardFlexoki: 'Component__cardFlexoki___mnop4',
   };
 
   describe('getThemeClass', () => {
-    it('should return correct class for github theme', () => {
-      const result = getThemeClass(mockStyles, 'github', 'button');
-      expect(result).toBe('Component__buttonGithub___1a2b3');
+    it('should return correct class for catppuccin theme', () => {
+      const result = getThemeClass(mockStyles, 'catppuccin', 'button');
+      expect(result).toBe('Component__buttonCatppuccin___abcd1');
     });
 
-    it('should return correct class for dark theme (maps to Dracula)', () => {
-      const result = getThemeClass(mockStyles, 'dark', 'button');
-      expect(result).toBe('Component__buttonDracula___4c5d6');
+    it('should return correct class for flexoki theme', () => {
+      const result = getThemeClass(mockStyles, 'flexoki', 'button');
+      expect(result).toBe('Component__buttonFlexoki___efgh2');
     });
 
     it('should return correct class for matrix theme', () => {
@@ -39,32 +43,32 @@ describe('themeClassHelper', () => {
     });
 
     it('should work with different base class names', () => {
-      const result = getThemeClass(mockStyles, 'github', 'card');
-      expect(result).toBe('Component__cardGithub___6k7l8');
+      const result = getThemeClass(mockStyles, 'catppuccin', 'card');
+      expect(result).toBe('Component__cardCatppuccin___ijkl3');
     });
 
-    it('should default to Github theme for unknown themes', () => {
+    it('should default to Github theme suffix for unknown themes', () => {
       const result = getThemeClass(mockStyles, 'unknown-theme', 'button');
       expect(result).toBe('Component__buttonGithub___1a2b3');
     });
 
-    it('should default to Github theme for null theme', () => {
+    it('should default to Github theme suffix for null theme', () => {
       const result = getThemeClass(mockStyles, null, 'button');
       expect(result).toBe('Component__buttonGithub___1a2b3');
     });
 
-    it('should default to Github theme for undefined theme', () => {
+    it('should default to Github theme suffix for undefined theme', () => {
       const result = getThemeClass(mockStyles, undefined, 'button');
       expect(result).toBe('Component__buttonGithub___1a2b3');
     });
 
     it('should return undefined if styles object does not contain the requested class', () => {
-      const result = getThemeClass(mockStyles, 'github', 'nonexistent');
+      const result = getThemeClass(mockStyles, 'catppuccin', 'nonexistent');
       expect(result).toBeUndefined();
     });
 
     it('should handle empty styles object', () => {
-      const result = getThemeClass({}, 'github', 'button');
+      const result = getThemeClass({}, 'catppuccin', 'button');
       expect(result).toBeUndefined();
     });
   });
@@ -77,18 +81,18 @@ describe('themeClassHelper', () => {
 
     it('should create a bound function that works correctly', () => {
       const getThemeClass = createThemeClassGetter(mockStyles);
-      const result = getThemeClass('github', 'button');
-      expect(result).toBe('Component__buttonGithub___1a2b3');
+      const result = getThemeClass('catppuccin', 'button');
+      expect(result).toBe('Component__buttonCatppuccin___abcd1');
     });
 
     it('should work with all themes through bound function', () => {
       const getThemeClass = createThemeClassGetter(mockStyles);
 
-      expect(getThemeClass('github', 'button')).toBe(
-        'Component__buttonGithub___1a2b3'
+      expect(getThemeClass('catppuccin', 'button')).toBe(
+        'Component__buttonCatppuccin___abcd1'
       );
-      expect(getThemeClass('dark', 'button')).toBe(
-        'Component__buttonDracula___4c5d6'
+      expect(getThemeClass('flexoki', 'button')).toBe(
+        'Component__buttonFlexoki___efgh2'
       );
       expect(getThemeClass('matrix', 'button')).toBe(
         'Component__buttonMatrix___7e8f9'
@@ -101,8 +105,8 @@ describe('themeClassHelper', () => {
     it('should work with different base classes through bound function', () => {
       const getThemeClass = createThemeClassGetter(mockStyles);
 
-      expect(getThemeClass('github', 'card')).toBe(
-        'Component__cardGithub___6k7l8'
+      expect(getThemeClass('flexoki', 'card')).toBe(
+        'Component__cardFlexoki___mnop4'
       );
       expect(getThemeClass('matrix', 'card')).toBe(
         'Component__cardMatrix___2o3p4'
@@ -119,11 +123,11 @@ describe('themeClassHelper', () => {
       const getThemeClass = createThemeClassGetter(mockStyles);
 
       // Multiple calls should work consistently
-      expect(getThemeClass('github', 'button')).toBe(
-        'Component__buttonGithub___1a2b3'
+      expect(getThemeClass('flexoki', 'button')).toBe(
+        'Component__buttonFlexoki___efgh2'
       );
-      expect(getThemeClass('github', 'button')).toBe(
-        'Component__buttonGithub___1a2b3'
+      expect(getThemeClass('flexoki', 'button')).toBe(
+        'Component__buttonFlexoki___efgh2'
       );
       expect(getThemeClass('matrix', 'card')).toBe(
         'Component__cardMatrix___2o3p4'
@@ -132,7 +136,7 @@ describe('themeClassHelper', () => {
 
     it('should work with empty styles object', () => {
       const getThemeClass = createThemeClassGetter({});
-      const result = getThemeClass('github', 'button');
+      const result = getThemeClass('flexoki', 'button');
       expect(result).toBeUndefined();
     });
   });
@@ -142,12 +146,12 @@ describe('themeClassHelper', () => {
       const getThemeClassBound = createThemeClassGetter(mockStyles);
 
       // Test that both functions return the same results
-      expect(getThemeClass(mockStyles, 'github', 'button')).toBe(
-        getThemeClassBound('github', 'button')
+      expect(getThemeClass(mockStyles, 'catppuccin', 'button')).toBe(
+        getThemeClassBound('catppuccin', 'button')
       );
 
-      expect(getThemeClass(mockStyles, 'dark', 'button')).toBe(
-        getThemeClassBound('dark', 'button')
+      expect(getThemeClass(mockStyles, 'flexoki', 'button')).toBe(
+        getThemeClassBound('flexoki', 'button')
       );
 
       expect(getThemeClass(mockStyles, 'matrix', 'card')).toBe(
@@ -156,8 +160,8 @@ describe('themeClassHelper', () => {
     });
 
     it('should handle all supported themes correctly', () => {
-      const supportedThemes = ['github', 'dark', 'matrix', 'web2'];
-      const expectedSuffixes = ['Github', 'Dracula', 'Matrix', 'Web2'];
+      const supportedThemes = ['catppuccin', 'flexoki', 'matrix', 'web2'];
+      const expectedSuffixes = ['Catppuccin', 'Flexoki', 'Matrix', 'Web2'];
 
       supportedThemes.forEach((theme, index) => {
         const expectedClass = `Component__button${expectedSuffixes[index]}___`;
@@ -189,8 +193,8 @@ describe('themeClassHelper', () => {
     });
 
     it('should be case sensitive for theme names', () => {
-      const result = getThemeClass(mockStyles, 'GITHUB', 'button');
-      // Should default to Github since 'GITHUB' is not in the theme map
+      const result = getThemeClass(mockStyles, 'CATPPUCCIN', 'button');
+      // Should default to Github since 'CATPPUCCIN' is not in the theme map
       expect(result).toBe('Component__buttonGithub___1a2b3');
     });
   });

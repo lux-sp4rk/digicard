@@ -79,7 +79,6 @@ const Profile = ({ theme }) => {
           'web2:text-4xl web2:text-web2-secondary web2:font-web2Heading',
           'matrix:text-matrix-glow',
           'flexoki:text-flexoki-text',
-          'rosepine:text-rosepine-text',
           'catppuccin:text-catppuccin-text'
         )}
       >
