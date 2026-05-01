@@ -10,10 +10,6 @@ const Header = ({ theme, setTheme }) => {
       {/* Theme Switcher - Right side (hidden in minimal modes) */}
       {!isMinimal && (
         <div className="relative text-right">
-          <label>
-            <small>Site Theme</small>
-          </label>
-          <br />
           <ThemeSwitch theme={theme} setTheme={setTheme} />
         </div>
       )}

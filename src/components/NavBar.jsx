@@ -96,7 +96,7 @@ const NavBar = ({ theme, activeTab, setActiveTab }) => {
       id: 'skills',
       label: 'Skills',
       ariaLabel: 'Switch to Skills tab',
-      iconName: 'FaWandMagicSparkles',
+      iconName: 'FaRobot',
     },
   ];
 
