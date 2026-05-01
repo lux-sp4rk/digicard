@@ -21,7 +21,7 @@ describe('Header', () => {
         <Header theme={theme} setTheme={mockSetTheme} />
       );
       expect(screen.getByTestId('theme-switch')).toBeInTheDocument();
-      expect(screen.getByText('Site Theme')).toBeInTheDocument();
+      expect(screen.queryByText('Site Theme')).not.toBeInTheDocument();
       container.remove();
     });
   });
