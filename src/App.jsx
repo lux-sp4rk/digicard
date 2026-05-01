@@ -5,6 +5,7 @@ import Profile from './components/Profile';
 import Projects from './components/Projects/Projects';
 import Services from './components/Services';
 import FeaturedContent from './components/FeaturedContent';
+import Skills from './components/Skills';
 import Footer from './components/Footer';
 import MountainFooter from './components/MountainFooter';
 import NavBar from './components/NavBar';
@@ -16,7 +17,7 @@ import Snowfall from './components/Snowfall';
 
 function App() {
   const [theme, setTheme] = useState(() => getInitialTheme());
-  const [activeTab, setActiveTab] = useState('work'); // 'services' or 'work'
+  const [activeTab, setActiveTab] = useState('work'); // 'services', 'work', or 'skills'
 
   // Apply theme to body
   useEffect(() => {
@@ -100,6 +101,12 @@ function App() {
                   <Projects theme={theme} />
                 </ErrorBoundary>
               </>
+            )}
+
+            {activeTab === 'skills' && (
+              <ErrorBoundary theme={theme}>
+                <Skills theme={theme} />
+              </ErrorBoundary>
             )}
           </main>
 

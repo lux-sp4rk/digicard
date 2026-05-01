@@ -92,6 +92,12 @@ const NavBar = ({ theme, activeTab, setActiveTab }) => {
       ariaLabel: 'Switch to The Work tab',
       iconName: 'FaBriefcase',
     },
+    {
+      id: 'skills',
+      label: 'Skills',
+      ariaLabel: 'Switch to Skills tab',
+      iconName: 'FaWandMagicSparkles',
+    },
   ];
 
   return (
