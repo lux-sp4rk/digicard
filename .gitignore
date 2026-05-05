@@ -34,3 +34,6 @@ coverage
 .worktrees
 
 thoughts/
+
+.gemini/
+gha-creds-*.json
