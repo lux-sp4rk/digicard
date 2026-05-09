@@ -7,7 +7,42 @@ import SectionHeading from '../SectionHeading';
 import styles from './Projects.module.css';
 import { createThemeClassGetter } from '../helpers/themeClassHelper';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS } from '@contentful/rich-text-types';
 import { renderMarkdown } from '../../utils/stringUtils';
+
+const richTextOptions = {
+  renderNode: {
+    [BLOCKS.EMBEDDED_ASSET]: node => {
+      const asset = node?.data?.target;
+      if (!asset || !asset.fields || !asset.fields.file) return null;
+      const { file } = asset.fields;
+      if (!file.contentType || !file.contentType.startsWith('image/'))
+        return null;
+      const url = file.url
+        ? file.url.startsWith('//')
+          ? `https:${file.url}`
+          : file.url.startsWith('http')
+            ? file.url
+            : `https://${file.url}`
+        : '';
+      if (!url) return null;
+      const alt =
+        asset.fields.description || asset.fields.title || file.fileName || '';
+      return (
+        <img
+          src={url}
+          alt={alt}
+          loading="lazy"
+          className="max-w-full h-auto rounded-lg my-4"
+          onError={e => {
+            e.target.style.display = 'none';
+            console.warn(`Failed to load embedded image: ${url}`);
+          }}
+        />
+      );
+    },
+  },
+};
 
 /**
  * Render a description field that may be a Contentful Rich Text document
@@ -28,7 +63,7 @@ const ContentDescription = ({ description, className, theme }) => {
           className
         )}
       >
-        {documentToReactComponents(description)}
+        {documentToReactComponents(description, richTextOptions)}
       </div>
     );
   }

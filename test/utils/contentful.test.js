@@ -214,6 +214,7 @@ describe('getServices', () => {
     expect(mockGetEntries).toHaveBeenCalledWith({
       content_type: 'service',
       order: 'fields.order',
+      include: 3,
     });
   });
 
@@ -303,6 +304,7 @@ describe('getServices', () => {
     expect(mockGetEntries).toHaveBeenNthCalledWith(2, {
       content_type: 'services',
       order: 'fields.order',
+      include: 3,
     });
 
     errorSpy.mockRestore();
@@ -355,6 +357,7 @@ describe('getProjects', () => {
     expect(mockGetEntries).toHaveBeenCalledWith({
       content_type: 'project',
       order: 'fields.order',
+      include: 3,
     });
   });
 
@@ -372,6 +375,7 @@ describe('getProjects', () => {
     expect(mockGetEntries).toHaveBeenNthCalledWith(2, {
       content_type: 'projects',
       order: 'fields.order',
+      include: 3,
     });
 
     errorSpy.mockRestore();
@@ -487,6 +491,7 @@ describe('getBlogPosts', () => {
     expect(mockGetEntries).toHaveBeenCalledWith({
       content_type: 'blogPost',
       order: '-fields.publishDate',
+      include: 3,
     });
   });
 
@@ -584,6 +589,7 @@ describe('getFeaturedPost', () => {
       content_type: 'blogPost',
       'fields.featured': true,
       limit: 1,
+      include: 3,
     });
   });
 
@@ -654,6 +660,7 @@ describe('getProfile', () => {
     expect(mockGetEntries).toHaveBeenCalledWith({
       content_type: 'profile',
       limit: 1,
+      include: 3,
     });
   });
 
@@ -727,6 +734,7 @@ describe('getSettings', () => {
     expect(mockGetEntries).toHaveBeenCalledWith({
       content_type: 'settings',
       limit: 1,
+      include: 3,
     });
   });
 
@@ -976,6 +984,7 @@ describe('getYouTubeVideo', () => {
     expect(mockGetEntries).toHaveBeenCalledWith({
       content_type: 'youtubeVideo',
       limit: 1,
+      include: 3,
     });
   });
 
@@ -1066,6 +1075,7 @@ describe('getSoundCloudTrack', () => {
     expect(mockGetEntries).toHaveBeenCalledWith({
       content_type: 'soundCloudTrack',
       limit: 1,
+      include: 3,
     });
   });
 
@@ -1151,10 +1161,12 @@ describe('getSkills', () => {
     expect(mockGetEntries).toHaveBeenNthCalledWith(1, {
       content_type: '6iJCkjpxHxeOEeic4bVobd',
       order: 'fields.order',
+      include: 3,
     });
     expect(mockGetEntries).toHaveBeenNthCalledWith(2, {
       content_type: 'skill',
       order: 'fields.order',
+      include: 3,
     });
     expect(result[0].id).toBe('skill-id');
   });
@@ -1171,6 +1183,7 @@ describe('getSkills', () => {
     expect(mockGetEntries).toHaveBeenNthCalledWith(3, {
       content_type: 'skills',
       order: 'fields.order',
+      include: 3,
     });
     expect(result[0].id).toBe('skills-id');
   });
@@ -1196,6 +1209,7 @@ describe('getSkills', () => {
 
     expect(mockGetEntries).toHaveBeenNthCalledWith(3, {
       content_type: 'skill',
+      include: 3,
     });
     expect(result[0].id).toBe('no-order');
   });
@@ -1279,6 +1293,7 @@ describe('getBio', () => {
     expect(mockGetEntries).toHaveBeenCalledWith({
       content_type: 'profile',
       limit: 1,
+      include: 3,
     });
   });
 

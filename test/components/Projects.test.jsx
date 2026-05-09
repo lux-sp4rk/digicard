@@ -137,4 +137,133 @@ describe('Projects', () => {
 
     warnSpy.mockRestore();
   });
+
+  it('renders rich text description with embedded image asset', () => {
+    const richTextDoc = {
+      nodeType: 'document',
+      data: {},
+      content: [
+        {
+          nodeType: 'embedded-asset-block',
+          data: {
+            target: {
+              sys: { id: 'asset-1', type: 'Asset' },
+              fields: {
+                file: {
+                  url: '//images.ctfassets.net/example/robot-bear.png',
+                  contentType: 'image/png',
+                  fileName: 'robot-bear.png',
+                },
+                title: 'AI Mechanic Mascot',
+                description: 'Robotic bear mascot for AI Mechanic service',
+              },
+            },
+          },
+          content: [],
+        },
+      ],
+    };
+
+    const cmsProjects = [
+      {
+        id: 'rich-text-project',
+        imgNormal: 'https://example.com/project.jpg',
+        alt: 'Rich Text Project',
+        title: 'AI Mechanic',
+        description: richTextDoc,
+        link: 'https://ai-mechanic.example.com',
+        order: 1,
+        active: true,
+      },
+    ];
+
+    mockUseContentful.mockReturnValue({
+      data: cmsProjects,
+      loading: false,
+      error: null,
+    });
+
+    render(<Projects theme="dark" />);
+
+    // Check that the project title is rendered
+    expect(screen.getByText('AI Mechanic')).toBeInTheDocument();
+
+    // Check that the embedded image is rendered with correct attributes
+    const imgs = screen.getAllByRole('img');
+    // Find the embedded image by its src attribute
+    const embeddedImg = imgs.find(
+      img =>
+        img.getAttribute('src') ===
+        'https://images.ctfassets.net/example/robot-bear.png'
+    );
+    // First img is project card, second should be embedded asset
+    expect(imgs.length).toBeGreaterThanOrEqual(1);
+    expect(embeddedImg).toBeDefined();
+    expect(embeddedImg).toHaveAttribute(
+      'src',
+      'https://images.ctfassets.net/example/robot-bear.png'
+    );
+    expect(embeddedImg).toHaveAttribute(
+      'alt',
+      'Robotic bear mascot for AI Mechanic service'
+    );
+  });
+
+  it('filters out non-image embedded assets from rich text description', () => {
+    const richTextDoc = {
+      nodeType: 'document',
+      data: {},
+      content: [
+        {
+          nodeType: 'embedded-asset-block',
+          data: {
+            target: {
+              sys: { id: 'asset-2', type: 'Asset' },
+              fields: {
+                file: {
+                  url: '//assets.ctfassets.net/example/document.pdf',
+                  contentType: 'application/pdf',
+                  fileName: 'docs.pdf',
+                },
+                title: 'PDF Document',
+                description: 'Some PDF',
+              },
+            },
+          },
+          content: [],
+        },
+      ],
+    };
+
+    const cmsProjects = [
+      {
+        id: 'pdf-project',
+        imgNormal: 'https://example.com/project.jpg',
+        alt: 'PDF Project',
+        title: 'Doc Project',
+        description: richTextDoc,
+        link: 'https://doc.example.com',
+        order: 1,
+        active: true,
+      },
+    ];
+
+    mockUseContentful.mockReturnValue({
+      data: cmsProjects,
+      loading: false,
+      error: null,
+    });
+
+    render(<Projects theme="dark" />);
+
+    // Project title should render
+    expect(screen.getByText('Doc Project')).toBeInTheDocument();
+
+    // No embedded image should be rendered for PDF assets (only the project card img)
+    const imgs = screen.getAllByRole('img');
+    const pdfEmbeddedImg = imgs.find(
+      img => img.getAttribute('alt') === 'PDF Document'
+    );
+    expect(pdfEmbeddedImg).toBeUndefined();
+  });
 });

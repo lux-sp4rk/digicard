@@ -1,51 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import SectionHeading from './SectionHeading';
 import DynamicIcon from './DynamicIcon';
 import { useContentful } from '../hooks/useContentful';
-import { renderMarkdown } from '../utils/stringUtils';
+import RichTextRenderer from './RichTextRenderer';
 import {
   getIconClasses,
   getCtaButtonClasses,
 } from './helpers/themeClassHelper';
-
-/**
- * Render a description field that may be a Contentful Rich Text document
- * or a plain string (from fallback data).
- */
-const ContentDescription = ({ description, className, theme }) => {
-  if (!description) return null;
-
-  const textColorClass =
-    'text-black/90 dark:text-white/90 matrix:text-matrix-text catppuccin:text-catppuccin-text flexoki:text-flexoki-text';
-
-  if (typeof description === 'object' && description.nodeType) {
-    return (
-      <div
-        className={clsx(
-          'text-sm leading-relaxed max-w-none space-y-3',
-          textColorClass,
-          className
-        )}
-      >
-        {documentToReactComponents(description)}
-      </div>
-    );
-  }
-
-  // Handle plain string (Markdown fallback)
-  return (
-    <div
-      className={clsx(
-        'text-sm leading-relaxed max-w-none space-y-3',
-        textColorClass,
-        className
-      )}
-      dangerouslySetInnerHTML={{ __html: renderMarkdown(description, theme) }}
-    />
-  );
-};
 
 const ContentList = ({
   fetchFn,
@@ -137,7 +99,7 @@ const ContentList = ({
                     </p>
                   )}
                   <div className="leading-relaxed">
-                    <ContentDescription
+                    <RichTextRenderer
                       description={item.description}
                       theme={theme}
                     />

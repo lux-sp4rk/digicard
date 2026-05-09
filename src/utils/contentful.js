@@ -24,6 +24,7 @@ export const getProjects = async () => {
     const response = await client.getEntries({
       content_type: 'project',
       order: 'fields.order',
+      include: 3,
     });
     return response.items.map(item => ({
       id: item.sys.id,
@@ -44,6 +45,7 @@ export const getProjects = async () => {
         const response = await client.getEntries({
           content_type: 'projects',
           order: 'fields.order',
+          include: 3,
         });
         return response.items.map(item => ({
           id: item.sys.id,
@@ -71,6 +73,7 @@ export const getBlogPosts = async () => {
     const response = await client.getEntries({
       content_type: 'blogPost',
       order: '-fields.publishDate',
+      include: 3,
     });
     return response.items.map(item => ({
       id: item.sys.id,
@@ -94,6 +97,7 @@ export const getFeaturedPost = async () => {
       content_type: 'blogPost',
       'fields.featured': true,
       limit: 1,
+      include: 3,
     });
     if (response.items.length > 0) {
       const item = response.items[0];
@@ -119,6 +123,7 @@ export const getProfile = async () => {
     const response = await client.getEntries({
       content_type: 'profile',
       limit: 1,
+      include: 3,
     });
     if (response.items.length > 0) {
       const item = response.items[0];
@@ -143,6 +148,7 @@ export const getSettings = async () => {
     const response = await client.getEntries({
       content_type: 'settings',
       limit: 1,
+      include: 3,
     });
     if (response.items.length > 0) {
       const item = response.items[0];
@@ -190,6 +196,7 @@ export const getYouTubeVideo = async () => {
     const response = await client.getEntries({
       content_type: 'youtubeVideo',
       limit: 1,
+      include: 3,
     });
     if (response.items.length > 0) {
       const item = response.items[0];
@@ -216,6 +223,7 @@ export const getSoundCloudTrack = async () => {
     const response = await client.getEntries({
       content_type: 'soundCloudTrack',
       limit: 1,
+      include: 3,
     });
     if (response.items.length > 0) {
       const item = response.items[0];
@@ -237,7 +245,7 @@ export const getSoundCloudTrack = async () => {
 
 export const getServices = async () => {
   const tryFetch = async (contentType, useOrder = true) => {
-    const params = { content_type: contentType };
+    const params = { content_type: contentType, include: 3 };
     if (useOrder) params.order = 'fields.order';
     const response = await client.getEntries(params);
     return response.items.map(item => ({
@@ -280,7 +288,7 @@ export const getServices = async () => {
 
 export const getSkills = async () => {
   const tryFetch = async (contentType, useOrder = true) => {
-    const params = { content_type: contentType };
+    const params = { content_type: contentType, include: 3 };
     if (useOrder) params.order = 'fields.order';
     const response = await client.getEntries(params);
     return response.items.map(item => ({
@@ -322,6 +330,7 @@ export const getBio = async () => {
     const response = await client.getEntries({
       content_type: 'profile',
       limit: 1,
+      include: 3,
     });
     if (response.items.length > 0) {
       const item = response.items[0];
