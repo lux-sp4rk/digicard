@@ -72,7 +72,7 @@ jobs:
           settings: |-
             {
               "model": {
-                "maxSessionTurns": 25
+                "maxSessionTurns": 50
               },
               "telemetry": {
                 "enabled": true,
@@ -92,8 +92,15 @@ jobs:
                   ],
                   "includeTools": [
                     "add_comment_to_pending_review",
+                    "create_pending_pull_request_review",
+                    "submit_pending_pull_request_review",
                     "pull_request_read",
-                    "pull_request_review_write"
+                    "pull_request_read.get",
+                    "pull_request_read.get_diff",
+                    "pull_request_read.get_files",
+                    "pull_request_review_write",
+                    "pull_request_get",
+                    "pull_request_list"
                   ],
                   "env": {
                     "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
@@ -106,7 +113,8 @@ jobs:
                   "run_shell_command(echo)",
                   "run_shell_command(grep)",
                   "run_shell_command(head)",
-                  "run_shell_command(tail)"
+                  "run_shell_command(tail)",
+                  "run_shell_command(ls)"
                 ]
               }
             }
