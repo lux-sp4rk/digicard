@@ -10,6 +10,7 @@ import Loading from './Loading';
 import YouTubeCard from './YouTubeCard';
 import SubstackCard from './SubstackCard';
 import InstagramCard from './InstagramCard';
+import SoundCloudWidget from './SoundCloudWidget';
 import fallbackVideoData from '../dev-data/youtubeVideo.json';
 import fallbackPostData from '../dev-data/featuredPost.json';
 import fallbackInstagramData from '../dev-data/instagramPost.json';
@@ -156,6 +157,8 @@ const FeaturedContent = ({ theme }) => {
         }
         return null;
       })}
+      {/* SoundCloud renders its own data fetching — placed after sorted media items */}
+      <SoundCloudWidget theme={theme} />
     </>
   );
 };

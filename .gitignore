@@ -37,3 +37,8 @@ thoughts/
 
 .gemini/
 gha-creds-*.json
+
+# Coding agents
+.opencode/
+.claude/
+.cursor/
