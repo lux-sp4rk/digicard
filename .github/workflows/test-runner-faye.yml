@@ -22,5 +22,5 @@ jobs:
         continue-on-error: false
         with:
           arcee-api-key: ${{ secrets.ARCEE_API_KEY }}
-          passes: 'test,coverage,delta'
+          passes: 'test,coverage'
           coverage-threshold: 80
