@@ -110,4 +110,57 @@ jobs:
                 ]
               }
             }
-          prompt: 'Review this pull request. Focus on: code quality, potential bugs, security issues, and suggest improvements. Be concise and actionable.'
+          prompt: |-
+            You are reviewing a pull request for DigiCard — a React 18 + Vite portfolio site with dynamic theming and Contentful CMS integration.
+
+            ## Tech Stack Context
+            - React 18 with hooks (no class components)
+            - Vite for build tooling
+            - Tailwind CSS + CSS Modules for styling
+            - Contentful CMS for dynamic content
+            - Netlify for deployment
+            - Vitest + React Testing Library for tests
+
+            ## Review Focus Areas
+
+            ### React Specific
+            - Hook dependencies are correct (exhaustive-deps)
+            - No stale closures or infinite re-render loops
+            - Proper cleanup in useEffect (event listeners, subscriptions)
+            - State updates are immutable
+            - Component props are properly typed
+
+            ### Theming (Critical)
+            - Theme changes use CSS custom properties correctly
+            - No hardcoded colors that bypass the theme system
+            - Theme switching doesn't cause FOUC (flash of unstyled content)
+            - CSS Modules don't leak styles between themes
+
+            ### Performance
+            - Images use proper loading="lazy" where appropriate
+            - No unnecessary re-renders (memo, useMemo, useCallback where justified)
+            - Bundle size impact of new dependencies
+            - Contentful API calls are cached/optimized
+
+            ### Contentful Integration
+            - Graceful fallback when CMS is unavailable
+            - Proper error boundaries for CMS content
+            - Type safety for Contentful responses
+
+            ### Security
+            - No exposed API keys or secrets
+            - No XSS vectors in dangerouslySetInnerHTML or similar
+            - Proper sanitization of CMS content
+
+            ### Testing
+            - New components have basic test coverage
+            - Async operations are properly tested (waitFor, findBy)
+
+            ## Output Format
+            Provide a concise review with:
+            1. **Critical issues** (blocking) — bugs, security, broken functionality
+            2. **Warnings** (should fix) — performance, maintainability
+            3. **Suggestions** (nice to have) — code style, optimizations
+            4. **Theme-specific checks** — anything affecting the theming system
+
+            Be specific. Reference line numbers or file names. Don't nitpick formatting.
