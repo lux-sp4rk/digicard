@@ -43,12 +43,38 @@ pnpm run build
 
 **PR-first. Never push to main.**
 
+This repo uses a **bare-repo + worktree** setup:
+
+```
+~/git/digicard.git/              # bare repo (source of truth)
+~/Projects/digicard-main/        # main branch worktree
+~/Projects/digicard-<branch>/    # feature branch worktrees
+```
+
+### Worktree Rules
+
+- **Never `git checkout`** to switch branches — `cd` into the right worktree
+- **Create worktrees from the bare repo:**
+  ```bash
+  git -C ~/git/digicard.git worktree add -b feature/my-thing ~/Projects/digicard-my-thing main
+  cd ~/Projects/digicard-my-thing
+  pnpm install
+  ```
+- **Remove worktrees properly:**
+  ```bash
+  git -C ~/git/digicard.git worktree remove digicard-my-thing
+  ```
+  Never use `rm -rf` on a worktree directory.
+- **Always run `git worktree list`** to see what's checked out where
+
+### Branch naming
 ```bash
-# Branch naming
 git feature issue-123-description   # → feature/issue-123-description
 # Alt: feat/, fix/, hotfix/, chore/, docs/, refactor/
+```
 
-# PR requirements
+### PR requirements
+```bash
 gh pr create --title "..." --body "Closes #ID"
 ```
 
