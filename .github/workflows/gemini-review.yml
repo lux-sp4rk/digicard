@@ -110,8 +110,4 @@ jobs:
                 ]
               }
             }
-          extensions: |
-            [
-              "https://github.com/gemini-cli-extensions/code-review"
-            ]
-          prompt: '/pr-code-review'
+          prompt: 'Review this pull request. Focus on: code quality, potential bugs, security issues, and suggest improvements. Be concise and actionable.'
