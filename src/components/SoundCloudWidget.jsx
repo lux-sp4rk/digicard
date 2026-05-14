@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import DynamicIcon from './DynamicIcon';
 import { useContentful } from '../hooks/useContentful';
 import { getSoundCloudTrack } from '../utils/contentful';
+import { getLatestSoundCloudTrack } from '../utils/soundcloud';
 import Loading from './Loading';
 
 const SoundCloudWidget = ({ theme }) => {
@@ -11,10 +12,35 @@ const SoundCloudWidget = ({ theme }) => {
     loading: trackLoading,
     error: trackError,
   } = useContentful(getSoundCloudTrack);
+  const [apiTrack, setApiTrack] = useState(null);
+  const [apiLoading, setApiLoading] = useState(true);
   const [fallbackTrack, setFallbackTrack] = useState(null);
   const [fallbackLoading, setFallbackLoading] = useState(true);
 
-  // Fallback to JSON file if Contentful fails
+  // Try Netlify function first (new primary source)
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    getLatestSoundCloudTrack()
+      .then(track => {
+        if (track) {
+          setApiTrack(track);
+        }
+        setApiLoading(false);
+      })
+      .catch(error => {
+        if (error.name !== 'AbortError') {
+          console.error('Error fetching from SoundCloud API:', error);
+          setApiLoading(false);
+        }
+      });
+
+    return () => {
+      abortController.abort();
+    };
+  }, []);
+
+  // Fall back to JSON file if both API and Contentful fail
   useEffect(() => {
     if (trackError) {
       const abortController = new AbortController();
@@ -40,8 +66,8 @@ const SoundCloudWidget = ({ theme }) => {
     }
   }, [trackError]);
 
-  const loading = trackLoading || (trackError && fallbackLoading);
-  const track = cmsTrack || fallbackTrack;
+  const loading = apiLoading || trackLoading || (trackError && fallbackLoading);
+  const track = apiTrack || cmsTrack || fallbackTrack;
 
   if (loading) return <Loading />;
   if (!track || track.active === false) return null;
