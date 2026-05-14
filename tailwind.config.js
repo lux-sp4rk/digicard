@@ -2,7 +2,7 @@ import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,astro}', './public/**/*.html'],
   darkMode: 'class', // We'll use this for toggling dark/light theme
   theme: {
     extend: {

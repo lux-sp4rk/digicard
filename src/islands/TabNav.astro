@@ -1,0 +1,61 @@
+---
+export interface Props {
+  tabs: { id: string; label: string }[];
+  defaultTab?: string;
+}
+
+const { tabs, defaultTab = 'work' } = Astro.props;
+---
+
+<nav class="flex border-b border-gray-200 dark:border-gray-700" role="tablist">
+  {tabs.map(tab => (
+    <button
+      type="button"
+      role="tab"
+      data-tab={tab.id}
+      class={`tab-btn px-4 py-3 text-sm font-medium transition-colors border-b-2 ${tab.id === defaultTab ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+    >
+      {tab.label}
+    </button>
+  ))}
+</nav>
+
+<script>
+  (function() {
+    function initTabs() {
+      const buttons = document.querySelectorAll('.tab-btn');
+      const panels = document.querySelectorAll('[data-tab-panel]');
+
+      function showTab(tabId) {
+        buttons.forEach(btn => {
+          const isActive = btn.getAttribute('data-tab') === tabId;
+          btn.classList.toggle('border-blue-500', isActive);
+          btn.classList.toggle('text-blue-600', isActive);
+          btn.classList.toggle('border-transparent', !isActive);
+          btn.classList.toggle('text-gray-500', !isActive);
+          btn.setAttribute('aria-selected', String(isActive));
+        });
+
+        panels.forEach(panel => {
+          const isTarget = panel.getAttribute('data-tab-panel') === tabId;
+          panel.classList.toggle('hidden', !isTarget);
+        });
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.getAttribute('data-tab');
+          if (tabId) showTab(tabId);
+        });
+      });
+
+      const activeBtn = Array.from(buttons).find(b => b.classList.contains('border-blue-500'));
+      if (activeBtn) {
+        showTab(activeBtn.getAttribute('data-tab') || 'work');
+      }
+    }
+
+    initTabs();
+    document.addEventListener('astro:page-load', initTabs);
+  })();
+</script>
