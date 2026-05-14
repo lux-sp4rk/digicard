@@ -15,10 +15,33 @@ import { resolve } from 'path';
 const OUT_DIR = resolve(process.cwd(), 'src', 'data', 'generated');
 mkdirSync(OUT_DIR, { recursive: true });
 
-const client = createClient({
-  space: process.env.VITE_CONTENTFUL_SPACE_ID || '',
-  accessToken: process.env.VITE_CONTENTFUL_ACCESS_TOKEN || '',
-});
+const SPACE_ID = process.env.VITE_CONTENTFUL_SPACE_ID;
+const ACCESS_TOKEN = process.env.VITE_CONTENTFUL_ACCESS_TOKEN;
+
+if (!SPACE_ID || !ACCESS_TOKEN) {
+  console.warn(
+    '[fetch-content] Contentful credentials missing. Writing empty stub so dev-data fallback kicks in.'
+  );
+  writeFileSync(
+    resolve(OUT_DIR, 'contentful.json'),
+    JSON.stringify(
+      {
+        projects: [],
+        services: [],
+        skills: [],
+        profile: null,
+        settings: null,
+        youTubeVideo: null,
+        soundCloudTrack: null,
+      },
+      null,
+      2
+    )
+  );
+  process.exit(0);
+}
+
+const client = createClient({ space: SPACE_ID, accessToken: ACCESS_TOKEN });
 
 const richTextOptions = {
   renderNode: {
