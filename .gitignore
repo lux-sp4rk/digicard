@@ -48,5 +48,8 @@ gha-creds-*.json
 .astro/
 dist/
 
+# Build-time generated data
+src/data/generated/
+
 # Embedded repos
 steadfast-series/
