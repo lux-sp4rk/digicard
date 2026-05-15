@@ -5,6 +5,7 @@ import TabNav from '../islands/TabNav.astro';
 import FeaturedContentWrapper from '../islands/FeaturedContentWrapper.jsx';
 import FooterWrapper from '../islands/FooterWrapper.jsx';
 import ServicesWrapper from '../islands/ServicesWrapper.jsx';
+import SkillsWrapper from '../islands/SkillsWrapper.jsx';
 import { loadContent, getProjects, getServices, getSkills, getProfile, getSettings } from '../data/loader';
 
 const data = await loadContent();
@@ -123,38 +124,8 @@ const socialLinks = settings.socialLinks || [];
 
         {/* Skills Tab */}
         <div data-tab-panel="skills" class="hidden">
-          <section class="p-5">
-            <h2 class="text-lg font-bold mb-6 tracking-tight">Skills</h2>
-            <div class="space-y-1">
-              {skills.map((skill, index) => (
-                <div class={`group relative py-6 px-2 ${index !== skills.length - 1 ? 'border-b border-gray-200 dark:border-gray-700' : ''} ${index % 2 === 1 ? 'md:pl-12' : ''}`}>
-                  <div class="flex items-start gap-4 md:gap-6">
-                    <div class="flex-shrink-0 mt-1 opacity-70">
-                      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" />
-                      </svg>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <h3 class="text-lg font-bold mb-1">{skill.title}</h3>
-                      {skill.subtitle && <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">{skill.subtitle}</p>}
-                      <div class="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-                        {descText(skill.description)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div class="mt-8 text-center">
-              <h3 class="text-lg font-bold mb-3">Want to leverage these skills for your project?</h3>
-              <a
-                href="mailto:ulises@luxspark.com"
-                class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition-colors"
-              >
-                Let's Talk
-              </a>
-            </div>
-          </section>
+          {/* Skills — React island with FontAwesome icons */}
+          <SkillsWrapper client:load />
         </div>
       </main>
 
