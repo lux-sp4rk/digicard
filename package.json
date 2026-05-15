@@ -36,6 +36,7 @@
     ]
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.5",
     "@contentful/rich-text-react-renderer": "^16.1.6",
     "@contentful/rich-text-types": "^17.2.5",
     "@tailwindcss/typography": "^0.5.16",

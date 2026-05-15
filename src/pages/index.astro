@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import ThemeSwitcher from '../islands/ThemeSwitcher.astro';
 import TabNav from '../islands/TabNav.astro';
+import FeaturedContentWrapper from '../islands/FeaturedContentWrapper.jsx';
 import { loadContent, getProjects, getServices, getSkills, getProfile, getSettings } from '../data/loader';
 
 const data = await loadContent();
@@ -74,6 +75,9 @@ const socialLinks = settings.socialLinks || [];
 
         {/* Work Tab */}
         <div data-tab-panel="work" class="hidden">
+          {/* FeaturedContent fetches Substack / YouTube / Instagram / SoundCloud at runtime */}
+          <FeaturedContentWrapper client:load />
+
           <section class="px-4 md:px-8 py-8">
             <h2 class="text-lg font-bold mb-6 tracking-tight">Projects</h2>
             <div class="max-w-4xl mx-auto space-y-0">

@@ -14,14 +14,24 @@ const normalizeUrl = url => {
   return `https://${url}`;
 };
 
-const client = createClient({
-  space: import.meta.env.VITE_CONTENTFUL_SPACE_ID,
-  accessToken: import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN,
-});
+let client = null;
+function getClient() {
+  if (!client) {
+    const space = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
+    const accessToken = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
+    if (!space || !accessToken) {
+      throw new Error(
+        'Contentful credentials missing: VITE_CONTENTFUL_SPACE_ID and VITE_CONTENTFUL_ACCESS_TOKEN must be set'
+      );
+    }
+    client = createClient({ space, accessToken });
+  }
+  return client;
+}
 
 export const getProjects = async () => {
   try {
-    const response = await client.getEntries({
+    const response = await getClient().getEntries({
       content_type: 'project',
       order: 'fields.order',
       include: 3,
@@ -42,7 +52,7 @@ export const getProjects = async () => {
     // If singular fails, try plural
     if (error.message?.includes('unknownContentType')) {
       try {
-        const response = await client.getEntries({
+        const response = await getClient().getEntries({
           content_type: 'projects',
           order: 'fields.order',
           include: 3,
@@ -70,7 +80,7 @@ export const getProjects = async () => {
 
 export const getBlogPosts = async () => {
   try {
-    const response = await client.getEntries({
+    const response = await getClient().getEntries({
       content_type: 'blogPost',
       order: '-fields.publishDate',
       include: 3,
@@ -93,7 +103,7 @@ export const getBlogPosts = async () => {
 
 export const getFeaturedPost = async () => {
   try {
-    const response = await client.getEntries({
+    const response = await getClient().getEntries({
       content_type: 'blogPost',
       'fields.featured': true,
       limit: 1,
@@ -120,7 +130,7 @@ export const getFeaturedPost = async () => {
 
 export const getProfile = async () => {
   try {
-    const response = await client.getEntries({
+    const response = await getClient().getEntries({
       content_type: 'profile',
       limit: 1,
       include: 3,
@@ -145,7 +155,7 @@ export const getProfile = async () => {
 
 export const getSettings = async () => {
   try {
-    const response = await client.getEntries({
+    const response = await getClient().getEntries({
       content_type: 'settings',
       limit: 1,
       include: 3,
@@ -193,7 +203,7 @@ export const getSocialLinks = async () => {
 
 export const getYouTubeVideo = async () => {
   try {
-    const response = await client.getEntries({
+    const response = await getClient().getEntries({
       content_type: 'youtubeVideo',
       limit: 1,
       include: 3,
@@ -220,7 +230,7 @@ export const getYouTubeVideo = async () => {
 
 export const getSoundCloudTrack = async () => {
   try {
-    const response = await client.getEntries({
+    const response = await getClient().getEntries({
       content_type: 'soundCloudTrack',
       limit: 1,
       include: 3,
@@ -247,7 +257,7 @@ export const getServices = async () => {
   const tryFetch = async (contentType, useOrder = true) => {
     const params = { content_type: contentType, include: 3 };
     if (useOrder) params.order = 'fields.order';
-    const response = await client.getEntries(params);
+    const response = await getClient().getEntries(params);
     return response.items.map(item => ({
       id: item.sys.id,
       title: item.fields.title,
@@ -290,7 +300,7 @@ export const getSkills = async () => {
   const tryFetch = async (contentType, useOrder = true) => {
     const params = { content_type: contentType, include: 3 };
     if (useOrder) params.order = 'fields.order';
-    const response = await client.getEntries(params);
+    const response = await getClient().getEntries(params);
     return response.items.map(item => ({
       id: item.sys.id,
       title: item.fields.title,
@@ -327,7 +337,7 @@ export const getSkills = async () => {
 
 export const getBio = async () => {
   try {
-    const response = await client.getEntries({
+    const response = await getClient().getEntries({
       content_type: 'profile',
       limit: 1,
       include: 3,
