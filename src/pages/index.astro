@@ -64,14 +64,14 @@ const socialLinks = settings.socialLinks || [];
             />
           </div>
           <h1 class="text-2xl font-heading font-bold tracking-tight mb-1">{profile.name}</h1>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{profile.title}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 catppuccin:text-catppuccin-text flexoki:text-flexoki-text matrix:text-matrix-text xmas:text-xmas-text">{profile.title}</p>
           {profile.location && (
-            <p class="text-xs text-gray-500 dark:text-gray-500 flex items-center justify-center gap-1">
+            <p class="text-xs text-gray-500 dark:text-gray-500 flex items-center justify-center gap-1 catppuccin:text-catppuccin-text/80 flexoki:text-flexoki-text/80 matrix:text-matrix-text/80 xmas:text-xmas-text/80">
               <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
               {profile.location}
             </p>
           )}
-          <div class="text-sm leading-relaxed max-w-xl mx-auto mt-4 text-gray-700 dark:text-gray-300">
+          <div class="text-sm leading-relaxed max-w-xl mx-auto mt-4 text-gray-700 dark:text-gray-300 catppuccin:text-catppuccin-text flexoki:text-flexoki-text matrix:text-matrix-text xmas:text-xmas-text">
             {profile.bio}
           </div>
         </section>
