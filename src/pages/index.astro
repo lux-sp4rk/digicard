@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import ThemeSwitcher from '../islands/ThemeSwitcher.astro';
 import TabNav from '../islands/TabNav.astro';
 import FeaturedContentWrapper from '../islands/FeaturedContentWrapper.jsx';
+import FooterWrapper from '../islands/FooterWrapper.jsx';
 import { loadContent, getProjects, getServices, getSkills, getProfile, getSettings } from '../data/loader';
 
 const data = await loadContent();
@@ -188,36 +189,8 @@ const socialLinks = settings.socialLinks || [];
         </div>
       </main>
 
-      {/* Footer */}
-      <footer class="text-center pb-5 px-4 text-sm relative text-gray-600 dark:text-gray-400">
-        <div class="flex justify-center gap-4 mb-4">
-          {socialLinks.map(link => (
-            <a
-              key={link.id}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.name}
-              class="opacity-60 hover:opacity-100 transition-opacity"
-            >
-              <span class="sr-only">{link.name}</span>
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <rect width="20" height="20" x="2" y="2" rx="4" />
-              </svg>
-            </a>
-          ))}
-        </div>
-        <div class="mt-2">
-          <span class="group relative inline-block opacity-40 hover:opacity-80 transition-opacity cursor-pointer">
-            <svg class="inline-block w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5z" />
-            </svg>
-            <span class="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded p-2 -mt-2 -translate-y-full -translate-x-1/2 left-1/2 whitespace-nowrap z-10">
-              console.log("Open sesame")
-            </span>
-          </span>
-        </div>
-      </footer>
+      {/* Footer — React island with proper FontAwesome icons */}
+      <FooterWrapper client:load />
     </div>
   </div>
 </Layout>
