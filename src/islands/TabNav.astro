@@ -13,7 +13,7 @@ const { tabs, defaultTab = 'work' } = Astro.props;
       type="button"
       role="tab"
       data-tab={tab.id}
-      class={`tab-btn flex-1 py-4 text-sm font-medium text-center transition-colors border-b-2 ${tab.id === defaultTab ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+      class={`tab-btn web2-nav-tab flex-1 py-4 text-sm font-medium text-center transition-colors border-b-2 ${tab.id === defaultTab ? 'border-blue-500 text-blue-600 web2-nav-tab-active' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
     >
       {tab.label}
     </button>
@@ -33,6 +33,7 @@ const { tabs, defaultTab = 'work' } = Astro.props;
           btn.classList.toggle('text-blue-600', isActive);
           btn.classList.toggle('border-transparent', !isActive);
           btn.classList.toggle('text-gray-500', !isActive);
+          btn.classList.toggle('web2-nav-tab-active', isActive);
           btn.setAttribute('aria-selected', String(isActive));
         });
 

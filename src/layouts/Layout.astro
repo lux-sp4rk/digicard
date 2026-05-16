@@ -3,6 +3,8 @@ export interface Props {
   title?: string;
 }
 
+import '../index.css';
+
 const { title = "Luh Sprwhk — Agentic Engineer & Creative Technologist" } = Astro.props;
 ---
 
@@ -27,10 +29,11 @@ const { title = "Luh Sprwhk — Agentic Engineer & Creative Technologist" } = As
         document.documentElement.classList.add(theme);
         document.documentElement.setAttribute('data-theme', theme);
         if (theme === 'matrix') document.body?.classList.add('matrix-bg');
+        if (theme === 'web2') document.body?.classList.add('web2-bg');
       })();
     </script>
   </head>
-  <body class="font-body bg-github-bgGray text-github-text transition-colors dark:bg-dracula-background dark:text-dracula-foreground matrix:bg-matrix-background matrix:text-matrix-text xmas:bg-xmas-background xmas:text-xmas-text catppuccin:bg-catppuccin-crust catppuccin:text-catppuccin-text flexoki:bg-flexoki-crust flexoki:text-flexoki-text">
+  <body class="font-body bg-github-bgGray text-github-text transition-colors dark:bg-dracula-background dark:text-dracula-foreground matrix:bg-matrix-background matrix:text-matrix-text xmas:bg-xmas-background xmas:text-xmas-text catppuccin:bg-catppuccin-crust catppuccin:text-catppuccin-text flexoki:bg-flexoki-crust flexoki:text-flexoki-text web2-bg">
     <slot />
   </body>
 </html>
