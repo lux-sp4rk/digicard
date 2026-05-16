@@ -55,24 +55,42 @@ const richTextOptions = {
         asset.fields.description || asset.fields.title || file.fileName || '';
       return `<img src="${url}" alt="${alt}" loading="lazy" class="max-w-full h-auto rounded-lg my-4" />`;
     },
-    [BLOCKS.PARAGRAPH]: (_node: any, next: any) =>
-      `<p class="mb-3">${next()}</p>`,
-    [BLOCKS.HEADING_1]: (_node: any, next: any) =>
-      `<h1 class="text-2xl font-bold mb-4">${next()}</h1>`,
-    [BLOCKS.HEADING_2]: (_node: any, next: any) =>
-      `<h2 class="text-xl font-bold mb-3">${next()}</h2>`,
-    [BLOCKS.HEADING_3]: (_node: any, next: any) =>
-      `<h3 class="text-lg font-bold mb-2">${next()}</h3>`,
-    [BLOCKS.UL_LIST]: (_node: any, next: any) =>
-      `<ul class="list-disc pl-5 mb-3 space-y-1">${next()}</ul>`,
-    [BLOCKS.OL_LIST]: (_node: any, next: any) =>
-      `<ol class="list-decimal pl-5 mb-3 space-y-1">${next()}</ol>`,
-    [BLOCKS.LIST_ITEM]: (_node: any, next: any) => `<li>${next()}</li>`,
-    [BLOCKS.QUOTE]: (_node: any, next: any) =>
-      `<blockquote class="border-l-4 border-gray-300 pl-4 italic my-4">${next()}</blockquote>`,
+    [BLOCKS.PARAGRAPH]: (node: any, next: any) => {
+      const children = node.content || [];
+      return `<p class="mb-3">${next(children)}</p>`;
+    },
+    [BLOCKS.HEADING_1]: (node: any, next: any) => {
+      const children = node.content || [];
+      return `<h1 class="text-2xl font-bold mb-4">${next(children)}</h1>`;
+    },
+    [BLOCKS.HEADING_2]: (node: any, next: any) => {
+      const children = node.content || [];
+      return `<h2 class="text-xl font-bold mb-3">${next(children)}</h2>`;
+    },
+    [BLOCKS.HEADING_3]: (node: any, next: any) => {
+      const children = node.content || [];
+      return `<h3 class="text-lg font-bold mb-2">${next(children)}</h3>`;
+    },
+    [BLOCKS.UL_LIST]: (node: any, next: any) => {
+      const children = node.content || [];
+      return `<ul class="list-disc pl-5 mb-3 space-y-1">${next(children)}</ul>`;
+    },
+    [BLOCKS.OL_LIST]: (node: any, next: any) => {
+      const children = node.content || [];
+      return `<ol class="list-decimal pl-5 mb-3 space-y-1">${next(children)}</ol>`;
+    },
+    [BLOCKS.LIST_ITEM]: (node: any, next: any) => {
+      const children = node.content || [];
+      return `<li>${next(children)}</li>`;
+    },
+    [BLOCKS.QUOTE]: (node: any, next: any) => {
+      const children = node.content || [];
+      return `<blockquote class="border-l-4 border-gray-300 pl-4 italic my-4">${next(children)}</blockquote>`;
+    },
     [INLINES.HYPERLINK]: (node: any, next: any) => {
+      const children = node.content || [];
       const url = node.data.uri || '#';
-      return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="underline hover:opacity-80">${next()}</a>`;
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="underline hover:opacity-80">${next(children)}</a>`;
     },
   },
 };
@@ -84,7 +102,9 @@ function normalizeUrl(url: string): string {
 }
 
 function renderRichText(doc: any): string {
-  if (!doc || !doc.nodeType) return '';
+  if (!doc) return '';
+  if (typeof doc === 'string') return doc;
+  if (!doc.nodeType) return '';
   return documentToHtmlString(doc, richTextOptions);
 }
 

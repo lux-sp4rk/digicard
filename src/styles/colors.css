@@ -12,11 +12,17 @@
   --web2-border: #cccccc;
   --web2-success: #66cc66;
   --web2-error: #ff6666;
-  --web2-background: #ffffff;
-  --web2-card-bg: #f2f2f2;
+  --web2-background: #e8edf2;
+  --web2-card-bg: #ffffff;
   --web2-highlight: #e6f7ff;
   --web2-divider: #dddddd;
   --web2-debug: #ff0000;
+  --web2-glossy-blue: #4a90e2;
+  --web2-glossy-highlight: #87ceeb;
+  --web2-gradient-start: #ffffff;
+  --web2-gradient-end: #f0f4f8;
+  --web2-shadow-color: rgba(0, 0, 0, 0.15);
+  --web2-inner-glow: rgba(255, 255, 255, 0.8);
 
   /* GitHub Theme Colors */
   --github-white: #ffffff;
