@@ -66,7 +66,9 @@ const ContentList = ({
               )}
             >
               <div className="flex items-start gap-4 md:gap-6">
-                {item.image ? (
+                {/* Image/icon rendering — theme-aware layout */}
+                {theme === 'web2' && item.image ? (
+                  /* Web2: small thumbnail on the side */
                   <div className="flex-shrink-0 mt-1 w-12 h-12 md:w-14 md:h-14 rounded-lg overflow-hidden">
                     <img
                       src={item.image}
@@ -76,6 +78,7 @@ const ContentList = ({
                     />
                   </div>
                 ) : item.icon ? (
+                  /* Non-web2 themes: icon */
                   <div
                     className={clsx(
                       'flex-shrink-0 mt-1 opacity-70',
@@ -107,6 +110,18 @@ const ContentList = ({
                       {item.subtitle}
                     </p>
                   )}
+                  {/* Catppuccin / Flexoki: large full-width image */}
+                  {(theme === 'catppuccin' || theme === 'flexoki') &&
+                    item.image && (
+                      <div className="mb-4 rounded-xl overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-auto object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
                   <div className="leading-relaxed">
                     <RichTextRenderer
                       description={item.description}
