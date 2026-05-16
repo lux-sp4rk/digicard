@@ -66,7 +66,16 @@ const ContentList = ({
               )}
             >
               <div className="flex items-start gap-4 md:gap-6">
-                {item.icon && (
+                {item.image ? (
+                  <div className="flex-shrink-0 mt-1 w-12 h-12 md:w-14 md:h-14 rounded-lg overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : item.icon ? (
                   <div
                     className={clsx(
                       'flex-shrink-0 mt-1 opacity-70',
@@ -79,7 +88,7 @@ const ContentList = ({
                       className={getIconClasses(theme)}
                     />
                   </div>
-                )}
+                ) : null}
                 <div className="flex-1 min-w-0">
                   <h3
                     className={clsx(

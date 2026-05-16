@@ -30,6 +30,7 @@ export interface Skill {
   description: string;
   descriptionRaw?: any;
   icon: string | null;
+  image: string | null;
   order: number;
   active: boolean;
 }

@@ -307,6 +307,7 @@ export const getSkills = async () => {
       subtitle: item.fields.subtitle || '',
       description: item.fields.description,
       icon: item.fields.icon || null,
+      image: item.fields.image?.fields?.file?.url || null,
       order: item.fields.order || 0,
       active: item.fields.active !== false,
     }));
