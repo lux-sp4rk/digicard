@@ -29,7 +29,7 @@ export default defineConfig({
   },
   server: {
     host: true, // Allows access from network (not just localhost)
-    allowedHosts: ['.trycloudflare.com', 'localhost', '127.0.0.1'],
+    allowedHosts: true, // Allow all hosts (for cloudflare tunnels, ngrok, etc)
     proxy: {
       '/api': {
         target: 'https://api.beehiiv.com/v2',
