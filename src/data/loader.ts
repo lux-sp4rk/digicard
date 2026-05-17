@@ -68,6 +68,7 @@ export async function loadContent(): Promise<ContentfulData> {
       description: s.description,
       icon: s.icon || null,
       image: s.image || null,
+      url: s.url || null,
       order: s.order || i,
       active: s.active !== false,
     })) as Skill[],
