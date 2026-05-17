@@ -269,44 +269,62 @@ const ClassicProjectsList = ({ theme, projects }) => (
       getThemeClass(theme, 'classicSection')
     )}
   >
-    <div className={clsx('flex flex-col gap-8')}>
+    <div className="flex items-center gap-2 mb-6">
+      <span className="web2-badge">HOT!</span>
+      <h2 className="web2-heading flex-1">My Projects</h2>
+    </div>
+
+    <div className={clsx('flex flex-col gap-6')}>
       {projects.map(project => (
         <div
           key={project.title}
           className={clsx(
-            'flex flex-row items-start gap-6 pb-6 mb-4',
+            'card-web2 p-5',
             styles.classicItemBase,
-            getThemeClass(theme, 'classicItem'),
-            'last:border-b-0 last:mb-0 last:pb-0'
+            getThemeClass(theme, 'classicItem')
           )}
         >
-          <img
-            src={project.imgNormal}
-            alt={project.alt}
-            className={clsx(
-              'w-32 h-32 object-cover mt-2 mb-2 ml-2',
-              styles.classicImageBase,
-              getThemeClass(theme, 'classicImage')
-            )}
-            style={{ float: 'left' }}
-          />
-          <div className="flex-1">
-            <h3 className={clsx('text-xl mb-1')}>
-              <a
-                href={project.link}
-                className={clsx(getThemeClass(theme, 'classicLink'))}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {project.title}
-              </a>
-            </h3>
-            <ContentDescription
-              description={project.description}
-              className={clsx('mb-2', getThemeClass(theme, 'classicDesc'))}
-              theme={theme}
-            />
-            {/* Optionally add meta info here */}
+          <div className="flex flex-row items-start gap-4">
+            <div className="web2-profile-frame p-1 flex-shrink-0">
+              <img
+                src={project.imgNormal}
+                alt={project.alt}
+                className={clsx(
+                  'w-28 h-28 object-cover rounded-lg',
+                  styles.classicImageBase,
+                  getThemeClass(theme, 'classicImage')
+                )}
+              />
+            </div>
+            <div className="flex-1 relative">
+              <h3 className={clsx('text-lg font-web2Heading font-bold mb-2')}>
+                <a
+                  href={project.link}
+                  className={clsx(
+                    'text-web2-primary hover:text-web2-primaryLight underline underline-offset-4',
+                    getThemeClass(theme, 'classicLink')
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {project.title}
+                </a>
+              </h3>
+              <ContentDescription
+                description={project.description}
+                className={clsx(
+                  'text-sm text-web2-textLight font-web2',
+                  getThemeClass(theme, 'classicDesc')
+                )}
+                theme={theme}
+              />
+              <div className="mt-3 flex gap-2">
+                <span className="web2-badge text-[10px]">NEW!</span>
+                <button className="btn-web2 text-xs py-1.5 px-3">
+                  Launch →
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       ))}

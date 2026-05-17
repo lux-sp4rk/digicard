@@ -1142,6 +1142,8 @@ describe('getSkills', () => {
       subtitle: 'Frontend Framework',
       description: 'A JavaScript library for building UIs',
       icon: 'FaReact',
+      image: null,
+      url: null,
       order: 1,
       active: true,
     });
