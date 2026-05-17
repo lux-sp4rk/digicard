@@ -6,7 +6,7 @@ A personal portfolio that earns its name — dynamic theming, CMS-driven content
 
 ## What it is
 
-A React + Contentful single-page portfolio with five switchable themes, each a full visual overhaul — not just a color swap. The site content (projects, services, skills) is managed in Contentful and falls back to static data when the CMS is unavailable.
+An [Astro](https://astro.build) single-page portfolio with React islands, five switchable themes, and Contentful CMS backing. Each theme is a full visual overhaul — not just a color swap. Content (projects, services, skills) is editable in Contentful and falls back to static data when the CMS is unavailable.
 
 **Themes:** Catppuccin Mocha · Flexoki Light · Web2.0 · Matrix
 
@@ -20,7 +20,7 @@ A React + Contentful single-page portfolio with five switchable themes, each a f
 
 ## Stack
 
-React 18 · Vite · Tailwind CSS · CSS Modules · Contentful · Netlify
+Astro · React · Tailwind CSS · Contentful · Netlify
 
 ## Themes
 
@@ -34,6 +34,10 @@ React 18 · Vite · Tailwind CSS · CSS Modules · Contentful · Netlify
 ## Deployment
 
 Auto-deploys from `main` to Netlify. Push to `main` → live.
+
+## Contributing
+
+Not accepting contributions. This repo is open-sourced as show-and-tell and to avoid burning GitHub Actions minutes on private repos.
 
 ## License
 
