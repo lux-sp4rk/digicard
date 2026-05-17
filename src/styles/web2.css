@@ -241,8 +241,20 @@
 }
 
 .web2 .web2-bg {
-  background: linear-gradient(180deg, #e8edf2 0%, #d4dde6 50%, #c8d4e0 100%);
-  background-attachment: fixed;
+  background:
+    /* White clouds at bottom */
+    url('/src/assets/clouds-bg-2.png') repeat-x bottom center / auto 40%,
+    /* Blue sky gradient */
+    linear-gradient(
+        180deg,
+        #3a8bc7 0%,
+        #87ceeb 30%,
+        #b8dff8 60%,
+        #e0f0ff 85%,
+        #f0f8ff 100%
+      );
+  background-attachment: scroll, fixed;
+  background-color: #3a8bc7;
 }
 
 .web2 .section-heading {
