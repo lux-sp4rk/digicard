@@ -154,18 +154,6 @@
   opacity: 0 !important;
 }
 
-.clouds-bg {
-  background: url('/src/assets/clouds-bg-2.png');
-  background-repeat: repeat-x;
-  background-size: auto 100%;
-  position: absolute;
-  margin-top: -12em;
-  height: 15rem; /* or whatever fits your layout */
-  min-height: 3rem;
-  /* opacity: 0.5; */
-  pointer-events: none;
-}
-
 /* Web2 body background */
 .web2-bg {
   background: linear-gradient(180deg, #e8edf2 0%, #d4dde6 50%, #c8d4e0 100%);
