@@ -58,10 +58,6 @@ const ContentList = ({
               key={item.id || `${sectionTitle.toLowerCase()}-${index}`}
               className={clsx(
                 'group relative py-6 px-2',
-                index !== sortedItems.length - 1 && 'border-b',
-                theme === 'matrix'
-                  ? 'border-matrix-glow/20'
-                  : 'border-gray-200 dark:border-gray-700',
                 index % 2 === 1 && 'md:pl-12'
               )}
             >
