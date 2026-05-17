@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+package-lock.json
 
 # Editor directories and files
 .vscode/*
@@ -42,3 +43,13 @@ gha-creds-*.json
 .opencode/
 .claude/
 .cursor/
+
+# Astro build output
+.astro/
+dist/
+
+# Build-time generated data
+src/data/generated/
+
+# Embedded repos
+steadfast-series/

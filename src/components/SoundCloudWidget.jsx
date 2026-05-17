@@ -40,31 +40,32 @@ const SoundCloudWidget = ({ theme }) => {
     };
   }, []);
 
-  // Fall back to JSON file if both API and Contentful fail
+  // Fall back to JSON file if both API and Contentful fail or return empty
   useEffect(() => {
-    if (trackError) {
-      const abortController = new AbortController();
+    const shouldLoadFallback = trackError || (!cmsTrack && !trackLoading);
+    if (!shouldLoadFallback) return;
 
-      fetch('/soundcloudTrack.json', { signal: abortController.signal })
-        .then(res => {
-          if (!res.ok) throw new Error('Failed to load SoundCloud track');
-          return res.json();
-        })
-        .then(data => {
-          setFallbackTrack(data);
+    const abortController = new AbortController();
+
+    fetch('/soundcloudTrack.json', { signal: abortController.signal })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to load SoundCloud track');
+        return res.json();
+      })
+      .then(data => {
+        setFallbackTrack(data);
+        setFallbackLoading(false);
+      })
+      .catch(error => {
+        if (error.name !== 'AbortError') {
           setFallbackLoading(false);
-        })
-        .catch(error => {
-          if (error.name !== 'AbortError') {
-            setFallbackLoading(false);
-          }
-        });
+        }
+      });
 
-      return () => {
-        abortController.abort();
-      };
-    }
-  }, [trackError]);
+    return () => {
+      abortController.abort();
+    };
+  }, [trackError, cmsTrack, trackLoading]);
 
   const loading = apiLoading || trackLoading || (trackError && fallbackLoading);
   const track = apiTrack || cmsTrack || fallbackTrack;

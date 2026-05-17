@@ -1,0 +1,55 @@
+---
+export interface Props {
+  initialTheme?: string;
+}
+
+const themes = [
+  { value: 'catppuccin', label: 'Catppuccin' },
+  { value: 'flexoki', label: 'Flexoki' },
+  { value: 'web2', label: 'Web2' },
+];
+
+const { initialTheme = 'catppuccin' } = Astro.props;
+---
+
+<select
+  id="theme-switcher"
+  class="bg-transparent text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+  data-initial={initialTheme}
+>
+  {themes.map(t => (
+    <option value={t.value} selected={t.value === initialTheme}>{t.label}</option>
+  ))}
+</select>
+
+<script>
+  (function() {
+    const select = document.getElementById('theme-switcher');
+    if (!select) return;
+
+    const themes = ['catppuccin', 'flexoki', 'matrix', 'xmas', 'web2'];
+
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      themes.forEach(t => html.classList.remove(t));
+      html.classList.add(theme);
+      html.setAttribute('data-theme', theme);
+      sessionStorage.setItem('theme', theme);
+
+      if (theme === 'matrix') {
+        document.body.classList.add('matrix-bg');
+      } else {
+        document.body.classList.remove('matrix-bg');
+      }
+    }
+
+    select.addEventListener('change', (e) => {
+      applyTheme(e.target.value);
+    });
+
+    const current = document.documentElement.getAttribute('data-theme');
+    if (current && select.value !== current) {
+      select.value = current;
+    }
+  })();
+</script>
