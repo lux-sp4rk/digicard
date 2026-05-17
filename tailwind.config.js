@@ -2,7 +2,7 @@ import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,astro}', './public/**/*.html'],
   darkMode: 'class', // We'll use this for toggling dark/light theme
   theme: {
     extend: {
@@ -18,11 +18,17 @@ export default {
           border: '#CCCCCC',
           success: '#66CC66',
           error: '#FF6666',
-          background: '#FFFFFF',
-          cardBg: '#F2F2F2',
+          background: '#E8EDF2',
+          cardBg: '#FFFFFF',
           highlight: '#E6F7FF',
           divider: '#DDDDDD',
           debug: '#FF0000',
+          glossyBlue: '#4A90E2',
+          glossyHighlight: '#87CEEB',
+          gradientStart: '#FFFFFF',
+          gradientEnd: '#F0F4F8',
+          shadowColor: 'rgba(0, 0, 0, 0.15)',
+          innerGlow: 'rgba(255, 255, 255, 0.8)',
         },
         github: {
           white: '#ffffff',
@@ -117,6 +123,7 @@ export default {
           'Arial',
           'sans-serif',
         ],
+        web2Comic: ['"Comic Sans MS"', '"Comic Sans"', 'cursive', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.8s forwards',
@@ -125,6 +132,9 @@ export default {
         pulse: 'pulse 2s infinite',
         'matrix-fall': 'matrix-fall linear infinite',
         ripple: 'ripple 0.6s linear',
+        'web2-shimmer': 'web2Shimmer 2s infinite',
+        'web2-bounce': 'web2Bounce 0.6s infinite',
+        'web2-pulse': 'web2Pulse 2s infinite',
       },
       keyframes: {
         fadeIn: {
@@ -172,6 +182,18 @@ export default {
             opacity: '0',
           },
         },
+        web2Shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        web2Bounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        web2Pulse: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
       },
       transitionDuration: {
         DEFAULT: '300ms',
@@ -188,15 +210,30 @@ export default {
       borderColor: ['matrix', 'web2', 'xmas'],
       dropShadow: ['matrix', 'web2', 'xmas'],
       boxShadow: {
-        web2: '0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
+        web2: '0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
         'web2-hover':
-          '0 1px 5px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+          '0 8px 25px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 -1px 0 rgba(0, 0, 0, 0.15)',
+        'web2-glossy':
+          '0 1px 0 rgba(255,255,255,0.6) inset, 0 -1px 0 rgba(0,0,0,0.1) inset, 0 4px 8px rgba(0,0,0,0.2)',
+        'web2-card':
+          '0 2px 8px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.5) inset',
+        'web2-button':
+          '0 1px 0 rgba(255,255,255,0.4) inset, 0 -1px 0 rgba(0,0,0,0.2) inset, 0 3px 6px rgba(0,0,0,0.2)',
+        'web2-inner': 'inset 0 2px 4px rgba(0,0,0,0.15)',
+        'web2-reflection': '0 20px 40px rgba(0,0,0,0.15)',
       },
       backgroundImage: {
-        'web2-gradient': 'linear-gradient(to bottom, #33AADD, #0088CC)',
-        'web2-button': 'linear-gradient(to bottom, #33AADD, #0088CC)',
-        'web2-header': 'linear-gradient(to bottom, #FFFFFF, #F2F2F2)',
-        'web2-card': 'linear-gradient(to bottom, #FFFFFF, #F9F9F9)',
+        'web2-gradient': 'linear-gradient(to bottom, #4A90E2, #0088CC)',
+        'web2-button': 'linear-gradient(to bottom, #5BA3F5, #0088CC)',
+        'web2-button-hover': 'linear-gradient(to bottom, #6BB4FF, #33AADD)',
+        'web2-header': 'linear-gradient(to bottom, #FFFFFF, #E8EDF2)',
+        'web2-card': 'linear-gradient(to bottom, #FFFFFF, #F0F4F8)',
+        'web2-card-glossy':
+          'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,244,248,0.8) 50%, rgba(255,255,255,0.6) 100%)',
+        'web2-shimmer':
+          'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+        'web2-radial':
+          'radial-gradient(ellipse at top, #FFFFFF 0%, #E8EDF2 100%)',
       },
     },
   },

@@ -43,3 +43,13 @@ gha-creds-*.json
 .opencode/
 .claude/
 .cursor/
+
+# Astro build output
+.astro/
+dist/
+
+# Build-time generated data
+src/data/generated/
+
+# Embedded repos
+steadfast-series/

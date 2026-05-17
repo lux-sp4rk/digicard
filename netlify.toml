@@ -4,9 +4,9 @@
 
 [dev]
   command = "npm run dev"
-  framework = "vite"
+  framework = "#auto"
+  targetPort = 4321
 
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-

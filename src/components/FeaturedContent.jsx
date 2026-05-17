@@ -140,7 +140,7 @@ const FeaturedContent = ({ theme }) => {
 
   // Don't render anything if no content is available
   if (contentItems.length === 0) {
-    return null;
+    return <SoundCloudWidget theme={theme} />;
   }
 
   return (

@@ -1,0 +1,70 @@
+---
+export interface Props {
+  tabs: { id: string; label: string; icon?: string }[];
+  defaultTab?: string;
+}
+
+const { tabs, defaultTab = 'work' } = Astro.props;
+
+// SVG icons for each tab (matching original React NavBar: FaUsers, FaBriefcase, FaRobot)
+const tabIcons: Record<string, string> = {
+  services: '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>',
+  work: '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd"/><path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"/></svg>',
+  skills: '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a2 2 0 100 4 2 2 0 000-4zM6 9a2 2 0 100 4 2 2 0 000-4zm12 0a2 2 0 100 4 2 2 0 000-4zM6 16a2 2 0 100 4 2 2 0 000-4zm12 0a2 2 0 100 4 2 2 0 000-4z"/></svg>',
+};
+---
+
+<nav class="flex w-full" role="tablist">
+  {tabs.map(tab => (
+    <button
+      type="button"
+      role="tab"
+      data-tab={tab.id}
+      class={`tab-btn web2-nav-tab flex-1 py-4 text-sm font-bold uppercase tracking-[0.2em] text-center transition-colors border-b-2 flex items-center justify-center gap-3 ${tab.id === defaultTab ? 'border-blue-500 text-blue-600 web2-nav-tab-active' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+    >
+      <span class="web2:hidden" set:html={tabIcons[tab.id] || ''} />
+      <span>{tab.label}</span>
+    </button>
+  ))}
+</nav>
+
+<script>
+  (function() {
+    function initTabs() {
+      const buttons = document.querySelectorAll('.tab-btn');
+      const panels = document.querySelectorAll('[data-tab-panel]');
+
+      function showTab(tabId) {
+        buttons.forEach(btn => {
+          const isActive = btn.getAttribute('data-tab') === tabId;
+          btn.classList.toggle('border-blue-500', isActive);
+          btn.classList.toggle('text-blue-600', isActive);
+          btn.classList.toggle('border-transparent', !isActive);
+          btn.classList.toggle('text-gray-500', !isActive);
+          btn.classList.toggle('web2-nav-tab-active', isActive);
+          btn.setAttribute('aria-selected', String(isActive));
+        });
+
+        panels.forEach(panel => {
+          const isTarget = panel.getAttribute('data-tab-panel') === tabId;
+          panel.classList.toggle('hidden', !isTarget);
+        });
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.getAttribute('data-tab');
+          if (tabId) showTab(tabId);
+        });
+      });
+
+      const activeBtn = Array.from(buttons).find(b => b.classList.contains('border-blue-500'));
+      if (activeBtn) {
+        showTab(activeBtn.getAttribute('data-tab') || 'work');
+      }
+    }
+
+    initTabs();
+    document.addEventListener('astro:page-load', initTabs);
+  })();
+</script>

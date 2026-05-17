@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+@import './colors.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-body bg-github-bgGray text-github-text transition-colors
+           dark:bg-dracula-background dark:text-dracula-foreground
+           matrix:bg-matrix-background matrix:text-matrix-text
+           xmas:bg-xmas-background xmas:text-xmas-text
+           catppuccin:bg-catppuccin-crust catppuccin:text-catppuccin-text
+           flexoki:bg-flexoki-crust flexoki:text-flexoki-text;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading
+           matrix:text-matrix-highlight matrix:drop-shadow-[0_0_5px_theme(colors.matrix.glow)]
+           xmas:text-xmas-gold xmas:drop-shadow-[0_0_8px_theme(colors.xmas.glow)];
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white dark:bg-dracula-currentLine
+           matrix:bg-matrix-terminal matrix:border-matrix-glow matrix:shadow-lg matrix:shadow-matrix-glow
+           rounded-lg shadow-sm;
+  }
+
+  .link {
+    @apply text-github-blue hover:text-github-lightBlue
+           dark:text-dracula-cyan dark:hover:text-dracula-pink
+           matrix:text-matrix-highlight matrix:hover:text-matrix-glow matrix:hover:drop-shadow-[0_0_8px_theme(colors.matrix.glow)]
+           xmas:text-xmas-gold xmas:hover:text-xmas-goldLight xmas:hover:drop-shadow-[0_0_6px_theme(colors.xmas.glow)]
+           transition-colors;
+  }
+}
+
+@layer utilities {
+  .card-hover {
+    @apply transition-all hover:shadow-lg hover:-translate-y-1;
+  }
+
+  body.matrix-bg {
+    background: url('/assets/matrix-bg.gif') repeat center center fixed;
+    background-size: cover;
+  }
+}
+
+.clouds-bg {
+  background: url('/assets/clouds-bg-2.png');
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  position: absolute;
+  margin-top: -12em;
+  height: 15rem;
+  min-height: 3rem;
+  pointer-events: none;
+}

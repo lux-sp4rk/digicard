@@ -19,7 +19,7 @@ describe('NavBar', () => {
   describe('Web2 specific features', () => {
     it('renders brand name for web2 theme', () => {
       render(<NavBar {...defaultProps} theme="web2" />);
-      expect(screen.getByText('Luh Sprwhk')).toBeInTheDocument();
+      expect(screen.getByText('Lux Sp4rk')).toBeInTheDocument();
     });
 
     it('renders all social links for web2 theme', () => {
@@ -30,7 +30,7 @@ describe('NavBar', () => {
 
     it('does not show web2 header for non-web2 themes', () => {
       render(<NavBar {...defaultProps} theme="catppuccin" />);
-      expect(screen.queryByText('Luh Sprwhk')).not.toBeInTheDocument();
+      expect(screen.queryByText('Lux Sp4rk')).not.toBeInTheDocument();
     });
   });
 

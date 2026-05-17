@@ -58,15 +58,23 @@ const ContentList = ({
               key={item.id || `${sectionTitle.toLowerCase()}-${index}`}
               className={clsx(
                 'group relative py-6 px-2',
-                index !== sortedItems.length - 1 && 'border-b',
-                theme === 'matrix'
-                  ? 'border-matrix-glow/20'
-                  : 'border-gray-200 dark:border-gray-700',
                 index % 2 === 1 && 'md:pl-12'
               )}
             >
               <div className="flex items-start gap-4 md:gap-6">
-                {item.icon && (
+                {/* Image/icon rendering — theme-aware layout */}
+                {theme === 'web2' && item.image ? (
+                  /* Web2: small thumbnail on the side */
+                  <div className="flex-shrink-0 mt-1 w-12 h-12 md:w-14 md:h-14 rounded-lg overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : item.icon ? (
+                  /* Non-web2 themes: icon */
                   <div
                     className={clsx(
                       'flex-shrink-0 mt-1 opacity-70',
@@ -79,7 +87,7 @@ const ContentList = ({
                       className={getIconClasses(theme)}
                     />
                   </div>
-                )}
+                ) : null}
                 <div className="flex-1 min-w-0">
                   <h3
                     className={clsx(
@@ -98,12 +106,42 @@ const ContentList = ({
                       {item.subtitle}
                     </p>
                   )}
+                  {/* Catppuccin / Flexoki: large full-width image */}
+                  {(theme === 'catppuccin' || theme === 'flexoki') &&
+                    item.image && (
+                      <div className="mb-4 rounded-xl overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-auto object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
                   <div className="leading-relaxed">
                     <RichTextRenderer
                       description={item.description}
                       theme={theme}
                     />
                   </div>
+                  {item.url && (
+                    <div className="mt-4">
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={clsx(
+                          'inline-flex items-center gap-2 text-sm font-medium tracking-wide transition-colors',
+                          theme === 'web2'
+                            ? 'btn-web2'
+                            : 'text-blue-600 hover:text-blue-500'
+                        )}
+                      >
+                        <span>Learn more</span>
+                        <span>→</span>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

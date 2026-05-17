@@ -1,0 +1,178 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ThemeSwitcher from '../islands/ThemeSwitcher.astro';
+import TabNav from '../islands/TabNav.astro';
+import FeaturedContentWrapper from '../islands/FeaturedContentWrapper.jsx';
+import FooterWrapper from '../islands/FooterWrapper.jsx';
+import ServicesWrapper from '../islands/ServicesWrapper.jsx';
+import SkillsWrapper from '../islands/SkillsWrapper.jsx';
+import { loadContent, getProjects, getServices, getSkills, getProfile, getSettings } from '../data/loader';
+
+const data = await loadContent();
+const projects = getProjects(data);
+const services = getServices(data);
+const skills = getSkills(data);
+const profile = getProfile(data);
+const settings = getSettings(data);
+
+const tabs = [
+  { id: 'services', label: 'Services' },
+  { id: 'work', label: 'The Work' },
+  { id: 'skills', label: 'Skills' },
+];
+
+// Normalize profile image URL
+const profileImage = profile.profileImage?.startsWith('//')
+  ? `https:${profile.profileImage}`
+  : profile.profileImage || '/assets/avatar.jpg';
+
+// Helper to extract text from rich text or return plain text
+function descText(desc: any): string {
+  if (typeof desc === 'string') return desc;
+  if (desc?.nodeType === 'document') {
+    // Simple plain-text extraction from Contentful rich text
+    return desc.content?.map((block: any) =>
+      block.content?.map((inline: any) => inline.value).join('')
+    ).join('\n\n') || '';
+  }
+  return String(desc || '');
+}
+
+const socialLinks = settings.socialLinks || [];
+---
+
+<Layout>
+  <div class="max-w-3xl mx-auto px-4 md:px-8 py-8 md:py-16">
+    <div class="relative">
+      {/* Header */}
+      <header class="flex justify-end mb-5">
+        <div class="relative text-right">
+          <ThemeSwitcher />
+        </div>
+      </header>
+
+      <main class="bg-white dark:bg-dracula-currentLine rounded-xl overflow-hidden mb-8 md:mb-12 matrix:bg-matrix-terminal matrix:border matrix:border-matrix-glow/30 web2:bg-web2-background web2:border-2 web2:border-web2-border/60 web2:shadow-web2 web2:rounded-2xl xmas:bg-xmas-cardBg xmas:border-xmas-gold/50 xmas:border catppuccin:bg-catppuccin-base catppuccin:text-catppuccin-text catppuccin:border catppuccin:border-catppuccin-surface flexoki:bg-flexoki-base flexoki:text-flexoki-text flexoki:border flexoki:border-flexoki-surface rosepine:bg-rosepine-base rosepine:text-rosepine-text rosepine:border rosepine:border-rosepine-rose/30">
+        {/* BETA ribbon — Web2 only */}
+        <div class="hidden web2:block web2-ribbon">BETA</div>
+        <TabNav tabs={tabs} defaultTab="work" />
+
+        {/* Profile */}
+        <section class="relative px-5 py-8 text-center web2-profile-section">
+          <div class="w-36 h-36 mx-auto mb-5 web2-profile-frame">
+            <img
+              src={profileImage}
+              alt={`${profile.name} avatar`}
+              class="w-full h-full object-cover rounded-full"
+            />
+          </div>
+          <h1 class="text-2xl font-heading font-bold tracking-tight mb-1">{profile.name}</h1>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 catppuccin:text-catppuccin-text flexoki:text-flexoki-text matrix:text-matrix-text xmas:text-xmas-text">{profile.title}</p>
+          {profile.location && (
+            <p class="text-xs text-gray-500 dark:text-gray-500 flex items-center justify-center gap-1 catppuccin:text-catppuccin-text/80 flexoki:text-flexoki-text/80 matrix:text-matrix-text/80 xmas:text-xmas-text/80">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
+              {profile.location}
+            </p>
+          )}
+          <div class="relative z-10 text-sm leading-relaxed max-w-xl mx-auto mt-4 text-gray-700 dark:text-gray-300 catppuccin:text-catppuccin-text flexoki:text-flexoki-text matrix:text-matrix-text xmas:text-xmas-text">
+            {profile.bio}
+          </div>
+          {/* Web2 badges — only visible in Web2 theme */}
+          <div class="hidden web2:flex justify-center gap-3 mt-4 mb-2">
+            <span class="web2-badge">NEW!</span>
+            <span class="inline-flex items-center justify-center bg-web2-success text-white font-web2 font-bold text-xs rounded-full px-3 py-1 shadow-md">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              Verified
+            </span>
+            <span class="web2-rss-icon">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z" />
+                <path d="M5 7a1 1 0 000 2c3.314 0 6 2.686 6 6a1 1 0 102 0c0-4.418-3.582-8-8-8z" />
+                <circle cx="5" cy="13" r="2" />
+              </svg>
+              RSS
+            </span>
+          </div>
+        </section>
+
+        {/* Clouds separator — Web2 only */}
+        <div class="hidden web2:block w-full h-16 clouds-bg" aria-hidden="true"></div>
+
+        {/* Work Tab */}
+        <div data-tab-panel="work" class="hidden">
+          {/* FeaturedContent fetches Substack / YouTube / Instagram / SoundCloud at runtime */}
+          <FeaturedContentWrapper client:load />
+
+          <section class="px-4 md:px-8 py-8">
+            {/* Web2 heading — only visible in Web2 theme */}
+            <div class="hidden web2:flex items-center gap-2 mb-6">
+              <span class="web2-badge">HOT!</span>
+              <h2 class="web2-heading flex-1">My Projects</h2>
+            </div>
+            <h2 class="web2:hidden text-lg font-bold mb-6 tracking-tight">Projects</h2>
+            <div class="max-w-4xl mx-auto space-y-0">
+              {projects.map((project, index) => {
+                const isEven = index % 2 === 0;
+                const imageSrc = project.imgWide || project.imgNormal || '/assets/RDTBanner.png';
+                return (
+                  <article class={`card-web2 grid gap-4 md:gap-8 md:grid-cols-2 items-center py-8 px-5 ${!isEven ? 'md:direction-rtl' : ''}`}>
+                    <div class={`relative overflow-hidden aspect-[16/10] ${isEven ? 'md:order-1' : 'md:order-2'}`}>
+                      <img src={imageSrc} alt={project.alt} class="w-full h-full object-cover" />
+                    </div>
+                    <div class={`flex flex-col ${isEven ? 'md:order-2 md:pl-4' : 'md:order-1 md:pr-4 md:text-right md:items-end'}`}>
+                      <div class={`flex items-center gap-3 mb-3 ${!isEven ? 'md:flex-row-reverse' : ''}`}>
+                        <h3 class="text-xl md:text-2xl font-heading font-bold tracking-tight">{project.title}</h3>
+                      </div>
+                      <div class="mb-6 leading-relaxed text-sm text-gray-700 dark:text-gray-300 catppuccin:text-catppuccin-text/80 flexoki:text-flexoki-text/80 matrix:text-matrix-text/80 xmas:text-xmas-text/80" set:html={descText(project.description)}></div>
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-2 text-sm font-medium tracking-wide text-blue-600 hover:text-blue-500"
+                      >
+                        <span>View Project</span>
+                        <span>→</span>
+                      </a>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+
+        {/* Services Tab */}
+        <div data-tab-panel="services" class="hidden">
+          {/* Services — React island with FontAwesome icons */}
+          <ServicesWrapper client:load />
+        </div>
+
+        {/* Skills Tab */}
+        <div data-tab-panel="skills" class="hidden">
+          {/* Skills — React island with FontAwesome icons */}
+          <SkillsWrapper client:load />
+        </div>
+      </main>
+
+      {/* Web2 footer badges — only visible in Web2 theme */}
+      <div class="hidden web2:flex justify-center gap-3 mt-4 pb-4">
+        <span class="web2-chrome-badge">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 4.909c2.298 0 4.322.992 5.754 2.567L12 14.36 5.846 8.128C7.278 6.553 9.702 4.909 12 4.909zM4.909 12c0-.545.073-1.073.209-1.578l3.582 6.209H6.109A7.045 7.045 0 014.909 12zm14.182 0c0 .545-.073 1.073-.209 1.578l-3.582-6.209h2.591A7.045 7.045 0 0119.091 12z"/>
+          </svg>
+          Best viewed in Chrome
+        </span>
+        <span class="web2-chrome-badge">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"/>
+          </svg>
+          Made with tables
+        </span>
+      </div>
+
+      {/* Footer — React island with proper FontAwesome icons */}
+      <FooterWrapper client:load />
+    </div>
+  </div>
+</Layout>
