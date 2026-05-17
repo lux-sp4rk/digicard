@@ -37,11 +37,11 @@ describe('Profile', () => {
     expect(bio.textContent.length).toBeGreaterThan(0);
   });
 
-  it('conditionally hides profile details for web2 theme', () => {
+  it('renders profile avatar for web2 theme', () => {
     render(<Profile theme="web2" />);
 
-    // Profile image should not be rendered for web2 theme
-    expect(screen.queryByAltText('Lux Sp4rwhk avatar')).not.toBeInTheDocument();
+    // Profile image should be rendered for web2 theme (in the hero)
+    expect(screen.getByAltText('Lux Sp4rwhk avatar')).toBeInTheDocument();
   });
 
   it('renders bio for all themes', () => {
