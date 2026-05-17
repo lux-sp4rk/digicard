@@ -57,7 +57,7 @@ const socialLinks = settings.socialLinks || [];
         <TabNav tabs={tabs} defaultTab="work" />
 
         {/* Profile */}
-        <section class="relative px-5 py-8 text-center">
+        <section class="relative px-5 py-8 text-center web2-profile-section">
           <div class="w-36 h-36 mx-auto mb-5 web2-profile-frame">
             <img
               src={profileImage}
@@ -73,7 +73,6 @@ const socialLinks = settings.socialLinks || [];
               {profile.location}
             </p>
           )}
-          <div class="absolute left-0 right-0 bottom-0 w-full h-24 pointer-events-none z-0 clouds-bg opacity-0 web2:opacity-100" aria-hidden="true"></div>
           <div class="relative z-10 text-sm leading-relaxed max-w-xl mx-auto mt-4 text-gray-700 dark:text-gray-300 catppuccin:text-catppuccin-text flexoki:text-flexoki-text matrix:text-matrix-text xmas:text-xmas-text">
             {profile.bio}
           </div>
@@ -96,6 +95,9 @@ const socialLinks = settings.socialLinks || [];
             </span>
           </div>
         </section>
+
+        {/* Clouds separator — Web2 only */}
+        <div class="hidden web2:block w-full h-16 clouds-bg" aria-hidden="true"></div>
 
         {/* Work Tab */}
         <div data-tab-panel="work" class="hidden">
