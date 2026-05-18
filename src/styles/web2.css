@@ -263,9 +263,19 @@
         #b8dff8 60%,
         #e0f0ff 85%,
         #f0f8ff 100%
-      );
-  background-attachment: scroll, fixed;
-  background-color: #3a8bc7;
+      ) !important;
+  background-size:
+    300px 300px,
+    80px 80px,
+    24px 24px,
+    auto auto !important;
+  background-position:
+    0 0,
+    0 0,
+    12px 12px,
+    0 0;
+  background-attachment: scroll, scroll, scroll, fixed !important;
+  background-color: #3a8bc7 !important;
 }
 
 .web2 .section-heading {
