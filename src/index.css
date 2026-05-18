@@ -16,7 +16,37 @@
            flexoki:bg-flexoki-crust flexoki:text-flexoki-text;
   }
   body.web2-bg {
-    background-color: #e8edf2;
+    /* Marble marble — all 4 layers */
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+      repeating-linear-gradient(
+        115deg,
+        transparent 0px,
+        transparent 40px,
+        rgba(255, 255, 255, 0.12) 40px,
+        rgba(255, 255, 255, 0.12) 42px
+      ),
+      radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+      linear-gradient(
+        180deg,
+        #3a8bc7 0%,
+        #87ceeb 30%,
+        #b8dff8 60%,
+        #e0f0ff 85%,
+        #f0f8ff 100%
+      ) !important;
+    background-size:
+      300px 300px,
+      80px 80px,
+      24px 24px,
+      auto auto !important;
+    background-position:
+      0 0,
+      0 0,
+      12px 12px,
+      0 0;
+    background-attachment: scroll, scroll, scroll, fixed !important;
+    background-color: #3a8bc7 !important;
   }
   h1,
   h2,
