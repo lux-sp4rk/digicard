@@ -154,10 +154,84 @@
   opacity: 0 !important;
 }
 
-/* Web2 body background */
-.web2-bg {
-  background: linear-gradient(180deg, #e8edf2 0%, #d4dde6 50%, #c8d4e0 100%);
+html.web2 body.web2-bg {
+  /* Replicates the marble layers from src/styles/web2.css .web2 .web2-bg
+     so it wins the specificity battle over the fallback .web2-bg rule above */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(
+      115deg,
+      transparent 0px,
+      transparent 40px,
+      rgba(255, 255, 255, 0.12) 40px,
+      rgba(255, 255, 255, 0.12) 42px,
+      transparent 42px,
+      transparent 80px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 29px,
+      rgba(120, 80, 40, 0.04) 29px,
+      rgba(120, 80, 40, 0.04) 30px,
+      transparent 30px,
+      transparent 59px,
+      rgba(120, 80, 40, 0.04) 59px,
+      rgba(120, 80, 40, 0.04) 60px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 29px,
+      rgba(120, 80, 40, 0.04) 29px,
+      rgba(120, 80, 40, 0.04) 30px,
+      transparent 30px,
+      transparent 59px,
+      rgba(120, 80, 40, 0.04) 59px,
+      rgba(120, 80, 40, 0.04) 60px
+    ),
+    radial-gradient(
+      ellipse 18px 18px at 15px 15px,
+      rgba(180, 140, 80, 0.12) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 18px 18px at 45px 45px,
+      rgba(180, 140, 80, 0.12) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      160deg,
+      #c8b89a 0%,
+      #e8dcc8 15%,
+      #d4c4a0 30%,
+      #cdbf9c 45%,
+      #ddd0b8 60%,
+      #cbbc98 75%,
+      #d8ccb4 90%,
+      #c0aa88 100%
+    );
   background-attachment: fixed;
+  background-color: #c8b89a;
+  background-repeat: no-repeat;
+}
+
+/* Glassmorphism sheen — sits above everything */
+html.web2 body.web2-bg::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0px,
+    transparent 60px,
+    rgba(255, 255, 255, 0.06) 60px,
+    rgba(255, 255, 255, 0.06) 63px,
+    transparent 63px,
+    transparent 120px
+  );
 }
 
 /* Web2 chrome badge */

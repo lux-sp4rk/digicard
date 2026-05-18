@@ -251,21 +251,90 @@
   box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.03);
 }
 
-.web2 .web2-bg {
+.web2 .web2-bg,
+.web2.web2-bg {
+  position: relative;
+  z-index: 1;
   background:
-    /* White clouds at bottom */
-    url('/src/assets/clouds-bg-2.png') repeat-x bottom center / auto 40%,
-    /* Blue sky gradient */
+    /* ── Layer 1: SVG noise texture ── */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+    /* ── Layer 2: Diagonal sheen bands ── */
+    repeating-linear-gradient(
+        115deg,
+        transparent 0px,
+        transparent 40px,
+        rgba(255, 255, 255, 0.12) 40px,
+        rgba(255, 255, 255, 0.12) 42px,
+        transparent 42px,
+        transparent 80px
+      ),
+    /* ── Layer 3: Tile grid (subtle graph-paper nostalgia) ── */
+    repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 29px,
+        rgba(120, 80, 40, 0.04) 29px,
+        rgba(120, 80, 40, 0.04) 30px,
+        transparent 30px,
+        transparent 59px,
+        rgba(120, 80, 40, 0.04) 59px,
+        rgba(120, 80, 40, 0.04) 60px
+      ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 29px,
+      rgba(120, 80, 40, 0.04) 29px,
+      rgba(120, 80, 40, 0.04) 30px,
+      transparent 30px,
+      transparent 59px,
+      rgba(120, 80, 40, 0.04) 59px,
+      rgba(120, 80, 40, 0.04) 60px
+    ),
+    /* ── Layer 4: Seemless diamond pattern (CSS only) ── */
+    radial-gradient(
+        ellipse 18px 18px at 15px 15px,
+        rgba(180, 140, 80, 0.12) 0%,
+        transparent 70%
+      ),
+    radial-gradient(
+      ellipse 18px 18px at 45px 45px,
+      rgba(180, 140, 80, 0.12) 0%,
+      transparent 70%
+    ),
+    /* ── Layer 5: Marble base gradient ── */
     linear-gradient(
-        180deg,
-        #3a8bc7 0%,
-        #87ceeb 30%,
-        #b8dff8 60%,
-        #e0f0ff 85%,
-        #f0f8ff 100%
+        160deg,
+        #c8b89a 0%,
+        #e8dcc8 15%,
+        #d4c4a0 30%,
+        #cdbf9c 45%,
+        #ddd0b8 60%,
+        #cbbc98 75%,
+        #d8ccb4 90%,
+        #c0aa88 100%
       );
-  background-attachment: scroll, fixed;
-  background-color: #3a8bc7;
+  background-attachment: fixed;
+  background-color: #c8b89a;
+}
+
+/* Glassmorphism sheen — sits above everything, scrolls with page */
+.web2 .web2-bg::after,
+.web2.web2-bg::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0px,
+    transparent 60px,
+    rgba(255, 255, 255, 0.06) 60px,
+    rgba(255, 255, 255, 0.06) 63px,
+    transparent 63px,
+    transparent 120px
+  );
 }
 
 .web2 .section-heading {
