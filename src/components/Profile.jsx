@@ -865,7 +865,8 @@ const Profile = ({ theme }) => {
       {theme === 'web2' && (
         <div
           className={clsx(
-            'absolute inset-0 w-full h-full pointer-events-none z-0'
+            'absolute inset-0 w-full h-full pointer-events-none',
+            'z-10'
           )}
           aria-hidden="true"
         >
@@ -875,7 +876,7 @@ const Profile = ({ theme }) => {
 
       <div
         className={clsx(
-          'relative z-10',
+          'relative z-20',
           theme !== 'web2' && 'mb-5',
           theme === 'matrix'
             ? 'w-20 h-20 mx-auto'
