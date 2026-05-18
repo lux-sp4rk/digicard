@@ -47,12 +47,19 @@ const Footer = ({ theme }) => {
         ))}
       </div>
 
-      <div className="footer-details mt-2">
+      <div className="console-hint mt-2">
         {theme !== 'matrix' && (
-          <span className="group relative inline-block opacity-40 hover:opacity-80 transition-opacity">
+          <span
+            className={clsx(
+              'group relative inline-block transition-opacity cursor-pointer',
+              theme === 'web2'
+                ? 'opacity-70 hover:opacity-100 hover:drop-shadow-[0_0_6px_#0088cc] text-[#0088cc]'
+                : 'opacity-40 hover:opacity-80'
+            )}
+          >
             <DynamicIcon
               iconName="FaTerminal"
-              className="inline-block cursor-pointer"
+              className="inline-block"
               size={14}
             />
             <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded p-2 -mt-2 -translate-y-full -translate-x-1/2 left-1/2 whitespace-nowrap">
