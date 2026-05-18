@@ -14,6 +14,13 @@ const Web2HeroBackground = () => (
     aria-hidden="true"
   >
     <defs>
+      {/* Sky gradient — referenced as url(#bgGrad) */}
+      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#1a4a7a" />
+        <stop offset="30%" stopColor="#3a8bc7" />
+        <stop offset="60%" stopColor="#87ceeb" />
+        <stop offset="100%" stopColor="#b8dff8" />
+      </linearGradient>
       {/* Glossy orb gradient */}
       <radialGradient id="orbGrad1" cx="30%" cy="30%" r="70%">
         <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
@@ -55,15 +62,7 @@ const Web2HeroBackground = () => (
       </filter>
     </defs>
 
-    {/* Background base gradient */}
-    <rect width="800" height="600" fill="url(#bgGrad)">
-      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#1a4a7a" />
-        <stop offset="30%" stopColor="#3a8bc7" />
-        <stop offset="60%" stopColor="#87ceeb" />
-        <stop offset="100%" stopColor="#b8dff8" />
-      </linearGradient>
-    </rect>
+    <rect width="800" height="600" fill="url(#bgGrad)" />
 
     {/* Floating glossy orbs */}
     <circle
