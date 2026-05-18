@@ -856,7 +856,8 @@ const Profile = ({ theme }) => {
         theme === 'web2' && 'pt-10 pb-44',
         styles.profileSection,
         theme === 'web2' && styles.profileSectionWeb2,
-        theme === 'xmas' && styles.profileSectionXmas
+        theme === 'xmas' && styles.profileSectionXmas,
+        theme === 'web2' && 'web2-profile-section'
       )}
     >
       {/* Satirical Web2 Hero BG */}
