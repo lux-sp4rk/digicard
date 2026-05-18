@@ -154,7 +154,7 @@
   opacity: 0 !important;
 }
 
-html.web2 body.web2-bg {
+html.web2 body {
   /* Replicates the marble layers from src/styles/web2.css .web2 .web2-bg
      so it wins the specificity battle over the fallback .web2-bg rule above */
   background:
@@ -217,7 +217,7 @@ html.web2 body.web2-bg {
 }
 
 /* Glassmorphism sheen — sits above everything */
-html.web2 body.web2-bg::after {
+html.web2 body::after {
   content: '';
   position: fixed;
   inset: 0;
