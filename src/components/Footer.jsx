@@ -67,7 +67,7 @@ const Footer = ({ theme }) => {
           >
             <DynamicIcon
               iconName="FaTerminal"
-              className="inline-block"
+              className="inline-block cursor-pointer"
               size={13}
             />
             <span className={clsx(theme !== 'web2' && 'hidden')}>
