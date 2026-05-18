@@ -7,6 +7,11 @@ const socialLinks = [
   { name: 'GitHub', url: 'https://github.com/luhsprwhk', icon: 'FaGithub' },
   { name: 'Twitter', url: 'https://twitter.com/luhsprwhk', icon: 'FaTwitter' },
   { name: 'YouTube', url: 'https://youtube.com/@luhsprwhk', icon: 'FaYoutube' },
+  {
+    name: 'LinkedIn',
+    url: 'https://linkedin.com/in/lux-sp4rk',
+    icon: 'FaLinkedin',
+  },
 ];
 
 const Footer = ({ theme }) => {
@@ -30,7 +35,10 @@ const Footer = ({ theme }) => {
             rel="noopener noreferrer"
             aria-label={link.name}
             className={clsx(
-              'opacity-60 hover:opacity-100 transition-opacity',
+              'transition-opacity',
+              theme === 'web2'
+                ? 'text-[#0088cc] opacity-80 hover:opacity-100 hover:drop-shadow-[0_0_6px_#0088cc]'
+                : 'opacity-60 hover:opacity-100',
               theme === 'matrix' && 'text-matrix-highlight'
             )}
           >
