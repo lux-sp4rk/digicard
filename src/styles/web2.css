@@ -341,3 +341,48 @@
   color: #005580;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+
+/* ── Web2 Maximalist Social Pills (footer) ── */
+.web2 .web2-social-pill {
+  background: linear-gradient(to bottom, #5ba3f5, #0088cc);
+  border: 1px solid rgba(0, 85, 128, 0.3);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  font-family: 'Lucida Grande', 'Segoe UI', 'Trebuchet MS', Tahoma, sans-serif;
+  /* The classic web2 pill shadow */
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.2) inset,
+    0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: all 150ms ease;
+}
+.web2 .web2-social-pill:hover {
+  background: linear-gradient(to bottom, #6bb4ff, #33aadd);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.25) inset,
+    0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Web2 Console Hint Pill ── */
+.web2 .web2-console-hint {
+  background: linear-gradient(to bottom, #ff9900, #cc6600);
+  border: 1px solid rgba(128, 60, 0, 0.3);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  font-family: 'Lucida Grande', 'Segoe UI', 'Trebuchet MS', Tahoma, sans-serif;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.3) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.2) inset,
+    0 3px 6px rgba(0, 0, 0, 0.25);
+}
+.web2 .web2-console-hint:hover {
+  background: linear-gradient(to bottom, #ffb84d, #e67300);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.25) inset,
+    0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* Social pill icons get a slight white glow to match web2 aesthetic */
+.web2 .web2-social-pill svg {
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+}

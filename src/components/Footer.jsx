@@ -25,8 +25,13 @@ const Footer = ({ theme }) => {
         'flexoki:text-flexoki-text'
       )}
     >
-      {/* Social Links */}
-      <div className="flex justify-center gap-4 mb-4">
+      {/* Social Links — web2 maximalist pills */}
+      <div
+        className={clsx(
+          'flex justify-center gap-3 mb-3',
+          theme === 'web2' ? 'scale-[1.02]' : ''
+        )}
+      >
         {socialLinks.map(link => (
           <a
             key={link.name}
@@ -35,34 +40,47 @@ const Footer = ({ theme }) => {
             rel="noopener noreferrer"
             aria-label={link.name}
             className={clsx(
-              'transition-opacity',
+              'transition-all duration-200',
               theme === 'web2'
-                ? 'text-[#0088cc] opacity-80 hover:opacity-100 hover:drop-shadow-[0_0_6px_#0088cc]'
-                : 'opacity-60 hover:opacity-100',
+                ? 'web2-social-pill inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-bold shadow-md hover:shadow-xl hover:scale-105'
+                : 'opacity-60 hover:opacity-100 transition-opacity',
               theme === 'matrix' && 'text-matrix-highlight'
             )}
           >
-            <DynamicIcon iconName={link.icon} size={18} />
+            <DynamicIcon iconName={link.icon} size={15} />
+            <span className={clsx(theme !== 'web2' && 'hidden')}>
+              {link.name}
+            </span>
           </a>
         ))}
       </div>
 
-      <div className="console-hint mt-2">
+      <div className="console-hint mt-1">
         {theme !== 'matrix' && (
           <span
             className={clsx(
-              'group relative inline-block transition-opacity cursor-pointer',
+              'group relative inline-block transition-all duration-200 cursor-pointer',
               theme === 'web2'
-                ? 'opacity-70 hover:opacity-100 hover:drop-shadow-[0_0_6px_#0088cc] text-[#0088cc]'
+                ? 'web2-console-hint inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-bold shadow-md hover:shadow-xl hover:scale-105'
                 : 'opacity-40 hover:opacity-80'
             )}
           >
             <DynamicIcon
               iconName="FaTerminal"
               className="inline-block"
-              size={14}
+              size={13}
             />
-            <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded p-2 -mt-2 -translate-y-full -translate-x-1/2 left-1/2 whitespace-nowrap">
+            <span className={clsx(theme !== 'web2' && 'hidden')}>
+              Check the console
+            </span>
+            <div
+              className={clsx(
+                'absolute hidden group-hover:block',
+                theme === 'web2'
+                  ? 'bg-orange-500 text-white text-xs rounded p-2 shadow-lg -mt-2 -translate-y-full -translate-x-1/2 left-1/2 whitespace-nowrap'
+                  : 'bg-gray-800 text-white text-xs rounded p-2 -mt-2 -translate-y-full -translate-x-1/2 left-1/2 whitespace-nowrap'
+              )}
+            >
               console.log("Open sesame")
             </div>
           </span>
