@@ -851,6 +851,7 @@ const Profile = ({ theme }) => {
 
   return (
     <section
+      id="profile-section"
       className={clsx(
         'relative py-8 px-5',
         theme === 'web2' && 'pt-10 pb-44',
@@ -858,13 +859,13 @@ const Profile = ({ theme }) => {
         theme === 'web2' && styles.profileSectionWeb2,
         theme === 'xmas' && styles.profileSectionXmas
       )}
+      style={theme === 'web2' ? { background: 'transparent' } : undefined}
     >
-      {/* Satirical Web2 Hero BG */}
+      {/* Satirical Web2 Hero BG — fixed full-viewport */}
       {theme === 'web2' && (
         <div
-          className={clsx(
-            'absolute inset-0 w-full h-full pointer-events-none z-0'
-          )}
+          className="fixed inset-0 w-full h-full pointer-events-none overflow-hidden"
+          style={{ zIndex: 0 }}
           aria-hidden="true"
         >
           <Web2HeroBackground />
@@ -873,8 +874,9 @@ const Profile = ({ theme }) => {
 
       <div
         className={clsx(
-          'relative z-10',
-          theme !== 'web2' && 'mb-5',
+          'relative',
+          theme !== 'web2' && 'mb-5 z-10',
+          theme === 'web2' && 'z-20',
           theme === 'matrix'
             ? 'w-20 h-20 mx-auto'
             : theme === 'web2'

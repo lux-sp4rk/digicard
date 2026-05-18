@@ -17,11 +17,12 @@ const Footer = ({ theme }) => {
         'text-catppuccin-text dark:text-catppuccin-text',
         'matrix:text-matrix-text',
         'catppuccin:text-catppuccin-text',
-        'flexoki:text-flexoki-text'
+        'flexoki:text-flexoki-text',
+        theme === 'web2' && 'web2'
       )}
     >
-      {/* Social Links */}
-      <div className="flex justify-center gap-4 mb-4">
+      {/* Social Links — web2 maximalist pill style */}
+      <div className="flex justify-center gap-3 mb-4 flex-wrap">
         {socialLinks.map(link => (
           <a
             key={link.name}
@@ -30,17 +31,22 @@ const Footer = ({ theme }) => {
             rel="noopener noreferrer"
             aria-label={link.name}
             className={clsx(
-              'opacity-60 hover:opacity-100 transition-opacity',
+              theme === 'web2'
+                ? 'social-pill'
+                : 'opacity-60 hover:opacity-100 transition-opacity',
               theme === 'matrix' && 'text-matrix-highlight'
             )}
           >
-            <DynamicIcon iconName={link.icon} size={18} />
+            <DynamicIcon iconName={link.icon} size={16} />
+            <span>{link.name}</span>
           </a>
         ))}
       </div>
 
       <div className="footer-details mt-2">
-        {theme !== 'matrix' && (
+        {theme === 'web2' ? (
+          <span className="console-hint">console.log("Open sesame")</span>
+        ) : (
           <span className="group relative inline-block opacity-40 hover:opacity-80 transition-opacity">
             <DynamicIcon
               iconName="FaTerminal"
