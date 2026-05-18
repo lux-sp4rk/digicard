@@ -851,14 +851,15 @@ const Profile = ({ theme }) => {
 
   return (
     <section
+      id="profile-section"
       className={clsx(
         'relative py-8 px-5',
         theme === 'web2' && 'pt-10 pb-44',
         styles.profileSection,
         theme === 'web2' && styles.profileSectionWeb2,
-        theme === 'xmas' && styles.profileSectionXmas,
-        theme === 'web2' && 'web2-profile-section'
+        theme === 'xmas' && styles.profileSectionXmas
       )}
+      style={theme === 'web2' ? { background: 'transparent' } : undefined}
     >
       {/* Satirical Web2 Hero BG */}
       {theme === 'web2' && (

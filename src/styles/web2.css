@@ -240,7 +240,7 @@
   }
 }
 
-.web2 .web2-profile-section {
+.web2 #profile-section {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
