@@ -2,14 +2,20 @@
   {
     "id": "3oCySvKDxiXif6Wi48CSwh",
     "title": "Word Loom",
-    "description": "A calm, senior-first word puzzle game built in Godot. Features bilingual support (EN/ES), gravity mechanics, and a zen aesthetic.",
+    "description": "A falling-grid word puzzle. Letters cascade onto a 5×5 board; you swipe adjacent tiles (8 directions) to spell words — then gravity pulls what's left back into play. Built with Godot 4, targets iPad, phone, and browser. The mechanic is called Word Drop — part Tetris, part Boggle, part chess-level combo thinking. English and Spanish word lists. Light/dark themes. Available on Vercel (HTML5). Built as a mother's day gift.",
     "link": "http://word-loom-lux.netlify.app",
     "imgNormal": "//images.ctfassets.net/flqyygd484v1/6U2EOhtswvotDUySnbGu2X/bf111ee37a6b49d3c521507ca368a958/word-loom-screen.png",
     "imgWide": "//images.ctfassets.net/flqyygd484v1/6U2EOhtswvotDUySnbGu2X/bf111ee37a6b49d3c521507ca368a958/word-loom-screen.png",
     "alt": "Word Loom Game",
     "order": 2,
     "active": true,
-    "icon": null
+    "icon": null,
+    "techStack": ["Godot 4", "GDScript", "Bilingual EN/ES", "HTML5"],
+    "meta": {
+      "duration": "8 weeks",
+      "mode": "vibe coded",
+      "shipDate": "Mother's Day 2026"
+    }
   },
   {
     "id": "2eExwHB0d7r82p1sxTJey6",
