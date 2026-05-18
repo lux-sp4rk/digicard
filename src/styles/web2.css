@@ -241,14 +241,13 @@
 }
 
 .web2 .web2-profile-section {
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #f8fbff 70%,
-    rgba(255, 255, 255, 0.95) 100%
-  );
-  border-bottom: 2px solid rgba(0, 136, 204, 0.15);
-  box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 2px solid rgba(0, 136, 204, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .web2 .web2-bg,
