@@ -2,7 +2,7 @@
 
 **Live:** [luxsp4rk.com](https://lux-sprwhk.xyz/)
 
-A personal portfolio that earns its name — dynamic theming, CMS-driven content, and integrations with the creator stack (Beehiiv, YouTube, Instagram). No page rebuilds to change the look.
+A personal portfolio with dynamic theming, CMS-driven content, and integrations with social media. No page rebuilds to change the look.
 
 ## What it is
 
