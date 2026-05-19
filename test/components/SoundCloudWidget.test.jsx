@@ -14,7 +14,10 @@ vi.mock('../../src/utils/soundcloud', () => ({
 
 // Mock fetch and AbortController globally
 const mockFetch = vi.fn();
-const mockAbortController = vi.fn();
+const mockAbortController = vi.fn(() => ({
+  abort: vi.fn(),
+  signal: {},
+}));
 Object.assign(globalThis, {
   fetch: mockFetch,
   AbortController: mockAbortController,
